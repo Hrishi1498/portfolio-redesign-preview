@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { cn } from '@/lib/utils'
 
 export interface StorySlideData {
@@ -41,7 +42,7 @@ function Character({
   }
 
   // Different expressions for the character
-  const expressions: Record<string, JSX.Element> = {
+  const expressions: Record<string, React.ReactElement> = {
     happy: (
       <g>
         {/* Face */}
