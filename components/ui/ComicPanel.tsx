@@ -1,11 +1,11 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import type { ComicPanel } from '@/lib/data'
+import type { StorySlide } from '@/lib/data'
 import { useState } from 'react'
 
 interface ComicPanelProps {
-  panel: ComicPanel
+  panel: StorySlide
   color: string
   index: number
   total: number
@@ -14,24 +14,27 @@ interface ComicPanelProps {
 export function ComicPanel({ panel, color, index, total }: ComicPanelProps) {
   const [isHovered, setIsHovered] = useState(false)
 
-  const typeStyles = {
+  const typeStyles: Record<StorySlide['type'], string> = {
     intro: 'border-l-4 border-l-emerald-500',
+    scene: 'border-l-4 border-l-blue-500',
     problem: 'border-l-4 border-l-rose-500',
     solution: 'border-l-4 border-l-violet-500',
     insight: 'border-l-4 border-l-amber-500',
     conclusion: 'border-l-4 border-l-cyan-500',
   }
 
-  const typeLabels = {
+  const typeLabels: Record<StorySlide['type'], string> = {
     intro: 'Introduction',
+    scene: 'Scene',
     problem: 'The Problem',
     solution: 'Solution',
     insight: 'Key Insight',
     conclusion: 'Conclusion',
   }
 
-  const typeColors = {
+  const typeColors: Record<StorySlide['type'], string> = {
     intro: 'text-emerald-400 bg-emerald-500/10',
+    scene: 'text-blue-400 bg-blue-500/10',
     problem: 'text-rose-400 bg-rose-500/10',
     solution: 'text-violet-400 bg-violet-500/10',
     insight: 'text-amber-400 bg-amber-500/10',

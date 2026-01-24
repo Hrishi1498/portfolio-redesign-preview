@@ -31,13 +31,24 @@ export interface CaseStudy {
   prevSlug?: string
 }
 
+export type Category = 'all' | 'llm' | 'agents' | 'prompts' | 'rag' | 'ux'
+
+export interface Article {
+  id: string
+  title: string
+  description: string
+  category: Exclude<Category, 'all'>
+  readTime: string
+  thumbnail: string
+}
+
 export const categories = [
-  { id: 'all', label: 'All' },
-  { id: 'llm', label: 'LLMs' },
-  { id: 'agents', label: 'AI Agents' },
-  { id: 'prompts', label: 'Prompting' },
-  { id: 'rag', label: 'RAG' },
-  { id: 'ux', label: 'AI UX' },
+  { id: 'all' as Category, label: 'All' },
+  { id: 'llm' as Category, label: 'LLMs' },
+  { id: 'agents' as Category, label: 'AI Agents' },
+  { id: 'prompts' as Category, label: 'Prompting' },
+  { id: 'rag' as Category, label: 'RAG' },
+  { id: 'ux' as Category, label: 'AI UX' },
 ]
 
 export const caseStudies: CaseStudy[] = [
@@ -670,6 +681,15 @@ export const caseStudies: CaseStudy[] = [
   },
 ]
 
+export const articles: Article[] = caseStudies.map((study) => ({
+  id: study.id,
+  title: study.title,
+  description: study.description,
+  category: study.category as Exclude<Category, 'all'>,
+  readTime: study.readTime,
+  thumbnail: study.thumbnail,
+}))
+
 export const navLinks = [
   { href: '#articles', label: 'Real Wins' },
   { href: '#', label: 'Brain Stuff' },
@@ -680,4 +700,14 @@ export const socialLinks = [
   { href: '#', label: 'Twitter' },
   { href: '#', label: 'LinkedIn' },
   { href: '#', label: 'GitHub' },
+]
+
+export const marqueeItems = [
+  'AI Agents',
+  'LLMs',
+  'RAG',
+  'Prompt Engineering',
+  'Fine-Tuning',
+  'Multi-Agent Systems',
+  'AI UX',
 ]
