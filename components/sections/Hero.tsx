@@ -34,8 +34,9 @@ export function Hero() {
             </h1>
 
             {/* Subheadline */}
-            <p className="font-body text-lg md:text-xl text-zinc-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              learn AI through visual stories that actually slap. no boring lectures, just 5 min/week of pure brain food.
+            <p className="font-body text-lg md:text-xl text-zinc-400 mb-10 mx-auto lg:mx-0 leading-relaxed">
+              learn AI through visual stories that actually slap.<br />
+              no boring lectures, just 5 min/week of pure brain food.
             </p>
 
             {/* CTA Buttons */}
