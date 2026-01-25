@@ -21,17 +21,17 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary: `
-        bg-gradient-to-r from-lime-400 via-emerald-400 to-cyan-400 text-zinc-900
-        hover:from-lime-300 hover:via-emerald-300 hover:to-cyan-300
-        shadow-[0_0_20px_rgba(163,230,53,0.4)]
-        hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]
+        bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 text-white
+        hover:from-purple-400 hover:via-blue-400 hover:to-cyan-300
+        shadow-[0_0_20px_rgba(139,92,246,0.4)]
+        hover:shadow-[0_0_30px_rgba(34,211,238,0.6)]
         active:scale-[0.98]
       `,
       secondary: `
         bg-transparent text-white
         border-2 border-zinc-700
-        hover:border-lime-400 hover:text-lime-400
-        hover:shadow-[0_0_20px_rgba(163,230,53,0.2)]
+        hover:border-cyan-400 hover:text-cyan-400
+        hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]
         active:scale-[0.98]
       `,
       google: `

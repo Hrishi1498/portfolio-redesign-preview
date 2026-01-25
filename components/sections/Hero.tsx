@@ -24,11 +24,11 @@ export function Hero() {
             <h1 className="font-display text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] leading-[1.1] font-bold text-white mb-6 tracking-tight">
               we make{' '}
               <span className="relative inline-block">
-                <span className="relative z-10 bg-gradient-to-r from-lime-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent">cool stuff</span>
+                <span className="relative z-10 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">cool stuff</span>
                 {/* Glow background */}
-                <span className="absolute inset-0 bg-emerald-500/20 blur-2xl -z-10" />
+                <span className="absolute inset-0 bg-purple-500/20 blur-2xl -z-10" />
                 {/* Underline */}
-                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-lime-400 via-emerald-400 to-cyan-400 rounded-full" />
+                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 rounded-full" />
               </span>
               {' '}that slaps.
             </h1>
@@ -83,11 +83,11 @@ export function Hero() {
           </div>
 
           {/* Right side - Character Image */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 lg:-ml-8">
             <Image
               src="/landing.png"
               alt="Dan and LX"
-              width={400}
+              width={450}
               height={400}
               className="object-contain drop-shadow-2xl"
               priority

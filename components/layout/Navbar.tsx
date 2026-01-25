@@ -46,17 +46,17 @@ export function Navbar() {
                 priority
                 className={cn(
                   "w-11 h-11 object-contain",
-                  "drop-shadow-[0_0_12px_rgba(163,230,53,0.35)]",
+                  "drop-shadow-[0_0_12px_rgba(139,92,246,0.5)]",
                   "transition-all duration-300",
                   "group-hover:scale-105 group-hover:rotate-3"
                 )}
               />
               {/* Animated glow ring */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-lime-400 via-emerald-400 to-cyan-400 opacity-0 group-hover:opacity-40 blur-xl transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500 via-blue-500 to-cyan-400 opacity-0 group-hover:opacity-40 blur-xl transition-opacity duration-300" />
             </div>
             <div className="flex flex-col">
               <span className="font-display font-bold text-white text-lg tracking-tight">
-                BitBLabs<span className="text-lime-400">.</span>
+                BitBLabs<span className="text-purple-500">.</span>
               </span>
               <span className="text-[10px] text-zinc-500 font-medium tracking-wider hidden sm:block">
                 Best in the Business
@@ -95,15 +95,15 @@ export function Navbar() {
               href="#"
               className={cn(
                 "px-5 py-2.5 rounded-xl",
-                "font-heading text-sm font-semibold text-zinc-900",
-                "bg-gradient-to-r from-lime-400 via-emerald-400 to-cyan-400",
-                "hover:from-lime-300 hover:via-emerald-300 hover:to-cyan-300",
-                "shadow-[0_0_20px_rgba(163,230,53,0.4)]",
-                "hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]",
+                "font-heading text-sm font-semibold text-white",
+                "bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400",
+                "hover:from-purple-400 hover:via-blue-400 hover:to-cyan-300",
+                "shadow-[0_0_20px_rgba(139,92,246,0.4)]",
+                "hover:shadow-[0_0_30px_rgba(34,211,238,0.6)]",
                 "transition-all duration-300"
               )}
             >
-              let's go
+              Let's go
             </Link>
           </div>
         </div>
@@ -113,7 +113,7 @@ export function Navbar() {
       <div 
         className={cn(
           "absolute bottom-0 left-0 right-0 h-px",
-          "bg-lime-500/30",
+          "bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-400/30",
           "transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0"
         )}
