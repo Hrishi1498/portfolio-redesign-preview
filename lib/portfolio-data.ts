@@ -1,3 +1,5 @@
+import type { StorySlide } from './data'
+
 export interface PortfolioProject {
   id: string
   slug: string
@@ -25,6 +27,7 @@ export interface PortfolioProject {
   }
   color: string
   featured?: boolean
+  slides?: StorySlide[]
 }
 
 export const portfolioCategories = [
@@ -219,5 +222,96 @@ export const portfolioProjects: PortfolioProject[] = [
       github: 'https://github.com',
     },
     color: '#14B8A6',
+  },
+  {
+    id: '7',
+    slug: 'digipropass',
+    title: 'DigiProPass',
+    tagline: 'EU-compliant Digital Product Passports for fashion',
+    description: 'A SaaS platform that helps fashion brands create EU-compliant Digital Product Passports, track product lifecycle data, and transform compliance into brand storytelling opportunities.',
+    role: 'Full Stack Developer',
+    duration: '6 months',
+    year: '2024',
+    category: 'web',
+    tech: ['Django', 'Django REST Framework', 'PostgreSQL', 'AWS', 'Docker', 'JWT', 'OAuth'],
+    highlights: [
+      'EU Digital Product Passport compliance for 2027 regulations',
+      'QR-powered digital identities for every product',
+      'Complete lifecycle tracking from raw materials to end-of-life',
+      'API-first architecture for ERP and PLM integrations',
+    ],
+    metrics: [
+      { label: 'Products Tracked', value: '10K+' },
+      { label: 'Compliance Rate', value: '100%' },
+      { label: 'Brand Partners', value: '50+' },
+    ],
+    images: {
+      thumbnail: '/dpplogo.svg',
+    },
+    links: {
+      live: 'https://digipropass.com/',
+    },
+    color: '#6366F1',
+    featured: true,
+    slides: [
+      {
+        id: 1,
+        type: 'intro',
+        title: 'The Story Behind DigiProPass',
+        content: 'In 2024, while the European Union was finalizing one of the most ambitious sustainability regulations for the fashion industry — the Digital Product Passport mandate — a quiet but massive shift was underway. Fashion brands weren\'t just being asked to sell products anymore. They were being asked to prove their story — from raw material to end-of-life.',
+        image: '/digipropass-meeting.png',
+      },
+      {
+        id: 2,
+        type: 'scene',
+        title: 'Meeting Keshika Mahesh',
+        content: 'That\'s when Keshika Mahesh, a sustainability-driven entrepreneur and the Founder & CEO of DigiProPass, reached out. Keshika works at the intersection of fashion, technology, and environmental compliance, helping brands prepare for a future where transparency isn\'t optional — it\'s the standard.',
+        highlight: 'Her mission: Build a platform that doesn\'t just help brands comply with regulations — but helps them turn sustainability into a competitive advantage.',
+        image: '/dpp_founder.png',
+      },
+      {
+        id: 3,
+        type: 'problem',
+        title: 'The Core Challenge',
+        content: 'She connected with us on LinkedIn with a simple but powerful problem statement: "How do we make complex product lifecycle data usable, compliant, and meaningful — for both regulators and customers?" That conversation became the foundation of DigiProPass.',
+        highlight: 'Complex data needs to be simple, compliant, and meaningful — for both regulators and customers',
+      },
+      {
+        id: 4,
+        type: 'solution',
+        title: 'From Problem to Platform',
+        content: 'What started as a regulatory challenge quickly evolved into something bigger — a Digital Identity System for Fashion Products. Together, we designed and built a SaaS platform that allows brands to create EU-compliant Digital Product Passports, track materials and sustainability impact, generate QR-powered digital identities, and transform compliance data into brand storytelling tools.',
+        highlight: 'DigiProPass isn\'t just about meeting 2027 regulations. It\'s about preparing fashion brands for a future where every product tells a verified, transparent, and trusted story.',
+      },
+      {
+        id: 5,
+        type: 'insight',
+        title: 'How We Built It',
+        content: 'DigiProPass is powered by a secure, scalable, and compliance-ready backend architecture designed to handle high-volume product data, regulatory workflows, and real-time QR interactions.',
+        code: 'Backend Framework: Django\nAPI Layer: Django REST Framework\nDatabase: PostgreSQL\nCloud Infrastructure: AWS\nAuthentication: JWT + OAuth\nDevOps: Docker + CI/CD\nProduct Identity: QR code generation engine\nIntegrations: API-first architecture',
+      },
+      {
+        id: 6,
+        type: 'conclusion',
+        title: 'Preparing for the Future',
+        content: 'The platform enables brands to turn regulatory compliance into a competitive advantage while building consumer trust through transparency. Every product now tells a verified, transparent, and trusted story — from raw material to end-of-life.',
+        highlight: 'Compliance becomes competitive advantage',
+        image: '/step4-dashboard.png',
+      },
+      {
+        id: 7,
+        type: 'testimonial',
+        title: 'What Our Client Says',
+        content: 'Hear directly from Keshika Mahesh, Founder & CEO of DigiProPass, about her experience working with us.',
+        testimonialImages: ['/digi1.png', '/digi2.png'],
+      },
+      {
+        id: 8,
+        type: 'gallery',
+        title: 'Project Gallery',
+        content: 'Explore the DigiProPass platform through these screenshots showcasing the dashboard, product management, digital passports, and customer-facing interfaces.',
+        galleryImages: ['/gallery-a.png', '/gallery-b.png', '/gallery-c.png', '/gallery-d.png'],
+      },
+    ],
   },
 ]

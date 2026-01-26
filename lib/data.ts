@@ -1,6 +1,6 @@
 export interface StorySlide {
   id: number
-  type: 'intro' | 'scene' | 'insight' | 'problem' | 'solution' | 'conclusion'
+  type: 'intro' | 'scene' | 'insight' | 'problem' | 'solution' | 'conclusion' | 'testimonial' | 'gallery'
   character?: 'happy' | 'thinking' | 'surprised' | 'excited' | 'confused' | 'pointing'
   characterPosition?: 'left' | 'right' | 'center'
   title?: string
@@ -9,6 +9,9 @@ export interface StorySlide {
   highlight?: string
   code?: string
   emoji?: string
+  image?: string
+  testimonialImages?: string[]
+  galleryImages?: string[]
 }
 
 export interface CaseStudy {

@@ -1,11 +1,12 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 export interface StorySlideData {
   id: number
-  type: 'intro' | 'scene' | 'insight' | 'problem' | 'solution' | 'conclusion'
+  type: 'intro' | 'scene' | 'insight' | 'problem' | 'solution' | 'conclusion' | 'testimonial' | 'gallery'
   character?: 'happy' | 'thinking' | 'surprised' | 'excited' | 'confused' | 'pointing'
   characterPosition?: 'left' | 'right' | 'center'
   title?: string
@@ -16,6 +17,8 @@ export interface StorySlideData {
   code?: string
   emoji?: string
   bgGradient?: string
+  testimonialImages?: string[]
+  galleryImages?: string[]
 }
 
 interface StorySlideProps {
@@ -25,296 +28,617 @@ interface StorySlideProps {
   direction: 'next' | 'prev' | null
 }
 
-// SVG Bitmoji-style character component
-function Character({ 
-  expression, 
-  position,
-  color 
-}: { 
-  expression: StorySlideData['character']
-  position: StorySlideData['characterPosition']
-  color: string
-}) {
-  const positionClass = {
-    left: 'left-8 md:left-16',
-    right: 'right-8 md:right-16',
-    center: 'left-1/2 -translate-x-1/2',
-  }
-
-  // Different expressions for the character
-  const expressions: Record<string, React.ReactElement> = {
-    happy: (
-      <g>
-        {/* Face */}
-        <circle cx="60" cy="60" r="50" fill="#FFE4C4" stroke={color} strokeWidth="3"/>
-        {/* Hair */}
-        <path d="M20 45 Q60 10 100 45" fill="#4A3728" />
-        <ellipse cx="25" cy="50" rx="8" ry="15" fill="#4A3728" />
-        <ellipse cx="95" cy="50" rx="8" ry="15" fill="#4A3728" />
-        {/* Eyes */}
-        <ellipse cx="42" cy="55" rx="6" ry="8" fill="#333"/>
-        <ellipse cx="78" cy="55" rx="6" ry="8" fill="#333"/>
-        <circle cx="44" cy="53" r="2" fill="#fff"/>
-        <circle cx="80" cy="53" r="2" fill="#fff"/>
-        {/* Happy mouth */}
-        <path d="M45 75 Q60 90 75 75" stroke="#333" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        {/* Cheeks */}
-        <ellipse cx="30" cy="70" rx="8" ry="5" fill="#FFB6C1" opacity="0.5"/>
-        <ellipse cx="90" cy="70" rx="8" ry="5" fill="#FFB6C1" opacity="0.5"/>
-      </g>
-    ),
-    thinking: (
-      <g>
-        <circle cx="60" cy="60" r="50" fill="#FFE4C4" stroke={color} strokeWidth="3"/>
-        <path d="M20 45 Q60 10 100 45" fill="#4A3728" />
-        <ellipse cx="25" cy="50" rx="8" ry="15" fill="#4A3728" />
-        <ellipse cx="95" cy="50" rx="8" ry="15" fill="#4A3728" />
-        {/* Thinking eyes - looking up */}
-        <ellipse cx="42" cy="52" rx="6" ry="8" fill="#333"/>
-        <ellipse cx="78" cy="52" rx="6" ry="8" fill="#333"/>
-        <circle cx="42" cy="48" r="2" fill="#fff"/>
-        <circle cx="78" cy="48" r="2" fill="#fff"/>
-        {/* Thinking mouth - slight frown */}
-        <path d="M50 78 Q60 72 70 78" stroke="#333" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        {/* Thinking hand */}
-        <ellipse cx="95" cy="85" rx="12" ry="8" fill="#FFE4C4" stroke={color} strokeWidth="2"/>
-      </g>
-    ),
-    surprised: (
-      <g>
-        <circle cx="60" cy="60" r="50" fill="#FFE4C4" stroke={color} strokeWidth="3"/>
-        <path d="M20 45 Q60 10 100 45" fill="#4A3728" />
-        <ellipse cx="25" cy="50" rx="8" ry="15" fill="#4A3728" />
-        <ellipse cx="95" cy="50" rx="8" ry="15" fill="#4A3728" />
-        {/* Surprised eyes - wide */}
-        <ellipse cx="42" cy="55" rx="8" ry="10" fill="#333"/>
-        <ellipse cx="78" cy="55" rx="8" ry="10" fill="#333"/>
-        <circle cx="44" cy="52" r="3" fill="#fff"/>
-        <circle cx="80" cy="52" r="3" fill="#fff"/>
-        {/* Eyebrows raised */}
-        <path d="M32 40 Q42 35 52 40" stroke="#4A3728" strokeWidth="3" fill="none"/>
-        <path d="M68 40 Q78 35 88 40" stroke="#4A3728" strokeWidth="3" fill="none"/>
-        {/* Surprised mouth - O shape */}
-        <ellipse cx="60" cy="78" rx="10" ry="12" fill="#333"/>
-      </g>
-    ),
-    excited: (
-      <g>
-        <circle cx="60" cy="60" r="50" fill="#FFE4C4" stroke={color} strokeWidth="3"/>
-        <path d="M20 45 Q60 10 100 45" fill="#4A3728" />
-        <ellipse cx="25" cy="50" rx="8" ry="15" fill="#4A3728" />
-        <ellipse cx="95" cy="50" rx="8" ry="15" fill="#4A3728" />
-        {/* Excited eyes - closed happy */}
-        <path d="M34 55 Q42 48 50 55" stroke="#333" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        <path d="M70 55 Q78 48 86 55" stroke="#333" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        {/* Big smile */}
-        <path d="M40 72 Q60 95 80 72" stroke="#333" strokeWidth="3" fill="#fff" strokeLinecap="round"/>
-        {/* Sparkles */}
-        <path d="M15 30 L20 35 L15 40 L10 35 Z" fill={color}/>
-        <path d="M100 25 L105 30 L100 35 L95 30 Z" fill={color}/>
-        {/* Cheeks */}
-        <ellipse cx="30" cy="68" rx="10" ry="6" fill="#FFB6C1" opacity="0.6"/>
-        <ellipse cx="90" cy="68" rx="10" ry="6" fill="#FFB6C1" opacity="0.6"/>
-      </g>
-    ),
-    confused: (
-      <g>
-        <circle cx="60" cy="60" r="50" fill="#FFE4C4" stroke={color} strokeWidth="3"/>
-        <path d="M20 45 Q60 10 100 45" fill="#4A3728" />
-        <ellipse cx="25" cy="50" rx="8" ry="15" fill="#4A3728" />
-        <ellipse cx="95" cy="50" rx="8" ry="15" fill="#4A3728" />
-        {/* Confused eyes - one higher */}
-        <ellipse cx="42" cy="52" rx="6" ry="8" fill="#333"/>
-        <ellipse cx="78" cy="58" rx="6" ry="8" fill="#333"/>
-        <circle cx="44" cy="50" r="2" fill="#fff"/>
-        <circle cx="80" cy="56" r="2" fill="#fff"/>
-        {/* Confused eyebrows */}
-        <path d="M32 42 L52 38" stroke="#4A3728" strokeWidth="3" strokeLinecap="round"/>
-        <path d="M68 44 L88 48" stroke="#4A3728" strokeWidth="3" strokeLinecap="round"/>
-        {/* Wavy confused mouth */}
-        <path d="M45 78 Q52 82 60 75 Q68 68 75 78" stroke="#333" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        {/* Question mark */}
-        <text x="95" y="25" fontSize="20" fill={color} fontWeight="bold">?</text>
-      </g>
-    ),
-    pointing: (
-      <g>
-        <circle cx="60" cy="60" r="50" fill="#FFE4C4" stroke={color} strokeWidth="3"/>
-        <path d="M20 45 Q60 10 100 45" fill="#4A3728" />
-        <ellipse cx="25" cy="50" rx="8" ry="15" fill="#4A3728" />
-        <ellipse cx="95" cy="50" rx="8" ry="15" fill="#4A3728" />
-        {/* Focused eyes */}
-        <ellipse cx="42" cy="55" rx="6" ry="8" fill="#333"/>
-        <ellipse cx="78" cy="55" rx="6" ry="8" fill="#333"/>
-        <circle cx="44" cy="53" r="2" fill="#fff"/>
-        <circle cx="80" cy="53" r="2" fill="#fff"/>
-        {/* Confident smile */}
-        <path d="M48 75 Q60 82 72 75" stroke="#333" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        {/* Pointing hand */}
-        <ellipse cx="115" cy="60" rx="15" ry="10" fill="#FFE4C4" stroke={color} strokeWidth="2"/>
-        <path d="M125 60 L140 60" stroke="#FFE4C4" strokeWidth="8" strokeLinecap="round"/>
-        <path d="M140 55 L140 65" stroke={color} strokeWidth="2"/>
-      </g>
-    ),
-  }
-
-  return (
-    <div className={cn(
-      "absolute bottom-8 transition-all duration-500",
-      positionClass[position || 'left']
-    )}>
-      <svg 
-        viewBox="0 0 150 120" 
-        className="w-24 h-20 md:w-32 md:h-28 drop-shadow-2xl"
-        style={{ filter: `drop-shadow(0 0 20px ${color}40)` }}
-      >
-        {expressions[expression || 'happy']}
-      </svg>
-    </div>
-  )
-}
-
-// Speech bubble component
-function SpeechBubble({ 
-  text, 
-  position,
-  color
-}: { 
-  text: string
-  position: 'left' | 'right' | 'center'
-  color: string
-}) {
-  return (
-    <div className={cn(
-      "absolute bottom-32 md:bottom-36 max-w-xs md:max-w-sm px-6 py-4 rounded-2xl",
-      "bg-white text-gray-800 font-body text-sm md:text-base leading-relaxed",
-      "shadow-2xl",
-      position === 'left' && "left-8 md:left-16",
-      position === 'right' && "right-8 md:right-16",
-      position === 'center' && "left-1/2 -translate-x-1/2"
-    )}
-    style={{ 
-      borderBottom: `4px solid ${color}`,
-    }}
-    >
-      {text}
-      {/* Speech bubble tail */}
-      <div 
-        className={cn(
-          "absolute -bottom-3 w-0 h-0",
-          "border-l-[12px] border-l-transparent",
-          "border-r-[12px] border-r-transparent",
-          "border-t-[12px] border-t-white",
-          position === 'left' && "left-8",
-          position === 'right' && "right-8",
-          position === 'center' && "left-1/2 -translate-x-1/2"
-        )}
-      />
-    </div>
-  )
+// Type badge styles
+const typeConfig: Record<StorySlideData['type'], { label: string; icon: string }> = {
+  intro: { label: 'Introduction', icon: '👋' },
+  scene: { label: 'The Story', icon: '📖' },
+  problem: { label: 'The Challenge', icon: '🎯' },
+  solution: { label: 'The Solution', icon: '✨' },
+  insight: { label: 'Tech Stack', icon: '⚙️' },
+  conclusion: { label: 'The Impact', icon: '🚀' },
+  testimonial: { label: 'Testimonial', icon: '💬' },
+  gallery: { label: 'Project Gallery', icon: '🖼️' },
 }
 
 export function StorySlide({ slide, color, isActive, direction }: StorySlideProps) {
+  const typeInfo = typeConfig[slide.type]
+
   return (
     <div
       className={cn(
-        "absolute inset-0 flex flex-col items-center justify-center px-6 md:px-16 lg:px-24",
-        "transition-all duration-500 ease-out",
-        "bg-dark-900",
+        "absolute inset-0 flex items-center justify-center",
+        "transition-all duration-700 ease-out",
+        "bg-dark-900 overflow-y-auto",
         isActive 
-          ? "opacity-100 translate-x-0" 
+          ? "opacity-100 translate-x-0 scale-100" 
           : direction === 'next' 
-            ? "opacity-0 translate-x-full" 
-            : "opacity-0 -translate-x-full"
+            ? "opacity-0 translate-x-[100px] scale-95" 
+            : "opacity-0 translate-x-[-100px] scale-95"
       )}
     >
-      {/* Content container */}
-      <div className="max-w-3xl w-full text-center relative z-10">
-        {/* Emoji */}
-        {slide.emoji && (
-          <span className="text-6xl md:text-8xl mb-6 block animate-bounce">
-            {slide.emoji}
-          </span>
-        )}
+      {/* Main content area */}
+      <div className="w-full max-w-5xl mx-auto px-6 py-12 md:py-16">
+        {/* Testimonial layout with two images side-by-side */}
+        {slide.type === 'testimonial' && slide.testimonialImages && slide.testimonialImages.length >= 2 ? (
+          <div className="w-full max-w-6xl mx-auto">
+            {/* Header section with decorative quote */}
+            <div className="text-center mb-12">
+              {/* Large decorative quote mark */}
+              <div 
+                className={cn(
+                  "flex justify-center mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 scale-100" : "opacity-0 scale-50"
+                )}
+              >
+                <div 
+                  className="w-20 h-20 rounded-full flex items-center justify-center"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${color}30, ${color}10)`,
+                    boxShadow: `0 0 60px ${color}30`,
+                  }}
+                >
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style={{ color }}>
+                    <path d="M11 7.5C11 9.98528 9.48528 12 7 12C7 12 8 12 8 15C8 18 5.5 19 4 19C4 19 7 18.5 7 15.5C7 13.5 5.5 13 4 13C2.5 13 1 11.5 1 9.5C1 6.5 3.5 4 7 4C9.5 4 11 5.5 11 7.5Z" fill="currentColor"/>
+                    <path d="M23 7.5C23 9.98528 21.4853 12 19 12C19 12 20 12 20 15C20 18 17.5 19 16 19C16 19 19 18.5 19 15.5C19 13.5 17.5 13 16 13C14.5 13 13 11.5 13 9.5C13 6.5 15.5 4 19 4C21.5 4 23 5.5 23 7.5Z" fill="currentColor"/>
+                  </svg>
+                </div>
+              </div>
 
-        {/* Title */}
-        {slide.title && (
-          <h2 
-            className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
-            style={{ textShadow: `0 0 40px ${color}40` }}
-          >
-            {slide.title}
-          </h2>
-        )}
+              {/* Type badge */}
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "transition-all duration-700 delay-200",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  background: `linear-gradient(135deg, ${color}20, ${color}05)`,
+                  border: `1px solid ${color}40`,
+                  boxShadow: `0 4px 20px ${color}15`,
+                }}
+              >
+                <span className="text-lg">{typeInfo.icon}</span>
+                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
 
-        {/* Main content */}
-        <p className="font-body text-lg md:text-2xl text-zinc-200 leading-relaxed mb-8 max-w-2xl mx-auto">
-          {slide.content}
-        </p>
+              {/* Title */}
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight",
+                    "transition-all duration-700 delay-300",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
 
-        {/* Highlight box */}
-        {slide.highlight && (
-          <div 
-            className="inline-block px-6 py-4 rounded-2xl mb-8"
-            style={{ 
-              backgroundColor: color + '20',
-              border: `2px solid ${color}40`,
-              boxShadow: `0 0 30px ${color}20`,
-            }}
-          >
-            <p className="font-heading font-bold text-white text-lg md:text-xl">
-              💡 {slide.highlight}
-            </p>
-          </div>
-        )}
-
-        {/* Code block */}
-        {slide.code && (
-          <div className="relative rounded-2xl overflow-hidden bg-[#0d0d0d] border border-white/[0.1] text-left max-w-xl mx-auto">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
-              <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-              <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+              {/* Content */}
+              {slide.content && (
+                <p 
+                  className={cn(
+                    "font-body text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto",
+                    "transition-all duration-700 delay-400",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.content}
+                </p>
+              )}
             </div>
-            <pre className="p-5 overflow-x-auto">
-              <code className="font-mono text-sm md:text-base text-zinc-300 leading-relaxed whitespace-pre">
-                {slide.code}
-              </code>
-            </pre>
+
+            {/* Two testimonial cards side-by-side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              {slide.testimonialImages.map((img, index) => (
+                <div 
+                  key={index}
+                  className={cn(
+                    "group relative",
+                    "transition-all duration-700",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                  )}
+                  style={{ transitionDelay: `${500 + index * 150}ms` }}
+                >
+                  {/* Card container */}
+                  <div 
+                    className="relative rounded-2xl overflow-hidden"
+                    style={{ 
+                      background: 'linear-gradient(145deg, rgba(39, 39, 42, 0.8), rgba(24, 24, 27, 0.9))',
+                      border: `1px solid rgba(255, 255, 255, 0.08)`,
+                      boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 80px ${color}15`,
+                    }}
+                  >
+                    {/* Gradient top border */}
+                    <div 
+                      className="absolute top-0 left-0 right-0 h-1"
+                      style={{ background: `linear-gradient(90deg, ${color}, ${color}60, ${color})` }}
+                    />
+                    
+                    {/* LinkedIn badge */}
+                    <div className="absolute top-4 right-4 z-10">
+                      <div 
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold"
+                        style={{ 
+                          background: 'rgba(10, 102, 194, 0.2)',
+                          border: '1px solid rgba(10, 102, 194, 0.4)',
+                          color: '#0A66C2',
+                        }}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        LinkedIn
+                      </div>
+                    </div>
+
+                    {/* Image container */}
+                    <div className="relative p-4 pt-8">
+                      <div className="relative rounded-xl overflow-hidden bg-zinc-900/50">
+                        <Image 
+                          src={img} 
+                          alt={`Testimonial from client ${index + 1}`}
+                          width={700}
+                          height={500}
+                          className="w-full h-auto object-contain"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Decorative corner gradient */}
+                    <div 
+                      className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
+                      style={{ backgroundColor: color }}
+                    />
+                  </div>
+
+                  {/* Hover glow effect */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{ 
+                      boxShadow: `0 0 100px ${color}25`,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Attribution */}
+            <div 
+              className={cn(
+                "flex justify-center mt-10",
+                "transition-all duration-700 delay-700",
+                isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              )}
+            >
+              <div 
+                className="flex items-center gap-3 px-6 py-3 rounded-full"
+                style={{ 
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                }}
+              >
+                <div 
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${color}40, ${color}20)`,
+                  }}
+                >
+                  👩‍💼
+                </div>
+                <div className="text-left">
+                  <p className="text-white font-semibold text-sm">Keshika Mahesh</p>
+                  <p className="text-zinc-500 text-xs">Founder & CEO, DigiProPass</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : slide.type === 'gallery' && slide.galleryImages && slide.galleryImages.length > 0 ? (
+          /* Gallery layout with multiple images */
+          <div className="w-full max-w-6xl mx-auto">
+            {/* Header section */}
+            <div className="text-center mb-12">
+              {/* Type badge */}
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  background: `linear-gradient(135deg, ${color}20, ${color}05)`,
+                  border: `1px solid ${color}40`,
+                  boxShadow: `0 4px 20px ${color}15`,
+                }}
+              >
+                <span className="text-lg">{typeInfo.icon}</span>
+                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+
+              {/* Title */}
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+
+              {/* Content */}
+              {slide.content && (
+                <p 
+                  className={cn(
+                    "font-body text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto",
+                    "transition-all duration-700 delay-300",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.content}
+                </p>
+              )}
+            </div>
+
+            {/* Gallery grid */}
+            <div 
+              className={cn(
+                "grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8",
+                "transition-all duration-700 delay-400",
+                isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              )}
+            >
+              {slide.galleryImages.map((img, index) => (
+                <div 
+                  key={index}
+                  className={cn(
+                    "group relative rounded-2xl overflow-hidden",
+                    "transition-all duration-700",
+                    isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
+                  )}
+                  style={{ 
+                    transitionDelay: `${500 + index * 100}ms`,
+                    background: 'linear-gradient(145deg, rgba(39, 39, 42, 0.8), rgba(24, 24, 27, 0.9))',
+                    border: `1px solid rgba(255, 255, 255, 0.08)`,
+                    boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 60px ${color}10`,
+                  }}
+                >
+                  {/* Gradient top border */}
+                  <div 
+                    className="absolute top-0 left-0 right-0 h-1 z-10"
+                    style={{ background: `linear-gradient(90deg, ${color}, ${color}60, ${color})` }}
+                  />
+                  
+                  {/* Image container */}
+                  <div className="relative aspect-video overflow-hidden">
+                    <Image 
+                      src={img} 
+                      alt={`Gallery image ${index + 1}`}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    
+                    {/* Overlay on hover */}
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    />
+                  </div>
+
+                  {/* Decorative corner gradient */}
+                  <div 
+                    className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
+                    style={{ backgroundColor: color }}
+                  />
+
+                  {/* Hover glow effect */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{ 
+                      boxShadow: `0 0 80px ${color}20`,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : slide.image ? (
+          /* Two-column layout for slides with images */
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            {/* Image side */}
+            <div 
+              className={cn(
+                "flex-shrink-0 w-full lg:w-1/2",
+                "transition-all duration-700 delay-100",
+                isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              )}
+            >
+              <div 
+                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                style={{ 
+                  boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 60px ${color}20`,
+                }}
+              >
+                <Image 
+                  src={slide.image} 
+                  alt={slide.title || 'Story image'}
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                  priority={slide.id === 1}
+                />
+              </div>
+            </div>
+
+            {/* Content side */}
+            <div className="flex-1 text-left lg:text-left">
+              {/* Type badge */}
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6",
+                  "transition-all duration-700 delay-200",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  backgroundColor: color + '15',
+                  border: `1px solid ${color}30`,
+                }}
+              >
+                <span>{typeInfo.icon}</span>
+                <span className="text-sm font-semibold uppercase tracking-wider" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+
+              {/* Title */}
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight",
+                    "transition-all duration-700 delay-300",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+
+              {/* Content */}
+              <p 
+                className={cn(
+                  "font-body text-lg md:text-xl text-zinc-300 leading-relaxed",
+                  "transition-all duration-700 delay-400",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+              >
+                {slide.content}
+              </p>
+            </div>
+          </div>
+        ) : slide.code ? (
+          /* Two-column layout for slides with code blocks */
+          <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
+            {/* Content side - left */}
+            <div className="flex-1 text-left">
+              {/* Type badge */}
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  backgroundColor: color + '15',
+                  border: `1px solid ${color}30`,
+                }}
+              >
+                <span>{typeInfo.icon}</span>
+                <span className="text-sm font-semibold uppercase tracking-wider" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+
+              {/* Title */}
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+
+              {/* Content */}
+              <p 
+                className={cn(
+                  "font-body text-lg md:text-xl text-zinc-300 leading-relaxed mb-6",
+                  "transition-all duration-700 delay-300",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+              >
+                {slide.content}
+              </p>
+
+              {/* Highlight box */}
+              {slide.highlight && (
+                <div 
+                  className={cn(
+                    "px-6 py-4 rounded-2xl",
+                    "transition-all duration-700 delay-400",
+                    isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
+                  )}
+                  style={{ 
+                    backgroundColor: color + '10',
+                    border: `1px solid ${color}30`,
+                    boxShadow: `0 0 40px ${color}15`,
+                  }}
+                >
+                  <p className="font-body text-lg text-white leading-relaxed">
+                    <span className="mr-2">💡</span>
+                    {slide.highlight}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Code block side - right */}
+            <div 
+              className={cn(
+                "flex-shrink-0 w-full lg:w-[500px]",
+                "transition-all duration-700 delay-500",
+                isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              )}
+            >
+              <div 
+                className={cn(
+                  "relative rounded-2xl overflow-hidden text-left",
+                  "transition-all duration-700",
+                  isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-95"
+                )}
+                style={{
+                  backgroundColor: '#0a0a0a',
+                  border: `1px solid ${color}20`,
+                  boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px ${color}10`,
+                }}
+              >
+                {/* Code header */}
+                <div 
+                  className="flex items-center justify-between px-5 py-4 border-b"
+                  style={{ borderColor: color + '15' }}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/70" />
+                  </div>
+                  <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider">Tech Stack</span>
+                </div>
+                {/* Code content */}
+                <div className="p-6">
+                  {slide.code.split('\n').map((line, index) => {
+                    const [key, value] = line.split(': ')
+                    return (
+                      <div 
+                        key={index} 
+                        className={cn(
+                          "flex items-start gap-4 py-2",
+                          "transition-all duration-500",
+                          isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                        )}
+                        style={{ transitionDelay: `${600 + index * 80}ms` }}
+                      >
+                        <span className="font-mono text-sm text-zinc-500 min-w-[180px]">{key}</span>
+                        <span className="font-mono text-sm" style={{ color }}>{value}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* Centered layout for slides without images or code */
+          <div className="text-center max-w-3xl mx-auto">
+            {/* Type badge */}
+            <div 
+              className={cn(
+                "inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8",
+                "transition-all duration-700 delay-100",
+                isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
+              )}
+              style={{ 
+                backgroundColor: color + '15',
+                border: `1px solid ${color}30`,
+              }}
+            >
+              <span>{typeInfo.icon}</span>
+              <span className="text-sm font-semibold uppercase tracking-wider" style={{ color }}>
+                {typeInfo.label}
+              </span>
+            </div>
+
+            {/* Title */}
+            {slide.title && (
+              <h2 
+                className={cn(
+                  "font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight",
+                  "transition-all duration-700 delay-200",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                )}
+              >
+                {slide.title}
+              </h2>
+            )}
+
+            {/* Content */}
+            <p 
+              className={cn(
+                "font-body text-lg md:text-xl text-zinc-300 leading-relaxed mb-8",
+                "transition-all duration-700 delay-300",
+                isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              )}
+            >
+              {slide.content}
+            </p>
+
+            {/* Highlight box */}
+            {slide.highlight && (
+              <div 
+                className={cn(
+                  "inline-block px-8 py-5 rounded-2xl mb-8 text-left",
+                  "transition-all duration-700 delay-400",
+                  isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-95"
+                )}
+                style={{ 
+                  backgroundColor: color + '10',
+                  border: `1px solid ${color}30`,
+                  boxShadow: `0 0 40px ${color}15`,
+                }}
+              >
+                <p className="font-body text-lg text-white leading-relaxed">
+                  <span className="mr-2">💡</span>
+                  {slide.highlight}
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      {/* Character with speech bubble */}
-      {slide.character && (
-        <>
-          {slide.dialogue && (
-            <SpeechBubble 
-              text={slide.dialogue} 
-              position={slide.characterPosition || 'left'} 
-              color={color}
-            />
-          )}
-          <Character 
-            expression={slide.character} 
-            position={slide.characterPosition || 'left'}
-            color={color}
-          />
-        </>
-      )}
-
-      {/* Background decorations - more visible */}
+      {/* Animated background elements */}
       <div 
-        className="absolute top-20 left-10 w-72 h-72 rounded-full blur-[100px] opacity-20 pointer-events-none"
+        className={cn(
+          "absolute top-1/4 -left-20 w-80 h-80 rounded-full blur-[120px] pointer-events-none",
+          "transition-all duration-1000",
+          isActive ? "opacity-20 scale-100" : "opacity-0 scale-50"
+        )}
         style={{ backgroundColor: color }}
       />
       <div 
-        className="absolute bottom-40 right-10 w-64 h-64 rounded-full blur-[100px] opacity-15 pointer-events-none"
+        className={cn(
+          "absolute bottom-1/4 -right-20 w-96 h-96 rounded-full blur-[150px] pointer-events-none",
+          "transition-all duration-1000 delay-200",
+          isActive ? "opacity-15 scale-100" : "opacity-0 scale-50"
+        )}
         style={{ backgroundColor: color }}
       />
+      
+      {/* Subtle grid pattern */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full blur-[150px] opacity-10 pointer-events-none"
-        style={{ backgroundColor: color }}
+        className="absolute inset-0 pointer-events-none opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(${color}40 1px, transparent 1px), linear-gradient(90deg, ${color}40 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
       />
     </div>
   )

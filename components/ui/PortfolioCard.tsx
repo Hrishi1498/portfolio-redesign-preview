@@ -11,12 +11,12 @@ interface PortfolioCardProps {
 }
 
 export function PortfolioCard({ project, featured = false }: PortfolioCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLAnchorElement>(null)
   const [rotateX, setRotateX] = useState(0)
   const [rotateY, setRotateY] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!cardRef.current) return
     
     const rect = cardRef.current.getBoundingClientRect()
@@ -42,14 +42,18 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
     setIsHovered(true)
   }
 
+  const hasStory = project.slides && project.slides.length > 0
+
   return (
-    <div
+    <Link
       ref={cardRef}
+      href={hasStory ? `/projects/${project.slug}` : '#'}
       className={cn(
-        "group relative rounded-2xl overflow-hidden",
+        "group relative rounded-2xl overflow-hidden block",
         "bg-dark-800 border border-white/[0.08]",
         "transition-all duration-300 ease-out",
-        featured && "md:col-span-2 md:row-span-2"
+        featured && "md:col-span-2 md:row-span-2",
+        hasStory && "cursor-pointer"
       )}
       style={{
         transform: isHovered 
@@ -62,7 +66,15 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}
+      onClick={(e) => {
+        // Don't navigate if clicking on external links
+        const target = e.target as HTMLElement
+        if (target.closest('a[href^="http"], a[href^="/case-studies"]')) {
+          e.preventDefault()
+        }
+      }}
     >
+      <div className="relative">
       {/* Thumbnail area */}
       <div 
         className={cn(
@@ -183,12 +195,22 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          {hasStory && (
+            <span className="flex items-center gap-2 px-4 py-2 rounded-xl font-heading text-sm font-semibold text-white bg-white/[0.05] border border-white/[0.08]">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Story
+            </span>
+          )}
           {project.links.live && (
             <a
               href={project.links.live}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-xl",
                 "font-heading text-sm font-semibold text-white",
@@ -216,6 +238,7 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
               href={project.links.github}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-2 px-4 py-2 rounded-xl font-heading text-sm font-semibold text-zinc-300 bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.1] hover:text-white transition-all"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -227,6 +250,7 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
           {project.links.case_study && (
             <Link
               href={project.links.case_study}
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-2 px-4 py-2 rounded-xl font-heading text-sm font-semibold text-zinc-300 hover:text-violet-400 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,6 +269,7 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
           background: `radial-gradient(circle at 50% 50%, ${project.color}10, transparent 70%)`,
         }}
       />
-    </div>
+      </div>
+    </Link>
   )
 }
