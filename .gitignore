@@ -44,9 +44,7 @@ Thumbs.db
 .turbo
 
 # Vercel
-.vercel
-
-# TypeScript
+.vercel# TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
