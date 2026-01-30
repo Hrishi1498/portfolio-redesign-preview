@@ -23,6 +23,10 @@ export function ComicPanel({ panel, color, index, total }: ComicPanelProps) {
     conclusion: 'border-l-4 border-l-cyan-500',
     testimonial: 'border-l-4 border-l-pink-500',
     gallery: 'border-l-4 border-l-indigo-500',
+    features: 'border-l-4 border-l-teal-500',
+    stats: 'border-l-4 border-l-sky-500',
+    process: 'border-l-4 border-l-orange-500',
+    architecture: 'border-l-4 border-l-fuchsia-500',
   }
 
   const typeLabels: Record<StorySlide['type'], string> = {
@@ -34,6 +38,10 @@ export function ComicPanel({ panel, color, index, total }: ComicPanelProps) {
     conclusion: 'Conclusion',
     testimonial: 'Testimonial',
     gallery: 'Project Gallery',
+    features: 'Key Features',
+    stats: 'By The Numbers',
+    process: 'How It Works',
+    architecture: 'Architecture',
   }
 
   const typeColors: Record<StorySlide['type'], string> = {
@@ -45,6 +53,10 @@ export function ComicPanel({ panel, color, index, total }: ComicPanelProps) {
     conclusion: 'text-cyan-400 bg-cyan-500/10',
     testimonial: 'text-pink-400 bg-pink-500/10',
     gallery: 'text-indigo-400 bg-indigo-500/10',
+    features: 'text-teal-400 bg-teal-500/10',
+    stats: 'text-sky-400 bg-sky-500/10',
+    process: 'text-orange-400 bg-orange-500/10',
+    architecture: 'text-fuchsia-400 bg-fuchsia-500/10',
   }
 
   return (

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 export interface StorySlideData {
   id: number
-  type: 'intro' | 'scene' | 'insight' | 'problem' | 'solution' | 'conclusion' | 'testimonial' | 'gallery'
+  type: 'intro' | 'scene' | 'insight' | 'problem' | 'solution' | 'conclusion' | 'testimonial' | 'gallery' | 'features' | 'stats' | 'process' | 'architecture'
   character?: 'happy' | 'thinking' | 'surprised' | 'excited' | 'confused' | 'pointing'
   characterPosition?: 'left' | 'right' | 'center'
   title?: string
@@ -19,6 +19,10 @@ export interface StorySlideData {
   bgGradient?: string
   testimonialImages?: string[]
   galleryImages?: string[]
+  features?: { icon: string; title: string; description: string }[]
+  stats?: { value: string; label: string; icon?: string }[]
+  steps?: { number: number; title: string; description: string }[]
+  layers?: { name: string; description: string; icon: string; color: string }[]
 }
 
 interface StorySlideProps {
@@ -38,6 +42,10 @@ const typeConfig: Record<StorySlideData['type'], { label: string; icon: string }
   conclusion: { label: 'The Impact', icon: '🚀' },
   testimonial: { label: 'Testimonial', icon: '💬' },
   gallery: { label: 'Project Gallery', icon: '🖼️' },
+  features: { label: 'Key Features', icon: '🔧' },
+  stats: { label: 'By The Numbers', icon: '📊' },
+  process: { label: 'How It Works', icon: '🔄' },
+  architecture: { label: 'Architecture', icon: '🏗️' },
 }
 
 export function StorySlide({ slide, color, isActive, direction }: StorySlideProps) {
@@ -230,7 +238,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   👩‍💼
                 </div>
                 <div className="text-left">
-                  <p className="text-white font-semibold text-sm">Keshika Mahesh</p>
+                  <p className="text-white font-semibold text-sm">Keishika Mahesh</p>
                   <p className="text-zinc-500 text-xs">Founder & CEO, DigiProPass</p>
                 </div>
               </div>
@@ -347,6 +355,329 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                 </div>
               ))}
             </div>
+          </div>
+        ) : slide.type === 'features' && slide.features ? (
+          /* Features grid layout */
+          <div className="w-full max-w-5xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  background: `linear-gradient(135deg, ${color}20, ${color}05)`,
+                  border: `1px solid ${color}40`,
+                }}
+              >
+                <span className="text-lg">{typeInfo.icon}</span>
+                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+              {slide.content && (
+                <p className={cn(
+                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "transition-all duration-700 delay-300",
+                  isActive ? "opacity-100" : "opacity-0"
+                )}>
+                  {slide.content}
+                </p>
+              )}
+            </div>
+            {/* Features grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {slide.features.map((feature, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "group p-6 rounded-2xl transition-all duration-700",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  )}
+                  style={{
+                    transitionDelay: `${400 + index * 100}ms`,
+                    background: 'linear-gradient(145deg, rgba(39, 39, 42, 0.6), rgba(24, 24, 27, 0.8))',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                  }}
+                >
+                  <div 
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+                    style={{ background: `linear-gradient(135deg, ${color}30, ${color}10)` }}
+                  >
+                    {feature.icon}
+                  </div>
+                  <h3 className="font-display text-lg font-bold text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : slide.type === 'stats' && slide.stats ? (
+          /* Stats display layout */
+          <div className="w-full max-w-5xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  background: `linear-gradient(135deg, ${color}20, ${color}05)`,
+                  border: `1px solid ${color}40`,
+                }}
+              >
+                <span className="text-lg">{typeInfo.icon}</span>
+                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+              {slide.content && (
+                <p className={cn(
+                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "transition-all duration-700 delay-300",
+                  isActive ? "opacity-100" : "opacity-0"
+                )}>
+                  {slide.content}
+                </p>
+              )}
+            </div>
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {slide.stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "text-center p-6 rounded-2xl transition-all duration-700",
+                    isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+                  )}
+                  style={{
+                    transitionDelay: `${400 + index * 150}ms`,
+                    background: `linear-gradient(145deg, ${color}15, ${color}05)`,
+                    border: `1px solid ${color}25`,
+                    boxShadow: `0 0 40px ${color}10`,
+                  }}
+                >
+                  {stat.icon && <span className="text-3xl mb-2 block">{stat.icon}</span>}
+                  <div className="font-display text-4xl md:text-5xl font-bold mb-2" style={{ color }}>
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-zinc-400 font-medium uppercase tracking-wider">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {slide.highlight && (
+              <div 
+                className={cn(
+                  "mt-10 text-center px-8 py-5 rounded-2xl mx-auto max-w-2xl",
+                  "transition-all duration-700 delay-700",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  backgroundColor: color + '10',
+                  border: `1px solid ${color}30`,
+                }}
+              >
+                <p className="font-body text-lg text-white">💡 {slide.highlight}</p>
+              </div>
+            )}
+          </div>
+        ) : slide.type === 'process' && slide.steps ? (
+          /* Process/workflow steps layout */
+          <div className="w-full max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  background: `linear-gradient(135deg, ${color}20, ${color}05)`,
+                  border: `1px solid ${color}40`,
+                }}
+              >
+                <span className="text-lg">{typeInfo.icon}</span>
+                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+              {slide.content && (
+                <p className={cn(
+                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "transition-all duration-700 delay-300",
+                  isActive ? "opacity-100" : "opacity-0"
+                )}>
+                  {slide.content}
+                </p>
+              )}
+            </div>
+            {/* Steps */}
+            <div className="space-y-4">
+              {slide.steps.map((step, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "flex items-start gap-6 p-6 rounded-2xl transition-all duration-700",
+                    isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-[-40px]"
+                  )}
+                  style={{
+                    transitionDelay: `${400 + index * 150}ms`,
+                    background: 'linear-gradient(145deg, rgba(39, 39, 42, 0.5), rgba(24, 24, 27, 0.7))',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                  }}
+                >
+                  <div 
+                    className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-display text-xl font-bold"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${color}, ${color}80)`,
+                      color: '#000',
+                    }}
+                  >
+                    {step.number}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display text-xl font-bold text-white mb-2">{step.title}</h3>
+                    <p className="text-zinc-400 leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : slide.type === 'architecture' && slide.layers ? (
+          /* Architecture layers layout */
+          <div className="w-full max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  background: `linear-gradient(135deg, ${color}20, ${color}05)`,
+                  border: `1px solid ${color}40`,
+                }}
+              >
+                <span className="text-lg">{typeInfo.icon}</span>
+                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+              {slide.content && (
+                <p className={cn(
+                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "transition-all duration-700 delay-300",
+                  isActive ? "opacity-100" : "opacity-0"
+                )}>
+                  {slide.content}
+                </p>
+              )}
+            </div>
+            {/* Architecture layers - stacked cards */}
+            <div className="space-y-4">
+              {slide.layers.map((layer, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "relative p-6 rounded-2xl transition-all duration-700 overflow-hidden",
+                    isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
+                  )}
+                  style={{
+                    transitionDelay: `${400 + index * 200}ms`,
+                    background: `linear-gradient(135deg, ${layer.color}15, ${layer.color}05)`,
+                    border: `2px solid ${layer.color}40`,
+                    boxShadow: `0 10px 40px ${layer.color}15`,
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
+                      style={{ background: `linear-gradient(135deg, ${layer.color}40, ${layer.color}20)` }}
+                    >
+                      {layer.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-display text-xl font-bold text-white mb-1">{layer.name}</h3>
+                      <p className="text-zinc-400">{layer.description}</p>
+                    </div>
+                  </div>
+                  {/* Connecting line to next layer */}
+                  {slide.layers && index < slide.layers.length - 1 && (
+                    <div 
+                      className="absolute -bottom-4 left-1/2 w-0.5 h-8 -translate-x-1/2"
+                      style={{ background: `linear-gradient(to bottom, ${layer.color}40, transparent)` }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+            {slide.highlight && (
+              <div 
+                className={cn(
+                  "mt-10 text-center px-8 py-5 rounded-2xl",
+                  "transition-all duration-700 delay-700",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  backgroundColor: color + '10',
+                  border: `1px solid ${color}30`,
+                }}
+              >
+                <p className="font-body text-lg text-white">💡 {slide.highlight}</p>
+              </div>
+            )}
           </div>
         ) : slide.image ? (
           /* Two-column layout for slides with images */

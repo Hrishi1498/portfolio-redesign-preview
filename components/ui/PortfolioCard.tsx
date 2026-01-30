@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils'
 import type { PortfolioProject } from '@/lib/portfolio-data'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRef, useState } from 'react'
 
 interface PortfolioCardProps {
@@ -78,7 +79,7 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
       {/* Thumbnail area */}
       <div 
         className={cn(
-          "relative overflow-hidden",
+          "relative overflow-hidden flex items-center justify-center",
           featured ? "h-64 md:h-80" : "h-48"
         )}
         style={{ backgroundColor: project.color + '15' }}
@@ -98,6 +99,63 @@ export function PortfolioCard({ project, featured = false }: PortfolioCardProps)
             style={{ backgroundColor: project.color + '25' }}
           />
         </div>
+
+        {/* Logo or Category Icon */}
+        {project.images.thumbnail ? (
+          <div className="relative z-[5] flex items-center justify-center">
+            {/* Glow effect */}
+            <div 
+              className="absolute rounded-2xl blur-2xl opacity-50 transition-all duration-500 group-hover:opacity-70"
+              style={{ 
+                background: project.color,
+                width: featured ? '120px' : '100px',
+                height: featured ? '120px' : '100px',
+              }}
+            />
+            
+            {/* Logo container with white background */}
+            <div 
+              className={cn(
+                "relative flex items-center justify-center rounded-2xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1",
+                featured ? "w-28 h-28 p-5" : "w-24 h-24 p-4"
+              )}
+              style={{ 
+                background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%)',
+                boxShadow: `
+                  0 16px 40px rgba(0, 0, 0, 0.25),
+                  0 0 0 1px rgba(255, 255, 255, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                  0 0 50px ${project.color}25
+                `,
+              }}
+            >
+              <Image 
+                src={project.images.thumbnail}
+                alt={`${project.title} logo`}
+                width={featured ? 72 : 56}
+                height={featured ? 72 : 56}
+                className="object-contain"
+              />
+            </div>
+          </div>
+        ) : (
+          <div 
+            className={cn(
+              "relative z-[5] flex items-center justify-center rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-1",
+              featured ? "w-20 h-20 text-4xl" : "w-16 h-16 text-3xl"
+            )}
+            style={{ 
+              background: `linear-gradient(135deg, ${project.color}40, ${project.color}20)`,
+              boxShadow: `0 8px 32px ${project.color}30`,
+              border: `1px solid ${project.color}40`,
+            }}
+          >
+            {project.category === 'ai' ? '🤖' : 
+             project.category === 'web' ? '🌐' : 
+             project.category === 'mobile' ? '📱' : 
+             project.category === 'data' ? '📊' : '💻'}
+          </div>
+        )}
 
         {/* Category badge */}
         <div className="absolute top-4 left-4 z-10">
