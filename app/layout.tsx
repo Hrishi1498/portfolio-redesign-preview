@@ -4,6 +4,10 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'AI Weekly | Level up your AI skills with fun weekly comics',
   description: 'Learn AI through playful visual stories. Master transformers, LLMs, RAG, and more in just 5 min per week.',
+  icons: {
+    icon: '/logos/bitblabs-logo.svg',
+    apple: '/logos/bitblabs-logo.svg',
+  },
 }
 
 export default function RootLayout({
