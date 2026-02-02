@@ -5,13 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-const navLinks = [
-  { href: '/projects', label: 'Projects' },
-  { href: '/case-studies', label: 'Case Studies' },
-  { href: '/side-quests', label: 'Side Quests' },
-  { href: '/brain-stuff', label: 'Brain Stuff' },
-]
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
 
@@ -63,49 +56,6 @@ export function Navbar() {
               </span>
             </div>
           </Link>
-
-          {/* Navigation Links */}
-          <ul className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "relative px-4 py-2 rounded-lg",
-                    "font-heading text-sm font-medium text-zinc-400",
-                    "hover:text-white hover:bg-white/[0.05]",
-                    "transition-all duration-200"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Right side */}
-          <div className="flex items-center gap-3">
-            <Link 
-              href="#"
-              className="font-heading text-sm font-medium text-zinc-400 hover:text-white transition-colors px-3 py-2"
-            >
-              Log in
-            </Link>
-            <Link
-              href="#"
-              className={cn(
-                "px-5 py-2.5 rounded-xl",
-                "font-heading text-sm font-semibold text-white",
-                "bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400",
-                "hover:from-purple-400 hover:via-blue-400 hover:to-cyan-300",
-                "shadow-[0_0_20px_rgba(139,92,246,0.4)]",
-                "hover:shadow-[0_0_30px_rgba(34,211,238,0.6)]",
-                "transition-all duration-300"
-              )}
-            >
-              Let's go
-            </Link>
-          </div>
         </div>
       </div>
 

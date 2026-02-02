@@ -1,15 +1,9 @@
 'use client'
 
+import { Button } from '@/components/ui'
 import Image from 'next/image'
-
-const companies = [
-  'Google',
-  'Meta', 
-  'Apple',
-  'Stripe',
-  'Shopify',
-  'Netflix',
-]
+import Link from 'next/link'
+import { portfolioProjects } from '@/lib/portfolio-data'
 
 export function Hero() {
   return (
@@ -38,20 +32,44 @@ export function Hero() {
               no boring lectures, just 5 min/week of pure brain food.
             </p>
 
+            {/* Navigation Links */}
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10">
+              <Link href="/projects">
+                <Button variant="secondary" size="lg">
+                  Projects
+                </Button>
+              </Link>
+              <Link href="/case-studies">
+                <Button variant="secondary" size="lg">
+                  Case Studies
+                </Button>
+              </Link>
+              <Link href="/side-quests">
+                <Button variant="secondary" size="lg">
+                  Side Quests
+                </Button>
+              </Link>
+              <Link href="/brain-stuff">
+                <Button variant="secondary" size="lg">
+                  Brain Stuff
+                </Button>
+              </Link>
+            </div>
+
             {/* Social proof */}
             <div>
               <p className="font-body text-sm text-zinc-500 mb-4">
-                Join <span className="text-white font-semibold">132,793</span> people from companies like:
+                Explore projects like:
               </p>
               
-              {/* Company logos */}
+              {/* Project names */}
               <div className="flex flex-wrap justify-center lg:justify-start items-center gap-x-6 gap-y-2">
-                {companies.map((company) => (
+                {portfolioProjects.slice(0, 6).map((project) => (
                   <span
-                    key={company}
+                    key={project.id}
                     className="font-heading text-sm font-medium text-zinc-600 tracking-wide"
                   >
-                    {company}
+                    {project.title}
                   </span>
                 ))}
               </div>
