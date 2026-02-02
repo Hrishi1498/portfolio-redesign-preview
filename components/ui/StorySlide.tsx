@@ -65,28 +65,28 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
       )}
     >
       {/* Main content area */}
-      <div className="w-full max-w-5xl mx-auto px-6 py-12 md:py-16">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         {/* Testimonial layout with two images side-by-side */}
         {slide.type === 'testimonial' && slide.testimonialImages && slide.testimonialImages.length >= 2 ? (
           <div className="w-full max-w-6xl mx-auto">
             {/* Header section with decorative quote */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-8 sm:mb-12">
               {/* Large decorative quote mark */}
               <div 
                 className={cn(
-                  "flex justify-center mb-6",
+                  "flex justify-center mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 scale-100" : "opacity-0 scale-50"
                 )}
               >
                 <div 
-                  className="w-20 h-20 rounded-full flex items-center justify-center"
+                  className="w-14 h-14 sm:w-20 sm:h-20 rounded-full flex items-center justify-center"
                   style={{ 
                     background: `linear-gradient(135deg, ${color}30, ${color}10)`,
                     boxShadow: `0 0 60px ${color}30`,
                   }}
                 >
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style={{ color }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{ color }} className="sm:w-10 sm:h-10">
                     <path d="M11 7.5C11 9.98528 9.48528 12 7 12C7 12 8 12 8 15C8 18 5.5 19 4 19C4 19 7 18.5 7 15.5C7 13.5 5.5 13 4 13C2.5 13 1 11.5 1 9.5C1 6.5 3.5 4 7 4C9.5 4 11 5.5 11 7.5Z" fill="currentColor"/>
                     <path d="M23 7.5C23 9.98528 21.4853 12 19 12C19 12 20 12 20 15C20 18 17.5 19 16 19C16 19 19 18.5 19 15.5C19 13.5 17.5 13 16 13C14.5 13 13 11.5 13 9.5C13 6.5 15.5 4 19 4C21.5 4 23 5.5 23 7.5Z" fill="currentColor"/>
                   </svg>
@@ -96,7 +96,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {/* Type badge */}
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-200",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -106,8 +106,8 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   boxShadow: `0 4px 20px ${color}15`,
                 }}
               >
-                <span className="text-lg">{typeInfo.icon}</span>
-                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                <span className="text-base sm:text-lg">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-widest" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
@@ -116,7 +116,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 leading-tight",
                     "transition-all duration-700 delay-300",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -129,7 +129,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {slide.content && (
                 <p 
                   className={cn(
-                    "font-body text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto",
+                    "font-body text-base sm:text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto px-2",
                     "transition-all duration-700 delay-400",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -140,7 +140,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             </div>
 
             {/* Two testimonial cards side-by-side */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
               {slide.testimonialImages.map((img, index) => (
                 <div 
                   key={index}
@@ -217,20 +217,20 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {/* Attribution */}
             <div 
               className={cn(
-                "flex justify-center mt-10",
+                "flex justify-center mt-6 sm:mt-10",
                 "transition-all duration-700 delay-700",
                 isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               )}
             >
               <div 
-                className="flex items-center gap-3 px-6 py-3 rounded-full"
+                className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full"
                 style={{ 
                   background: 'rgba(255, 255, 255, 0.03)',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                 }}
               >
                 <div 
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-base sm:text-lg"
                   style={{ 
                     background: `linear-gradient(135deg, ${color}40, ${color}20)`,
                   }}
@@ -238,8 +238,8 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   👩‍💼
                 </div>
                 <div className="text-left">
-                  <p className="text-white font-semibold text-sm">Keishika Mahesh</p>
-                  <p className="text-zinc-500 text-xs">Founder & CEO, DigiProPass</p>
+                  <p className="text-white font-semibold text-xs sm:text-sm">Keishika Mahesh</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs">Founder & CEO, DigiProPass</p>
                 </div>
               </div>
             </div>
@@ -248,11 +248,11 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
           /* Gallery layout with multiple images */
           <div className="w-full max-w-6xl mx-auto">
             {/* Header section */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-6 sm:mb-12">
               {/* Type badge */}
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -262,8 +262,8 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   boxShadow: `0 4px 20px ${color}15`,
                 }}
               >
-                <span className="text-lg">{typeInfo.icon}</span>
-                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                <span className="text-base sm:text-lg">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-widest" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
@@ -272,7 +272,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 leading-tight",
                     "transition-all duration-700 delay-200",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -285,7 +285,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {slide.content && (
                 <p 
                   className={cn(
-                    "font-body text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto",
+                    "font-body text-sm sm:text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto px-2",
                     "transition-all duration-700 delay-300",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -298,7 +298,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {/* Gallery grid */}
             <div 
               className={cn(
-                "grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8",
+                "grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8",
                 "transition-all duration-700 delay-400",
                 isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               )}
@@ -360,10 +360,10 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
           /* Features grid layout */
           <div className="w-full max-w-5xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-6 sm:mb-12">
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -372,15 +372,15 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}40`,
                 }}
               >
-                <span className="text-lg">{typeInfo.icon}</span>
-                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                <span className="text-base sm:text-lg">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-widest" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4",
                     "transition-all duration-700 delay-200",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -390,7 +390,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
               {slide.content && (
                 <p className={cn(
-                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "font-body text-sm sm:text-lg text-zinc-400 max-w-2xl mx-auto px-2",
                   "transition-all duration-700 delay-300",
                   isActive ? "opacity-100" : "opacity-0"
                 )}>
@@ -399,12 +399,12 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
             </div>
             {/* Features grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {slide.features.map((feature, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "group p-6 rounded-2xl transition-all duration-700",
+                    "group p-4 sm:p-6 rounded-xl sm:rounded-2xl transition-all duration-700",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   )}
                   style={{
@@ -414,13 +414,13 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   }}
                 >
                   <div 
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center text-xl sm:text-2xl mb-3 sm:mb-4"
                     style={{ background: `linear-gradient(135deg, ${color}30, ${color}10)` }}
                   >
                     {feature.icon}
                   </div>
-                  <h3 className="font-display text-lg font-bold text-white mb-2">{feature.title}</h3>
-                  <p className="text-sm text-zinc-400 leading-relaxed">{feature.description}</p>
+                  <h3 className="font-display text-base sm:text-lg font-bold text-white mb-1 sm:mb-2">{feature.title}</h3>
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -429,10 +429,10 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
           /* Stats display layout */
           <div className="w-full max-w-5xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-6 sm:mb-12">
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -441,15 +441,15 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}40`,
                 }}
               >
-                <span className="text-lg">{typeInfo.icon}</span>
-                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                <span className="text-base sm:text-lg">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-widest" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4",
                     "transition-all duration-700 delay-200",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -459,7 +459,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
               {slide.content && (
                 <p className={cn(
-                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "font-body text-sm sm:text-lg text-zinc-400 max-w-2xl mx-auto px-2",
                   "transition-all duration-700 delay-300",
                   isActive ? "opacity-100" : "opacity-0"
                 )}>
@@ -468,12 +468,12 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
             </div>
             {/* Stats grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
               {slide.stats.map((stat, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "text-center p-6 rounded-2xl transition-all duration-700",
+                    "text-center p-3 sm:p-6 rounded-xl sm:rounded-2xl transition-all duration-700",
                     isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
                   )}
                   style={{
@@ -483,11 +483,11 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                     boxShadow: `0 0 40px ${color}10`,
                   }}
                 >
-                  {stat.icon && <span className="text-3xl mb-2 block">{stat.icon}</span>}
-                  <div className="font-display text-4xl md:text-5xl font-bold mb-2" style={{ color }}>
+                  {stat.icon && <span className="text-xl sm:text-3xl mb-1 sm:mb-2 block">{stat.icon}</span>}
+                  <div className="font-display text-2xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2" style={{ color }}>
                     {stat.value}
                   </div>
-                  <div className="text-sm text-zinc-400 font-medium uppercase tracking-wider">
+                  <div className="text-[10px] sm:text-sm text-zinc-400 font-medium uppercase tracking-wider">
                     {stat.label}
                   </div>
                 </div>
@@ -496,7 +496,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {slide.highlight && (
               <div 
                 className={cn(
-                  "mt-10 text-center px-8 py-5 rounded-2xl mx-auto max-w-2xl",
+                  "mt-6 sm:mt-10 text-center px-4 sm:px-8 py-3 sm:py-5 rounded-xl sm:rounded-2xl mx-auto max-w-2xl",
                   "transition-all duration-700 delay-700",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -505,7 +505,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}30`,
                 }}
               >
-                <p className="font-body text-lg text-white">💡 {slide.highlight}</p>
+                <p className="font-body text-sm sm:text-lg text-white">💡 {slide.highlight}</p>
               </div>
             )}
           </div>
@@ -513,10 +513,10 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
           /* Process/workflow steps layout */
           <div className="w-full max-w-4xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-6 sm:mb-12">
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -525,15 +525,15 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}40`,
                 }}
               >
-                <span className="text-lg">{typeInfo.icon}</span>
-                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                <span className="text-base sm:text-lg">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-widest" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4",
                     "transition-all duration-700 delay-200",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -543,7 +543,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
               {slide.content && (
                 <p className={cn(
-                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "font-body text-sm sm:text-lg text-zinc-400 max-w-2xl mx-auto px-2",
                   "transition-all duration-700 delay-300",
                   isActive ? "opacity-100" : "opacity-0"
                 )}>
@@ -552,12 +552,12 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
             </div>
             {/* Steps */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {slide.steps.map((step, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "flex items-start gap-6 p-6 rounded-2xl transition-all duration-700",
+                    "flex items-start gap-3 sm:gap-6 p-4 sm:p-6 rounded-xl sm:rounded-2xl transition-all duration-700",
                     isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-[-40px]"
                   )}
                   style={{
@@ -567,7 +567,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   }}
                 >
                   <div 
-                    className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-display text-xl font-bold"
+                    className="flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-display text-base sm:text-xl font-bold"
                     style={{ 
                       background: `linear-gradient(135deg, ${color}, ${color}80)`,
                       color: '#000',
@@ -575,9 +575,9 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   >
                     {step.number}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-display text-xl font-bold text-white mb-2">{step.title}</h3>
-                    <p className="text-zinc-400 leading-relaxed">{step.description}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-display text-base sm:text-xl font-bold text-white mb-1 sm:mb-2">{step.title}</h3>
+                    <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               ))}
@@ -587,10 +587,10 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
           /* Architecture layers layout */
           <div className="w-full max-w-4xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-6 sm:mb-12">
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -599,15 +599,15 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}40`,
                 }}
               >
-                <span className="text-lg">{typeInfo.icon}</span>
-                <span className="text-sm font-bold uppercase tracking-widest" style={{ color }}>
+                <span className="text-base sm:text-lg">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-widest" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4",
                     "transition-all duration-700 delay-200",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   )}
@@ -617,7 +617,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
               {slide.content && (
                 <p className={cn(
-                  "font-body text-lg text-zinc-400 max-w-2xl mx-auto",
+                  "font-body text-sm sm:text-lg text-zinc-400 max-w-2xl mx-auto px-2",
                   "transition-all duration-700 delay-300",
                   isActive ? "opacity-100" : "opacity-0"
                 )}>
@@ -626,12 +626,12 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               )}
             </div>
             {/* Architecture layers - stacked cards */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {slide.layers.map((layer, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "relative p-6 rounded-2xl transition-all duration-700 overflow-hidden",
+                    "relative p-4 sm:p-6 rounded-xl sm:rounded-2xl transition-all duration-700 overflow-hidden",
                     isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"
                   )}
                   style={{
@@ -641,22 +641,22 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                     boxShadow: `0 10px 40px ${layer.color}15`,
                   }}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     <div 
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
+                      className="w-10 h-10 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center text-xl sm:text-2xl"
                       style={{ background: `linear-gradient(135deg, ${layer.color}40, ${layer.color}20)` }}
                     >
                       {layer.icon}
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-display text-xl font-bold text-white mb-1">{layer.name}</h3>
-                      <p className="text-zinc-400">{layer.description}</p>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-display text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">{layer.name}</h3>
+                      <p className="text-xs sm:text-base text-zinc-400">{layer.description}</p>
                     </div>
                   </div>
                   {/* Connecting line to next layer */}
                   {slide.layers && index < slide.layers.length - 1 && (
                     <div 
-                      className="absolute -bottom-4 left-1/2 w-0.5 h-8 -translate-x-1/2"
+                      className="absolute -bottom-3 sm:-bottom-4 left-1/2 w-0.5 h-6 sm:h-8 -translate-x-1/2"
                       style={{ background: `linear-gradient(to bottom, ${layer.color}40, transparent)` }}
                     />
                   )}
@@ -666,7 +666,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {slide.highlight && (
               <div 
                 className={cn(
-                  "mt-10 text-center px-8 py-5 rounded-2xl",
+                  "mt-6 sm:mt-10 text-center px-4 sm:px-8 py-3 sm:py-5 rounded-xl sm:rounded-2xl",
                   "transition-all duration-700 delay-700",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -675,92 +675,19 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}30`,
                 }}
               >
-                <p className="font-body text-lg text-white">💡 {slide.highlight}</p>
+                <p className="font-body text-sm sm:text-lg text-white">💡 {slide.highlight}</p>
               </div>
             )}
           </div>
         ) : slide.image ? (
-          /* Two-column layout for slides with images */
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-            {/* Image side */}
-            <div 
-              className={cn(
-                "flex-shrink-0 w-full lg:w-1/2",
-                "transition-all duration-700 delay-100",
-                isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              )}
-            >
-              <div 
-                className="relative rounded-2xl overflow-hidden shadow-2xl"
-                style={{ 
-                  boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 60px ${color}20`,
-                }}
-              >
-                <Image 
-                  src={slide.image} 
-                  alt={slide.title || 'Story image'}
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                  priority={slide.id === 1}
-                />
-              </div>
-            </div>
-
-            {/* Content side */}
-            <div className="flex-1 text-left lg:text-left">
+          /* Two-column layout for slides with images - Content first, image second */
+          <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 lg:gap-16">
+            {/* Content side - PRIMARY FOCUS */}
+            <div className="flex-1 text-left order-2 lg:order-1">
               {/* Type badge */}
               <div 
                 className={cn(
-                  "inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6",
-                  "transition-all duration-700 delay-200",
-                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                )}
-                style={{ 
-                  backgroundColor: color + '15',
-                  border: `1px solid ${color}30`,
-                }}
-              >
-                <span>{typeInfo.icon}</span>
-                <span className="text-sm font-semibold uppercase tracking-wider" style={{ color }}>
-                  {typeInfo.label}
-                </span>
-              </div>
-
-              {/* Title */}
-              {slide.title && (
-                <h2 
-                  className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight",
-                    "transition-all duration-700 delay-300",
-                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  )}
-                >
-                  {slide.title}
-                </h2>
-              )}
-
-              {/* Content */}
-              <p 
-                className={cn(
-                  "font-body text-lg md:text-xl text-zinc-300 leading-relaxed",
-                  "transition-all duration-700 delay-400",
-                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                )}
-              >
-                {slide.content}
-              </p>
-            </div>
-          </div>
-        ) : slide.code ? (
-          /* Two-column layout for slides with code blocks */
-          <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
-            {/* Content side - left */}
-            <div className="flex-1 text-left">
-              {/* Type badge */}
-              <div 
-                className={cn(
-                  "inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6",
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6",
                   "transition-all duration-700 delay-100",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -769,8 +696,8 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   border: `1px solid ${color}30`,
                 }}
               >
-                <span>{typeInfo.icon}</span>
-                <span className="text-sm font-semibold uppercase tracking-wider" style={{ color }}>
+                <span className="text-sm sm:text-base">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider" style={{ color }}>
                   {typeInfo.label}
                 </span>
               </div>
@@ -779,7 +706,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {slide.title && (
                 <h2 
                   className={cn(
-                    "font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight",
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-6 leading-tight",
                     "transition-all duration-700 delay-200",
                     isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   )}
@@ -791,7 +718,100 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {/* Content */}
               <p 
                 className={cn(
-                  "font-body text-lg md:text-xl text-zinc-300 leading-relaxed mb-6",
+                  "font-body text-sm sm:text-lg md:text-xl text-zinc-300 leading-relaxed mb-4 sm:mb-6",
+                  "transition-all duration-700 delay-300",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+              >
+                {slide.content}
+              </p>
+
+              {/* Highlight box - if present */}
+              {slide.highlight && (
+                <div 
+                  className={cn(
+                    "px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl",
+                    "transition-all duration-700 delay-400",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}
+                  style={{ 
+                    backgroundColor: color + '10',
+                    border: `1px solid ${color}30`,
+                  }}
+                >
+                  <p className="font-body text-sm sm:text-base text-white leading-relaxed">
+                    <span className="mr-2">💡</span>
+                    {slide.highlight}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Image side - SECONDARY, smaller */}
+            <div 
+              className={cn(
+                "flex-shrink-0 w-full lg:w-[35%] order-1 lg:order-2",
+                "transition-all duration-700 delay-500",
+                isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              )}
+            >
+              <div 
+                className="relative rounded-xl sm:rounded-2xl overflow-hidden"
+                style={{ 
+                  boxShadow: `0 15px 30px -10px rgba(0, 0, 0, 0.4)`,
+                }}
+              >
+                <Image 
+                  src={slide.image} 
+                  alt={slide.title || 'Story image'}
+                  width={450}
+                  height={350}
+                  className="w-full h-auto object-cover"
+                  priority={slide.id === 1}
+                />
+              </div>
+            </div>
+          </div>
+        ) : slide.code ? (
+          /* Two-column layout for slides with code blocks */
+          <div className="flex flex-col lg:flex-row items-start gap-6 sm:gap-8 lg:gap-12 w-full">
+            {/* Content side - left */}
+            <div className="flex-1 text-left">
+              {/* Type badge */}
+              <div 
+                className={cn(
+                  "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6",
+                  "transition-all duration-700 delay-100",
+                  isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}
+                style={{ 
+                  backgroundColor: color + '15',
+                  border: `1px solid ${color}30`,
+                }}
+              >
+                <span className="text-sm sm:text-base">{typeInfo.icon}</span>
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider" style={{ color }}>
+                  {typeInfo.label}
+                </span>
+              </div>
+
+              {/* Title */}
+              {slide.title && (
+                <h2 
+                  className={cn(
+                    "font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-6 leading-tight",
+                    "transition-all duration-700 delay-200",
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}
+                >
+                  {slide.title}
+                </h2>
+              )}
+
+              {/* Content */}
+              <p 
+                className={cn(
+                  "font-body text-sm sm:text-lg md:text-xl text-zinc-300 leading-relaxed mb-4 sm:mb-6",
                   "transition-all duration-700 delay-300",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
@@ -803,7 +823,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
               {slide.highlight && (
                 <div 
                   className={cn(
-                    "px-6 py-4 rounded-2xl",
+                    "px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl",
                     "transition-all duration-700 delay-400",
                     isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
                   )}
@@ -813,7 +833,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                     boxShadow: `0 0 40px ${color}15`,
                   }}
                 >
-                  <p className="font-body text-lg text-white leading-relaxed">
+                  <p className="font-body text-sm sm:text-lg text-white leading-relaxed">
                     <span className="mr-2">💡</span>
                     {slide.highlight}
                   </p>
@@ -854,21 +874,21 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider">Tech Stack</span>
                 </div>
                 {/* Code content */}
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   {slide.code.split('\n').map((line, index) => {
                     const [key, value] = line.split(': ')
                     return (
                       <div 
                         key={index} 
                         className={cn(
-                          "flex items-start gap-4 py-2",
+                          "flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-1.5 sm:py-2",
                           "transition-all duration-500",
                           isActive ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
                         )}
                         style={{ transitionDelay: `${600 + index * 80}ms` }}
                       >
-                        <span className="font-mono text-sm text-zinc-500 min-w-[180px]">{key}</span>
-                        <span className="font-mono text-sm" style={{ color }}>{value}</span>
+                        <span className="font-mono text-xs sm:text-sm text-zinc-500 sm:min-w-[180px]">{key}</span>
+                        <span className="font-mono text-xs sm:text-sm" style={{ color }}>{value}</span>
                       </div>
                     )
                   })}
@@ -878,11 +898,11 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
           </div>
         ) : (
           /* Centered layout for slides without images or code */
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto px-2">
             {/* Type badge */}
             <div 
               className={cn(
-                "inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8",
+                "inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-5 sm:mb-8",
                 "transition-all duration-700 delay-100",
                 isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
               )}
@@ -891,8 +911,8 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                 border: `1px solid ${color}30`,
               }}
             >
-              <span>{typeInfo.icon}</span>
-              <span className="text-sm font-semibold uppercase tracking-wider" style={{ color }}>
+              <span className="text-sm sm:text-base">{typeInfo.icon}</span>
+              <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider" style={{ color }}>
                 {typeInfo.label}
               </span>
             </div>
@@ -901,7 +921,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {slide.title && (
               <h2 
                 className={cn(
-                  "font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight",
+                  "font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-8 leading-tight",
                   "transition-all duration-700 delay-200",
                   isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 )}
@@ -913,7 +933,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {/* Content */}
             <p 
               className={cn(
-                "font-body text-lg md:text-xl text-zinc-300 leading-relaxed mb-8",
+                "font-body text-sm sm:text-lg md:text-xl text-zinc-300 leading-relaxed mb-5 sm:mb-8",
                 "transition-all duration-700 delay-300",
                 isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               )}
@@ -925,7 +945,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
             {slide.highlight && (
               <div 
                 className={cn(
-                  "inline-block px-8 py-5 rounded-2xl mb-8 text-left",
+                  "inline-block px-4 sm:px-8 py-3 sm:py-5 rounded-xl sm:rounded-2xl mb-5 sm:mb-8 text-left",
                   "transition-all duration-700 delay-400",
                   isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-95"
                 )}
@@ -935,7 +955,7 @@ export function StorySlide({ slide, color, isActive, direction }: StorySlideProp
                   boxShadow: `0 0 40px ${color}15`,
                 }}
               >
-                <p className="font-body text-lg text-white leading-relaxed">
+                <p className="font-body text-sm sm:text-lg text-white leading-relaxed">
                   <span className="mr-2">💡</span>
                   {slide.highlight}
                 </p>

@@ -12,6 +12,7 @@ const categoryStyles: Record<Exclude<Category, 'all'>, string> = {
   prompts: 'bg-amber-100 text-amber-700',
   rag: 'bg-pink-100 text-pink-700',
   ux: 'bg-blue-100 text-blue-700',
+  recruitment: 'bg-blue-100 text-blue-700',
 }
 
 const categoryLabels: Record<Exclude<Category, 'all'>, string> = {
@@ -20,6 +21,7 @@ const categoryLabels: Record<Exclude<Category, 'all'>, string> = {
   prompts: 'Prompting',
   rag: 'RAG',
   ux: 'AI UX',
+  recruitment: 'Recruitment',
 }
 
 export function Badge({ category, className }: BadgeProps) {

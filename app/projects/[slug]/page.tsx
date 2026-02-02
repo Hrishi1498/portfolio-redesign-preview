@@ -115,14 +115,14 @@ export default function ProjectDetailPage() {
   const isFirstSlide = currentSlide === 0
 
   return (
-    <main className="h-screen bg-dark-900 overflow-hidden">
+    <main className="min-h-screen sm:h-screen bg-dark-900 overflow-x-hidden sm:overflow-hidden">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-xl border-b border-white/[0.06]">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           {/* Back button */}
           <Link
             href="/projects"
-            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors group"
+            className="flex items-center gap-1 sm:gap-2 text-zinc-400 hover:text-white transition-colors group min-w-[40px]"
           >
             <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -131,9 +131,9 @@ export default function ProjectDetailPage() {
           </Link>
 
           {/* Title and progress */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center flex-1 mx-2 sm:mx-4">
             <span 
-              className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-1"
+              className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-0.5 sm:mb-1"
               style={{ 
                 backgroundColor: project.color + '20',
                 color: project.color,
@@ -141,21 +141,21 @@ export default function ProjectDetailPage() {
             >
               {project.category}
             </span>
-            <h1 className="font-display font-bold text-white text-sm md:text-base text-center max-w-xs md:max-w-md truncate">
+            <h1 className="font-display font-bold text-white text-xs sm:text-sm md:text-base text-center max-w-[150px] sm:max-w-xs md:max-w-md truncate">
               {project.title}
             </h1>
           </div>
 
           {/* Reading progress */}
-          <div className="flex items-center gap-2 text-zinc-400">
-            <span className="font-mono text-sm">
+          <div className="flex items-center gap-2 text-zinc-400 min-w-[40px] justify-end">
+            <span className="font-mono text-xs sm:text-sm">
               {currentSlide + 1}/{totalSlides}
             </span>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div className="h-1 bg-dark-800 overflow-hidden">
+        <div className="h-0.5 sm:h-1 bg-dark-800 overflow-hidden">
           <div 
             className="h-full transition-all duration-700 ease-out"
             style={{ 
@@ -168,7 +168,7 @@ export default function ProjectDetailPage() {
       </header>
 
       {/* Story slides container */}
-      <div className="h-full pt-20 relative">
+      <div className="min-h-screen sm:h-full pt-16 sm:pt-20 pb-32 sm:pb-0 relative">
         {project.slides?.map((slide, index) => (
           <StorySlide
             key={slide.id}
@@ -181,10 +181,10 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Navigation controls */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-dark-900/90 to-transparent pb-6 pt-8">
-        <div className="max-w-4xl mx-auto px-6">
-          {/* Progress dots */}
-          <div className="flex justify-center gap-3 mb-6">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-dark-900 via-dark-900/95 to-transparent pb-4 sm:pb-6 pt-6 sm:pt-8">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6">
+          {/* Progress dots - scrollable on mobile */}
+          <div className="flex justify-center gap-1.5 sm:gap-3 mb-4 sm:mb-6 overflow-x-auto pb-2 px-4 -mx-4 scrollbar-hide">
             {project.slides?.map((_, index) => (
               <button
                 key={index}
@@ -196,10 +196,10 @@ export default function ProjectDetailPage() {
                   setTimeout(() => setIsTransitioning(false), 700)
                 }}
                 className={cn(
-                  "h-2 rounded-full transition-all duration-500 ease-out",
+                  "h-1.5 sm:h-2 rounded-full transition-all duration-500 ease-out flex-shrink-0",
                   currentSlide === index 
-                    ? "w-10" 
-                    : "w-2 hover:scale-125"
+                    ? "w-6 sm:w-10" 
+                    : "w-1.5 sm:w-2 hover:scale-125"
                 )}
                 style={{ 
                   backgroundColor: currentSlide === index ? project.color : 'rgba(255,255,255,0.2)',
@@ -211,25 +211,25 @@ export default function ProjectDetailPage() {
           </div>
 
           {/* Navigation buttons */}
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Previous button */}
             <button
               onClick={goToPrevSlide}
               disabled={isFirstSlide || isTransitioning}
               className={cn(
-                "flex items-center gap-2 px-6 py-3 rounded-2xl font-heading font-semibold transition-all duration-300",
+                "flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-heading text-sm sm:text-base font-semibold transition-all duration-300",
                 isFirstSlide 
                   ? "opacity-30 cursor-not-allowed text-zinc-500" 
-                  : "text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] hover:scale-105 active:scale-95"
+                  : "text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] active:scale-95"
               )}
             >
-              <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               <span className="hidden sm:inline">Previous</span>
             </button>
 
-            {/* Keyboard hint */}
+            {/* Keyboard hint - desktop only */}
             <div className="hidden md:flex items-center gap-3 text-zinc-500 text-sm">
               <kbd className="px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] font-mono text-xs">←</kbd>
               <kbd className="px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] font-mono text-xs">→</kbd>
@@ -241,16 +241,17 @@ export default function ProjectDetailPage() {
               <Link
                 href="/projects"
                 className={cn(
-                  "flex items-center gap-2 px-6 py-3 rounded-2xl font-heading font-semibold text-white transition-all duration-300",
-                  "hover:scale-105 active:scale-95"
+                  "flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-heading text-sm sm:text-base font-semibold text-white transition-all duration-300",
+                  "active:scale-95"
                 )}
                 style={{ 
                   backgroundColor: project.color,
                   boxShadow: `0 0 30px ${project.color}50`,
                 }}
               >
-                <span>Back to Projects</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="hidden sm:inline">Back to Projects</span>
+                <span className="sm:hidden">Done</span>
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
@@ -259,8 +260,8 @@ export default function ProjectDetailPage() {
                 onClick={goToNextSlide}
                 disabled={isTransitioning}
                 className={cn(
-                  "flex items-center gap-2 px-6 py-3 rounded-2xl font-heading font-semibold text-white transition-all duration-300",
-                  "hover:scale-105 active:scale-95"
+                  "flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-heading text-sm sm:text-base font-semibold text-white transition-all duration-300",
+                  "active:scale-95"
                 )}
                 style={{ 
                   backgroundColor: project.color,
@@ -268,7 +269,7 @@ export default function ProjectDetailPage() {
                 }}
               >
                 <span>Next</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
@@ -277,11 +278,11 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      {/* Click zones for navigation */}
+      {/* Click zones for navigation - hidden on mobile for touch friendliness */}
       <button
         onClick={goToPrevSlide}
         disabled={isFirstSlide || isTransitioning}
-        className="fixed left-0 top-20 bottom-32 w-1/5 cursor-pointer opacity-0 hover:opacity-100 transition-all duration-300 z-40 flex items-center justify-start pl-6"
+        className="hidden sm:flex fixed left-0 top-20 bottom-32 w-1/5 cursor-pointer opacity-0 hover:opacity-100 transition-all duration-300 z-40 items-center justify-start pl-6"
         aria-label="Previous slide"
       >
         {!isFirstSlide && (
@@ -301,7 +302,7 @@ export default function ProjectDetailPage() {
       <button
         onClick={goToNextSlide}
         disabled={isLastSlide || isTransitioning}
-        className="fixed right-0 top-20 bottom-32 w-1/5 cursor-pointer opacity-0 hover:opacity-100 transition-all duration-300 z-40 flex items-center justify-end pr-6"
+        className="hidden sm:flex fixed right-0 top-20 bottom-32 w-1/5 cursor-pointer opacity-0 hover:opacity-100 transition-all duration-300 z-40 items-center justify-end pr-6"
         aria-label="Next slide"
       >
         {!isLastSlide && (

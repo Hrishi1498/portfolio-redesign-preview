@@ -30,7 +30,7 @@ export default function CaseStudiesPage() {
               Case Studies
             </h1>
             <p className="font-body text-lg text-zinc-400 max-w-xl mx-auto">
-              Deep dives into AI concepts, tools, and techniques—explained through engaging visual stories.
+              Deep dives into AI concepts, tools, and techniques, explained through engaging visual stories.
             </p>
           </div>
 

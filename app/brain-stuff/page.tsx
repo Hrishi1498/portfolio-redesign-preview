@@ -1,119 +1,68 @@
 'use client'
 
 import { Navbar } from '@/components/layout'
-import { PrincipleCard } from '@/components/ui/PrincipleCard'
-import { psychologyCategories } from '@/lib/psychology-data'
+import Link from 'next/link'
 
 export default function BrainStuffPage() {
-  const totalPrinciples = psychologyCategories.reduce(
-    (acc, cat) => acc + cat.principles.length, 
-    0
-  )
-
   return (
     <main className="min-h-screen bg-dark-900">
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            <span className="text-5xl md:text-6xl">🧠</span> {totalPrinciples} AI Principles & Mental Models
-            <br />
-            <span className="text-zinc-400">…that Make You a Better Builder</span>
+      {/* Coming Soon Section */}
+      <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-20">
+        <div className="max-w-2xl mx-auto text-center">
+          {/* Animated emoji */}
+          <div className="relative mb-8">
+            <span className="text-7xl sm:text-8xl md:text-9xl block animate-pulse">🧠</span>
+            <div className="absolute inset-0 bg-cyan-500/20 blur-[100px] -z-10" />
+          </div>
+          
+          {/* Title */}
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6">
+            Brain Stuff
           </h1>
           
-          <p className="font-body text-lg text-zinc-400 max-w-2xl mx-auto mb-8">
-            Every time you interact with AI, you need to:
-          </p>
-
-          {/* Decision cycle */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
-            <div className="p-4 rounded-2xl bg-dark-800 border border-white/[0.06]">
-              <span className="text-2xl mb-2 block">💬</span>
-              <span className="font-heading text-sm text-zinc-300">Craft the <strong className="text-white">prompt</strong></span>
-            </div>
-            <div className="p-4 rounded-2xl bg-dark-800 border border-white/[0.06]">
-              <span className="text-2xl mb-2 block">🧠</span>
-              <span className="font-heading text-sm text-zinc-300">Understand the <strong className="text-white">model</strong></span>
-            </div>
-            <div className="p-4 rounded-2xl bg-dark-800 border border-white/[0.06]">
-              <span className="text-2xl mb-2 block">🔧</span>
-              <span className="font-heading text-sm text-zinc-300">Build the <strong className="text-white">system</strong></span>
-            </div>
-            <div className="p-4 rounded-2xl bg-dark-800 border border-white/[0.06]">
-              <span className="text-2xl mb-2 block">⚖️</span>
-              <span className="font-heading text-sm text-zinc-300">Consider the <strong className="text-white">ethics</strong></span>
-            </div>
+          {/* Coming Soon Badge */}
+          <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-6 sm:mb-8">
+            <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-cyan-500"></span>
+            </span>
+            <span className="font-heading text-sm sm:text-base font-semibold text-cyan-400 uppercase tracking-wider">
+              Coming Soon
+            </span>
           </div>
-
-          <p className="font-body text-zinc-500">
-            Below is a list of principles and mental models (with explanations) for each category.
-            <br />
-            <span className="text-violet-400">Click any card to expand.</span>
+          
+          {/* Description */}
+          <p className="font-body text-base sm:text-lg md:text-xl text-zinc-400 mb-8 sm:mb-10 leading-relaxed px-2">
+            AI Principles & Mental Models that make you a better builder.
+            <br className="hidden sm:block" />
+            Deep dives into the psychology of AI systems.
           </p>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="pb-20 px-6">
-        <div className="max-w-4xl mx-auto space-y-16">
-          {psychologyCategories.map((category) => (
-            <div key={category.id}>
-              {/* Category Header */}
-              <div className="mb-8">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{category.emoji}</span>
-                  <h2 className="font-display text-2xl md:text-3xl font-bold text-white">
-                    {category.title}
-                  </h2>
-                </div>
-                <p className="font-body text-zinc-400 max-w-2xl">
-                  {category.description}
-                </p>
-              </div>
-
-              {/* Principles Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {category.principles.map((principle) => (
-                  <PrincipleCard key={principle.id} principle={principle} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-6 border-t border-white/[0.06]">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">
-            Get the Cheat Sheet
-          </h2>
-          <p className="font-body text-zinc-400 mb-8">
-            All {totalPrinciples} principles summarized in one PDF. Use it while building AI products.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="px-5 py-3 rounded-xl bg-dark-700 border border-white/[0.06] text-white placeholder:text-zinc-500 focus:outline-none focus:border-violet-500 transition-colors font-body"
-            />
-            <button className="px-6 py-3 rounded-xl bg-violet-500 text-white font-heading font-semibold hover:bg-violet-400 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] transition-all duration-300">
-              Download Free PDF
-            </button>
+          
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cyan-500 text-white font-heading font-semibold hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_30px_rgba(34,211,238,0.6)] transition-all duration-300"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Home
+            </Link>
+            <Link
+              href="/case-studies"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-dark-700 text-white font-heading font-semibold hover:bg-dark-600 border border-white/[0.06] transition-all duration-300"
+            >
+              View Case Studies
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-white/[0.06]">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="font-body text-sm text-zinc-500">
-            © 2026 AI Weekly. Learn AI visually.
-          </p>
-        </div>
-      </footer>
     </main>
   )
 }

@@ -90,8 +90,8 @@ export const psychologyCategories: Category[] = [
         id: 'hallucination-detection',
         emoji: '👻',
         title: 'Hallucination Detection',
-        description: 'AI confidently makes things up—learn to spot it',
-        content: 'AI models don\'t "know" facts—they predict likely text. This means they can confidently state false information. Always verify critical facts from authoritative sources.',
+        description: 'AI confidently makes things up -learn to spot it',
+        content: 'AI models don\'t "know" facts -they predict likely text. This means they can confidently state false information. Always verify critical facts from authoritative sources.',
       },
       {
         id: 'token-thinking',
@@ -112,7 +112,7 @@ export const psychologyCategories: Category[] = [
         emoji: '✨',
         title: 'Emergent Abilities',
         description: 'Some capabilities only appear at scale',
-        content: 'Larger models suddenly gain abilities that smaller ones lack entirely—like multi-step reasoning or code generation. It\'s not linear improvement.',
+        content: 'Larger models suddenly gain abilities that smaller ones lack entirely -like multi-step reasoning or code generation. It\'s not linear improvement.',
       },
       {
         id: 'training-cutoff',
@@ -126,7 +126,7 @@ export const psychologyCategories: Category[] = [
         emoji: '🎲',
         title: 'Stochastic Nature',
         description: 'The same prompt can give different answers',
-        content: 'AI outputs are probabilistic, not deterministic. Running the same prompt twice may yield different results—this is a feature, not a bug.',
+        content: 'AI outputs are probabilistic, not deterministic. Running the same prompt twice may yield different results -this is a feature, not a bug.',
       },
       {
         id: 'reasoning-limits',
@@ -253,7 +253,7 @@ export const psychologyCategories: Category[] = [
         id: 'job-displacement',
         emoji: '💼',
         title: 'Job Displacement Awareness',
-        description: 'AI changes work—prepare for transitions',
+        description: 'AI changes work -prepare for transitions',
         content: 'Rather than replacement, focus on augmentation. Identify which tasks AI can handle so humans can focus on higher-value work.',
       },
       {
