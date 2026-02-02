@@ -5,6 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
+const TIDYCAL_URL = 'https://tidycal.com/bitblabs/project-discussion'
+
 const navLinks = [
   { href: '/projects', label: 'Projects' },
   { href: '/case-studies', label: 'Case Studies' },
@@ -15,6 +17,7 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [bookingModalOpen, setBookingModalOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +49,31 @@ export function Navbar() {
       document.body.style.overflow = 'unset'
     }
   }, [mobileMenuOpen])
+
+  // Close booking modal on Escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setBookingModalOpen(false)
+    }
+    if (bookingModalOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'hidden'
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      if (bookingModalOpen) document.body.style.overflow = 'unset'
+    }
+  }, [bookingModalOpen])
+
+  const openBooking = () => {
+    setMobileMenuOpen(false)
+    setBookingModalOpen(true)
+  }
+
+  const closeBooking = () => {
+    setBookingModalOpen(false)
+    document.body.style.overflow = 'unset'
+  }
 
   return (
     <>
@@ -111,8 +139,9 @@ export function Navbar() {
             {/* Right side */}
             <div className="flex items-center gap-2 sm:gap-3">
               {/* Desktop CTA */}
-              <Link
-                href="#"
+              <button
+                type="button"
+                onClick={() => setBookingModalOpen(true)}
                 className={cn(
                   "hidden sm:block px-5 py-2.5 rounded-xl",
                   "font-heading text-sm font-semibold text-white",
@@ -123,8 +152,8 @@ export function Navbar() {
                   "transition-all duration-300"
                 )}
               >
-                Let's go
-              </Link>
+                Let's talk
+              </button>
 
               {/* Mobile menu button */}
               <button
@@ -196,9 +225,9 @@ export function Navbar() {
           
           {/* Mobile CTA */}
           <div className="flex flex-col items-center gap-4 mt-8">
-            <Link
-              href="#"
-              onClick={() => setMobileMenuOpen(false)}
+            <button
+              type="button"
+              onClick={openBooking}
               className={cn(
                 "px-8 py-3 rounded-xl",
                 "font-heading text-base font-semibold text-white",
@@ -208,11 +237,46 @@ export function Navbar() {
                 "active:scale-95"
               )}
             >
-              Let's go
-            </Link>
+              Let's talk
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Booking modal */}
+      {bookingModalOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={closeBooking}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Book a project discussion"
+        >
+          <div
+            className="relative w-full max-w-2xl h-[80vh] max-h-[700px] bg-dark-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-dark-900/95 border-b border-white/10 z-10">
+              <span className="font-heading text-sm font-medium text-white">Project Discussion – Book a call</span>
+              <button
+                type="button"
+                onClick={closeBooking}
+                className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <iframe
+              src={TIDYCAL_URL}
+              title="Book a project discussion with BitB Labs"
+              className="absolute top-12 left-0 right-0 bottom-0 w-full h-[calc(100%-3rem)] border-0"
+            />
+          </div>
+        </div>
+      )}
     </>
   )
 }
