@@ -1,6 +1,7 @@
 'use client'
 
 import { Reveal } from '@/components/ui/Reveal'
+import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
 import { cn } from '@/lib/utils'
 import { portfolioProjects } from '@/lib/portfolio-data'
 import { MetricsShowcase } from '@/components/showcase/case-study/MetricsShowcase'
@@ -88,6 +89,7 @@ function collectProcessGalleryImages(limit = 8): string[] {
 }
 
 const processHeroImage = '/axion-dashboard.png'
+const blurText = true
 
 interface ProcessProps {
   embedded?: boolean
@@ -107,32 +109,43 @@ function ProcessGrid({ accent, embedded = false }: { accent: string; embedded?: 
       )}
     >
       {steps.map((step, i) => (
-        <Reveal key={step.number} delay={i * 0.05}>
-          <div className={cn('group relative h-full overflow-hidden rounded-2xl', styles.card, embedded ? 'p-5' : 'p-6 md:p-8')}>
-            <div className="mb-5 h-px w-10" style={{ backgroundColor: accent }} />
-            <span className="font-heading text-xs uppercase tracking-[0.2em] text-zinc-500">
-              Phase {step.number} · {step.shortLabel}
-            </span>
-            <h3
-              className={cn(
-                'relative mt-4 font-display font-semibold tracking-tight',
-                styles.heading,
-                embedded ? 'text-xl' : 'text-2xl'
-              )}
-            >
-              {step.title}
-            </h3>
-            <p
-              className={cn(
-                'relative mt-3 font-body leading-relaxed',
-                styles.body,
-                embedded ? 'text-sm' : 'text-base'
-              )}
-            >
-              {step.description}
-            </p>
-          </div>
-        </Reveal>
+        <div
+          key={step.number}
+          className={cn('group relative h-full overflow-hidden rounded-2xl', styles.card, embedded ? 'p-5' : 'p-6 md:p-8')}
+        >
+          <div className="mb-5 h-px w-10" style={{ backgroundColor: accent }} />
+          <BlurTextAnimation
+            as="p"
+            text={`Phase ${step.number} · ${step.shortLabel}`}
+            variant="label"
+            theme="light"
+            textClassName="font-heading text-xs uppercase tracking-[0.2em] text-zinc-500"
+            startDelay={i * 0.04}
+          />
+          <h3
+            className={cn(
+              'relative mt-4 font-display font-semibold tracking-tight',
+              styles.heading,
+              embedded ? 'text-xl' : 'text-2xl'
+            )}
+          >
+            <BlurTextAnimation
+              as="span"
+              text={step.title}
+              variant="headline"
+              theme="light"
+              startDelay={i * 0.04 + 0.06}
+            />
+          </h3>
+          <BlurTextAnimation
+            as="p"
+            text={step.description}
+            variant="body"
+            theme="light"
+            className={cn('relative mt-3 font-body', styles.body, embedded ? 'text-sm' : 'text-base')}
+            startDelay={i * 0.04 + 0.12}
+          />
+        </div>
       ))}
     </div>
   )
@@ -146,14 +159,16 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         className="relative min-h-0 overflow-hidden border-t border-zinc-200/80 bg-white px-5 py-6 text-zinc-950 antialiased sm:px-8"
       >
         <div className="relative mx-auto max-h-[min(88vh,720px)] w-full max-w-7xl">
-          <Reveal>
-            <p className="mb-2 font-heading text-xs uppercase tracking-[0.28em]" style={{ color: accent }}>
-              How we work
-            </p>
-            <h2 className="mb-8 font-display text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
-              Craft, not templates
-            </h2>
-          </Reveal>
+          <p className="mb-2 font-heading text-xs uppercase tracking-[0.28em]" style={{ color: accent }}>
+            <BlurTextAnimation as="span" text="How we work" variant="label" theme="light" />
+          </p>
+          <BlurTextAnimation
+            text="Craft, not templates"
+            className="mb-8"
+            textClassName="font-display font-bold text-zinc-950 text-3xl sm:text-4xl"
+            theme="light"
+            variant="headline"
+          />
           <ProcessGrid accent={accent} embedded />
         </div>
       </section>
@@ -175,24 +190,31 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         />
 
         <div className="relative mx-auto max-w-[1400px]">
-          <Reveal>
-            <p className="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500" style={{ color: accent }}>
-              How we work
-            </p>
-            <h1 className="mt-8 max-w-5xl font-display text-[clamp(3.25rem,9vw,7.5rem)] font-bold leading-[0.95] tracking-[-0.045em] text-zinc-950">
-              Craft, not templates
-            </h1>
-            <p className="mt-8 max-w-3xl font-body text-2xl leading-relaxed text-zinc-600 md:text-3xl md:leading-relaxed">
-              A focused four-phase process built for premium product work — from discovery through delivery.
-            </p>
-          </Reveal>
+          <p className="font-heading text-sm uppercase tracking-[0.28em]" style={{ color: accent }}>
+            <BlurTextAnimation as="span" text="How we work" variant="label" theme="light" />
+          </p>
+          <BlurTextAnimation
+            text="Craft, not templates"
+            className="mt-8 max-w-5xl"
+            textClassName="font-display font-bold text-zinc-950 text-[clamp(3.25rem,9vw,7.5rem)]"
+            theme="light"
+            variant="headline"
+            startDelay={0.08}
+          />
+          <BlurTextAnimation
+            text="A focused four-phase process built for premium product work — from discovery through delivery."
+            className="mt-8 max-w-3xl font-body text-2xl text-zinc-600 md:text-3xl"
+            theme="light"
+            variant="body"
+            startDelay={0.18}
+          />
 
-          <Reveal className={cn('mt-12 grid gap-8 border-t pt-10 sm:grid-cols-2 lg:grid-cols-4', styles.borderStrong)}>
-            <MetaItem label="Engagement" value="2–6 months" theme={processTheme} />
-            <MetaItem label="Phases" value="4 integrated" theme={processTheme} />
-            <MetaItem label="Delivery" value="Production-ready" theme={processTheme} />
-            <MetaItem label="Focus" value="Product craft" theme={processTheme} />
-          </Reveal>
+          <div className={cn('mt-12 grid gap-8 border-t pt-10 sm:grid-cols-2 lg:grid-cols-4', styles.borderStrong)}>
+            <MetaItem label="Engagement" value="2–6 months" theme={processTheme} blurText startDelay={0.1} />
+            <MetaItem label="Phases" value="4 integrated" theme={processTheme} blurText startDelay={0.14} />
+            <MetaItem label="Delivery" value="Production-ready" theme={processTheme} blurText startDelay={0.18} />
+            <MetaItem label="Focus" value="Product craft" theme={processTheme} blurText startDelay={0.22} />
+          </div>
         </div>
 
         <Reveal className="relative mx-auto mt-16 max-w-[1400px]" delay={0.1}>
@@ -200,7 +222,6 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         </Reveal>
       </section>
 
-      {/* Scene 2 — Philosophy */}
       <StatementScene
         eyebrow="The Philosophy"
         headline="Premium products deserve a process that matches."
@@ -209,9 +230,9 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         accent={accent}
         align="center"
         theme={processTheme}
+        blurText={blurText}
       />
 
-      {/* Scene 3 — Sticky process walkthrough */}
       <StickyStorySection
         eyebrow="The Process"
         title="Four phases. One cohesive arc."
@@ -222,9 +243,9 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         }))}
         accent={accent}
         theme={processTheme}
+        blurText={blurText}
       />
 
-      {/* Scene 4 — Execution in practice */}
       <FullBleedVisual
         eyebrow="In Practice"
         title="Design and engineering in the same rhythm."
@@ -233,9 +254,9 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         image="/hf-products.png"
         accent={accent}
         theme={processTheme}
+        blurText={blurText}
       />
 
-      {/* Scene 5 — Capabilities */}
       <FeatureGridScene
         eyebrow="What You Get"
         title="End-to-end craft across every layer."
@@ -243,9 +264,9 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         features={principles}
         accent={accent}
         theme={processTheme}
+        blurText={blurText}
       />
 
-      {/* Scene 6 — Phase metrics */}
       <MetricsShowcase
         eyebrow="The Phases"
         headline="Structured for momentum."
@@ -253,9 +274,9 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         metrics={processMetrics}
         accent={accent}
         theme={processTheme}
+        blurText={blurText}
       />
 
-      {/* Scene 7 — Studio showcase */}
       {galleryImages.length > 0 && (
         <ParallaxGallery
           title="Built with the same standard."
@@ -263,10 +284,10 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
           images={galleryImages}
           accent={accent}
           theme={processTheme}
+          blurText={blurText}
         />
       )}
 
-      {/* Scene 8 — Closing */}
       <StatementScene
         eyebrow="Next Step"
         headline="Ready when you are."
@@ -274,6 +295,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         accent={accent}
         align="center"
         theme={processTheme}
+        blurText={blurText}
       />
     </div>
   )
