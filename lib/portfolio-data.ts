@@ -77,7 +77,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Project Overview',
         content: 'DigiProPass is a web-based platform designed to help brands comply with upcoming European regulations that mandate Digital Product Passports (DPP) for consumer products. End consumers can scan a QR code and instantly view sustainability details, origin, materials, and environmental impact scores.',
         highlight: 'The platform bridges the gap between regulatory compliance, brand transparency, and consumer trust.',
-        image: '/digipropass-meeting.png',
       },
       {
         id: 2,
@@ -85,7 +84,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'How It Started',
         content: 'The project was initiated by a young founder, Keishika Mahesh, who approached the BitB Labs team after discovering our work through LinkedIn. After a discovery call and requirement deep-dive, the idea was transformed into a fully functional web application with a clear technical and business roadmap.',
         highlight: 'From LinkedIn connection to fully functional platform.',
-        image: '/dpp_founder.png',
       },
       {
         id: 3,
@@ -200,7 +198,6 @@ export const portfolioProjects: PortfolioProject[] = [
         type: 'testimonial',
         title: 'What Our Client Says',
         content: 'Hear directly from Keishika Mahesh, Founder & CEO of DigiProPass, about her experience working with us.',
-        testimonialImages: ['/digi1.png', '/digi2.png'],
       },
       {
         id: 15,
@@ -249,7 +246,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Project Overview',
         content: 'Healthy Fasal is a scalable, zero-inventory grocery procurement and distribution platform designed to simplify the farm-to-vendor supply chain while ensuring freshness, reducing wastage, and improving margins for all stakeholders.',
         highlight: 'Procure fresh produce only when demand exists and deliver it efficiently to vendors without holding inventory.',
-        image: '/hf-meeting.png',
       },
       {
         id: 2,
@@ -257,7 +253,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Meet Mr. Kamlesh',
         content: 'The project was referred to BitB Labs through a trusted network and was led by Mr. Kamlesh, a farmer by background and an experienced logistics business owner. His dual exposure to farming realities and logistics operations enabled him to identify deep-rooted inefficiencies in the traditional grocery supply chain.',
         highlight: 'A farmer who runs a logistics business - the perfect founder for this problem.',
-        image: '/hf-founder.png',
       },
       {
         id: 3,
@@ -431,7 +426,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Project Overview',
         content: 'Natvoiz is an end-to-end AI Voice Bot Platform capable of handling enterprise-scale voice interactions across recruitment, insurance, sales, and customer support use cases. Built for Natsoft, a US-based consulting enterprise with over 2,000 employees.',
         highlight: 'Replace repetitive, high-volume human calling workflows with AI-driven, human-like voice conversations.',
-        image: '/nv-office.png',
       },
       {
         id: 2,
@@ -439,7 +433,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'The Client: Natsoft',
         content: 'Natsoft is a US-based consulting enterprise with over 2,000 employees and BPO operations. They faced major operational issues in their recruitment workflow - high recruiter workload, candidate drop-offs, and no structured way to capture feedback.',
         highlight: 'From recruitment automation to a full enterprise voice platform.',
-        image: '/nv-planning.png',
       },
       {
         id: 3,
@@ -619,7 +612,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'The Café Story',
         content: 'This project began inside a café. While working on AI voice integrations, our team casually discussed STT and TTS pipelines. Harish Boke, founder of Setoo, overheard the conversation, got curious, and asked what we were building.',
         highlight: 'Visibility + real technical depth = inbound opportunity.',
-        image: '/setu-cafe.png',
       },
       {
         id: 2,
@@ -627,7 +619,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Meet Harish Boke',
         content: 'Harish left for another meeting  but called us back while driving, finalized discussions on the move, and onboarded us for the project. A perfect example of how genuine technical conversations can lead to real business opportunities.',
         highlight: 'From overheard conversation to signed engagement.',
-        image: '/setu-founder.png',
       },
       {
         id: 3,
@@ -681,7 +672,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Lessons Learned',
         content: 'This project is ideal for AI capability showcases, enterprise sales conversations, and technical architecture deep-dives. The café story remains a powerful founder narrative about how visibility and genuine technical expertise create inbound opportunities.',
         highlight: 'Sometimes the best clients find you when you\'re just being yourself.',
-        image: '/setu-cafe.png',
       },
     ],
   },
@@ -723,7 +713,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Project Overview',
         content: 'Axion Plan is a B2C financial planning and forecasting platform designed to help enterprise leaders and decision-makers model revenues, costs, profitability, and cash flows  without relying on complex Excel sheets.',
         highlight: 'Turn proven financial forecasting methodology into a productized, scalable SaaS platform.',
-        image: '/axion-meeting.png',
       },
       {
         id: 2,
@@ -731,7 +720,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Meet Dr. Steven',
         content: 'The platform was built in collaboration with Dr. Steven, a Malaysia-based investment banker and executive coach who works with C-suite leaders. He brought investment banking experience, executive coaching expertise, and proven revenue-generating Excel-based financial models.',
         highlight: 'Before Axion Plan, forecasting was done using custom Excel templates  it worked, but it wasn\'t scalable.',
-        image: '/axion-founder.png',
       },
       {
         id: 3,
@@ -892,7 +880,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Project Overview',
         content: 'Course Companion is a privacy-first AI platform built for universities, professors, and academic institutions to safely leverage AI in teaching  without compromising data security, intellectual property, or institutional policies.',
         highlight: 'A scalable digital extension of a professor with zero data lock-in.',
-        image: '/cc-meeting.png',
       },
       {
         id: 2,
@@ -900,7 +887,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Meet Zoheb',
         content: 'Course Companion was initiated by Zoheb, a highly technical founder with deep academic and industry exposure. PhD in Chemistry from Northwestern University, AI Fellow at Handshake, based in the United States. Despite being deeply embedded in AI, he noticed strong resistance to AI adoption in universities.',
         highlight: 'Works closely with cutting-edge AI systems in production environments.',
-        image: '/cc-founder.png',
       },
       {
         id: 3,
@@ -987,7 +973,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Target Users',
         content: 'Primary users include university professors, academic institutions, and research-driven educators. Secondary users include teaching assistants, academic departments, and private education institutes with strict data policies.',
         highlight: 'Built for the most privacy-conscious institutions.',
-        image: '/cc-meeting.png',
       },
       {
         id: 11,
@@ -1002,7 +987,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Current Status & Vision',
         content: 'Product under active development. Core architecture finalized. Privacy-first design locked. Early-stage builds in progress. Course Companion positions itself at the intersection of AI, Education, Privacy, and Institutional trust.',
         highlight: 'Building AI systems people are comfortable trusting  not just using.',
-        image: '/cc-founder.png',
       },
     ],
   },

@@ -68,7 +68,7 @@ export const caseStudies: CaseStudy[] = [
     subtitle: 'Industry Education: The shift from manual hiring to AI-augmented recruitment',
     category: 'recruitment',
     readTime: '12 min',
-    thumbnail: '/cs-hiring-ai.png',
+    thumbnail: '',
     color: '#3B82F6',
     featured: true,
     author: 'BitB Labs',
@@ -80,7 +80,6 @@ export const caseStudies: CaseStudy[] = [
         title: 'The Reality of High-Volume Hiring',
         content: 'High-volume hiring is where traditional recruitment systems start to crack. Companies hiring hundreds or thousands of candidates per year face a familiar set of challenges that technology alone has not solved.',
         highlight: 'Despite modern ATS tools, much of the process still relies on manual effort, human endurance, and heuristic judgment.',
-        image: '/cs-hiring-overwhelmed.png',
       },
       {
         id: 2,
@@ -88,7 +87,6 @@ export const caseStudies: CaseStudy[] = [
         title: 'The Scale Problem',
         content: 'Thousands of applications per role. Recruiters juggling speed with quality. Business teams demanding fast closures. Candidates dropping off due to delays. Interviewers stretched thin.',
         highlight: 'Hiring teams work harder, but outcomes do not improve proportionally.',
-        image: '/cs-hiring-stressed.png',
       },
       {
         id: 3,
@@ -115,14 +113,12 @@ export const caseStudies: CaseStudy[] = [
         title: 'Why Traditional Automation Hit a Ceiling',
         content: 'Most recruitment teams already use automation: ATS filters, email templates, scheduling tools. But these systems are rule-based. They struggle with understanding context in resumes, interpreting transferable skills, evaluating open-ended responses, and scaling human judgment.',
         highlight: 'At high volumes, automation reduced effort but did not improve hiring quality.',
-        image: '/cs-hiring-ats.png',
       },
       {
         id: 6,
         type: 'scene',
         title: 'Enter Generative AI as Co-Pilot',
         content: 'Instead of replacing recruiters, the hiring team introduced GenAI as a co-pilot, inserted only at points where human judgment was being overloaded. The key principle: AI supports decisions. Humans make them.',
-        image: '/cs-hiring-judgment.png',
         highlight: 'AI supports decisions. Humans make them.',
       },
       {
@@ -144,7 +140,6 @@ export const caseStudies: CaseStudy[] = [
         type: 'scene',
         title: 'Resume Understanding, Not Rejection',
         content: 'GenAI parsed resumes to extract skills, experience patterns, and project depth. It normalized different resume formats into structured candidate profiles. Recruiters reviewed summarized skill profiles, not raw resumes.',
-        image: '/cs-hiring-ai.png',
         highlight: 'Shortlisting shifted from keywords to capability signals.',
       },
       {
@@ -152,7 +147,6 @@ export const caseStudies: CaseStudy[] = [
         type: 'scene',
         title: 'AI-Led Structured Screening',
         content: 'Candidates received automated interview links. GenAI conducted role-specific questions, scenario-based assessments, and behavioral prompts. Interviews happened asynchronously, scaling interview capacity without interviewer burnout.',
-        image: '/cs-hiring-interview.png',
         highlight: 'Interview capacity scaled without interviewer burnout.',
       },
       {
@@ -160,7 +154,6 @@ export const caseStudies: CaseStudy[] = [
         type: 'scene',
         title: 'Candidate Comparison Dashboard',
         content: 'AI provided comparison views across candidates, highlighting strengths, risks, and role fit. GenAI analyzed candidate responses and generated structured summaries with skill indicators and communication signals.',
-        image: '/cs-hiring-comparison.png',
         highlight: 'Recruiters reviewed insights, not raw recordings or transcripts.',
       },
       {
@@ -213,7 +206,6 @@ export const caseStudies: CaseStudy[] = [
         type: 'conclusion',
         title: 'The Real Competitive Advantage',
         content: 'Generative AI did not replace recruiters. It absorbed the noise so recruiters could focus on judgment. And in high-volume hiring, judgment, not speed, is the real competitive advantage.',
-        image: '/cs-hiring-profile.png',
         highlight: 'Judgment, not speed, is the real competitive advantage.',
       },
     ],
@@ -238,9 +230,7 @@ export const articles: Article[] = caseStudies.map((study) => ({
 }))
 
 export const navLinks = [
-  { href: '#articles', label: 'Real Wins' },
-  { href: '#', label: 'Brain Stuff' },
-  { href: '#', label: 'Side Quests' },
+  { href: '/work', label: 'Work' },
 ]
 
 export const socialLinks = [

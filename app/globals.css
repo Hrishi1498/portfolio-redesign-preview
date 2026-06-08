@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-base: #050505;
+  --bg-elevated: #0c0c0c;
+  --bg-surface: #141414;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+  --accent: #7c3aed;
+  --accent-soft: rgba(124, 58, 237, 0.12);
+  --border: rgba(255, 255, 255, 0.06);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -9,38 +21,54 @@
 }
 
 html {
-  background-color: #0a0a0a;
+  background-color: var(--bg-base);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #fafafa;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background-color: rgba(139, 92, 246, 0.3);
+  background-color: var(--accent-soft);
   color: #fff;
 }
 
-/* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--bg-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #27272a;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
+  background: #3f3f46;
 }
 
 a {
@@ -49,6 +77,210 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid #8b5cf6;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+@layer utilities {
+  .font-apple {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+      'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  .text-display {
+    font-family: 'Syne', 'Outfit', sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  .text-editorial {
+    font-family: 'Instrument Serif', Georgia, serif;
+  }
+
+  .footer-watermark {
+    font-family: var(--font-footer-wordmark), 'Inter', sans-serif;
+    font-size: clamp(6.5rem, 22vw, 18rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    text-shadow:
+      0 0 12px rgba(255, 190, 70, 0.28),
+      0 0 32px rgba(255, 155, 40, 0.12);
+  }
+
+  .footer-watermark-glitch {
+    isolation: isolate;
+  }
+
+  .footer-watermark__base {
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  .footer-watermark__band {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .footer-watermark__band--1 {
+    clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
+    animation: watermark-wave-disturb-1 5.5s infinite;
+  }
+
+  .footer-watermark__band--2 {
+    clip-path: polygon(0 34%, 100% 34%, 100% 62%, 0 62%);
+    animation: watermark-wave-disturb-2 6.2s infinite;
+  }
+
+  .footer-watermark__band--3 {
+    clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
+    animation: watermark-wave-disturb-3 4.8s infinite;
+  }
+
+  @keyframes watermark-wave-disturb-1 {
+    0%,
+    14%,
+    16%,
+    38%,
+    40%,
+    62%,
+    64%,
+    86%,
+    88%,
+    100% {
+      transform: translate3d(0, 0, 0) skewX(0deg);
+    }
+    14.6% {
+      transform: translate3d(-14px, 0, 0) skewX(-2.5deg);
+    }
+    15.2% {
+      transform: translate3d(11px, 1px, 0) skewX(2deg);
+    }
+    15.8% {
+      transform: translate3d(-5px, 0, 0) skewX(-1deg);
+    }
+    38.5% {
+      transform: translate3d(10px, 0, 0) skewX(1.5deg);
+    }
+    39.1% {
+      transform: translate3d(-8px, -1px, 0) skewX(-2deg);
+    }
+    62.7% {
+      transform: translate3d(-12px, 0, 0) skewX(-2deg);
+    }
+    63.3% {
+      transform: translate3d(9px, 0, 0) skewX(1.5deg);
+    }
+    86.4% {
+      transform: translate3d(13px, 1px, 0) skewX(2.5deg);
+    }
+    87% {
+      transform: translate3d(-7px, 0, 0) skewX(-1.5deg);
+    }
+  }
+
+  @keyframes watermark-wave-disturb-2 {
+    0%,
+    22%,
+    24%,
+    48%,
+    50%,
+    74%,
+    76%,
+    100% {
+      transform: translate3d(0, 0, 0) skewX(0deg);
+    }
+    22.5% {
+      transform: translate3d(12px, 0, 0) skewX(2deg);
+    }
+    23.1% {
+      transform: translate3d(-10px, 0, 0) skewX(-2.5deg);
+    }
+    23.7% {
+      transform: translate3d(4px, 1px, 0) skewX(1deg);
+    }
+    48.4% {
+      transform: translate3d(-11px, 0, 0) skewX(-2deg);
+    }
+    49% {
+      transform: translate3d(8px, 0, 0) skewX(1.5deg);
+    }
+    74.6% {
+      transform: translate3d(10px, -1px, 0) skewX(2deg);
+    }
+    75.2% {
+      transform: translate3d(-6px, 0, 0) skewX(-1.5deg);
+    }
+  }
+
+  @keyframes watermark-wave-disturb-3 {
+    0%,
+    8%,
+    10%,
+    32%,
+    34%,
+    56%,
+    58%,
+    80%,
+    82%,
+    100% {
+      transform: translate3d(0, 0, 0) skewX(0deg);
+    }
+    8.5% {
+      transform: translate3d(9px, 0, 0) skewX(1.5deg);
+    }
+    9.1% {
+      transform: translate3d(-13px, 0, 0) skewX(-2.5deg);
+    }
+    32.6% {
+      transform: translate3d(-9px, 1px, 0) skewX(-2deg);
+    }
+    33.2% {
+      transform: translate3d(7px, 0, 0) skewX(1.5deg);
+    }
+    56.5% {
+      transform: translate3d(11px, 0, 0) skewX(2deg);
+    }
+    57.1% {
+      transform: translate3d(-8px, 0, 0) skewX(-2deg);
+    }
+    80.4% {
+      transform: translate3d(-10px, -1px, 0) skewX(-1.5deg);
+    }
+    81% {
+      transform: translate3d(6px, 0, 0) skewX(1deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-watermark__band {
+      animation: none !important;
+    }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-marquee-vertical {
+    animation: marqueeVertical var(--marquee-duration, 30s) linear infinite;
+  }
+
+  @keyframes marqueeVertical {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
 }
