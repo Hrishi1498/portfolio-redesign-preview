@@ -18,7 +18,7 @@ const WHEEL_THRESHOLD = 80
 const TOUCH_THRESHOLD = 80
 const COOLDOWN_MS = 350
 const WHEEL_GESTURE_RESET_MS = 180
-const GESTURE_IDLE_MS = 200
+const GESTURE_IDLE_MS = 20
 const MIN_CASE_STUDY_HEIGHT = 240
 
 interface CaseStudyExitTransitionProps {
@@ -460,10 +460,20 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
         </motion.div>
       )}
 
-      {exitArmed && !exitActive && !transitionDone && (
-        <p className="pointer-events-none fixed bottom-8 left-1/2 z-50 -translate-x-1/2 font-apple text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
-          Scroll down to continue
-        </p>
+      {atEnd && !exitActive && !transitionDone && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-8 z-50 flex justify-center px-4">
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: exitArmed ? 1 : 0.75, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className={cn(
+              'text-center font-apple text-xs font-medium uppercase tracking-[0.2em]',
+              exitArmed ? 'text-zinc-300' : 'text-zinc-500'
+            )}
+          >
+            Scroll down to continue
+          </motion.p>
+        </div>
       )}
 
       {transitionDone && !exitActive && (
