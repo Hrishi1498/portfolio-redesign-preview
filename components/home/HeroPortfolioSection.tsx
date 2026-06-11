@@ -17,6 +17,12 @@ import { cn } from '@/lib/utils'
 const PROGRESS_ZOOM_END = 0.52
 const WHEEL_STEP = 0.0012
 
+function getWheelDelta(event: WheelEvent) {
+  if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) return event.deltaY * 32
+  if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) return event.deltaY * window.innerHeight
+  return event.deltaY
+}
+
 interface HeroPortfolioSectionProps {
   onPortfolioActive?: (active: boolean) => void
 }
@@ -34,7 +40,7 @@ export function HeroPortfolioSection({ onPortfolioActive }: HeroPortfolioSection
 
   if (prefersReducedMotion) {
     return (
-      <div className="flex h-full w-full items-center justify-center overflow-hidden">
+      <div className="h-full w-full overflow-x-hidden overflow-y-auto bg-black">
         <SelectedWork />
       </div>
     )
@@ -52,9 +58,11 @@ function HeroPortfolioParallax({
   onPortfolioActive,
   initialProgress,
 }: HeroPortfolioSectionProps & { initialProgress: number }) {
-  const { progress } = useMotionProgress(initialProgress)
+  const portfolioScrollRef = useRef<HTMLDivElement>(null)
+  const { progress } = useMotionProgress(initialProgress, portfolioScrollRef)
   const pathname = usePathname()
   const [portfolioOnTop, setPortfolioOnTop] = useState(initialProgress >= PROGRESS_ZOOM_END)
+  const [isFullyRevealed, setIsFullyRevealed] = useState(initialProgress >= 1)
 
   const heroScale = useTransform(progress, [0, PROGRESS_ZOOM_END], [1, 3])
   const heroOpacity = useTransform(progress, [PROGRESS_ZOOM_END * 0.85, PROGRESS_ZOOM_END], [1, 0])
@@ -65,6 +73,7 @@ function HeroPortfolioParallax({
     const unsub = progress.on('change', (v) => {
       const portfolioActive = v >= PROGRESS_ZOOM_END
       setPortfolioOnTop(portfolioActive)
+      setIsFullyRevealed(v >= 1)
       onPortfolioActive?.(portfolioActive)
     })
     return unsub
@@ -106,17 +115,30 @@ function HeroPortfolioParallax({
       <motion.div
         style={{ y: portfolioY, opacity: portfolioOpacity }}
         className={cn(
-          'absolute inset-0 flex h-full items-center justify-center overflow-x-hidden overflow-y-hidden',
+          'absolute inset-0 min-h-0',
           portfolioOnTop ? 'z-30 pointer-events-auto' : 'z-10 pointer-events-auto'
         )}
       >
-        <SelectedWork />
+        <div
+          ref={portfolioScrollRef}
+          className={cn(
+            'h-full overflow-x-hidden overscroll-y-contain pt-12 sm:pt-14 md:pt-16',
+            isFullyRevealed ? 'overflow-y-auto' : 'overflow-y-hidden'
+          )}
+        >
+          <div className="w-full shrink-0">
+            <SelectedWork />
+          </div>
+        </div>
       </motion.div>
     </div>
   )
 }
 
-function useMotionProgress(initialProgress: number) {
+function useMotionProgress(
+  initialProgress: number,
+  portfolioScrollRef: React.RefObject<HTMLDivElement | null>
+) {
   const progress = useMotionValue(initialProgress)
   const value = useRef(initialProgress)
 
@@ -131,11 +153,25 @@ function useMotionProgress(initialProgress: number) {
 
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
+      const scrollEl = portfolioScrollRef.current
+      const delta = getWheelDelta(e)
+
+      if (value.current >= 1 && scrollEl) {
+        const atTop = scrollEl.scrollTop <= 0
+
+        if (delta < 0 && atTop) {
+          e.preventDefault()
+          setProgress(value.current + delta * WHEEL_STEP)
+          return
+        }
+
+        e.preventDefault()
+        scrollEl.scrollBy({ top: delta, behavior: 'auto' })
+        return
+      }
+
       e.preventDefault()
-
-      if (value.current >= 1 && e.deltaY > 0) return
-
-      setProgress(value.current + e.deltaY * WHEEL_STEP)
+      setProgress(value.current + delta * WHEEL_STEP)
     }
 
     let touchY = 0
@@ -145,16 +181,28 @@ function useMotionProgress(initialProgress: number) {
     }
 
     const onTouchMove = (e: TouchEvent) => {
-      e.preventDefault()
-
+      const scrollEl = portfolioScrollRef.current
       const y = e.touches[0]?.clientY ?? touchY
       const delta = touchY - y
       touchY = y
 
       if (Math.abs(delta) < 2) return
 
-      if (value.current >= 1 && delta > 0) return
+      if (value.current >= 1 && scrollEl) {
+        const atTop = scrollEl.scrollTop <= 0
 
+        if (delta < 0 && atTop) {
+          e.preventDefault()
+          setProgress(value.current + delta * WHEEL_STEP * 2.5)
+          return
+        }
+
+        e.preventDefault()
+        scrollEl.scrollBy({ top: delta, behavior: 'auto' })
+        return
+      }
+
+      e.preventDefault()
       setProgress(value.current + delta * WHEEL_STEP * 2.5)
     }
 
@@ -166,7 +214,7 @@ function useMotionProgress(initialProgress: number) {
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
     }
-  }, [setProgress])
+  }, [portfolioScrollRef, setProgress])
 
   return { progress }
 }

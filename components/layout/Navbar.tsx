@@ -1,15 +1,15 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { BOOKING_URL } from '@/lib/site'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 const navLinks = [
   { href: '/work', label: 'Work' },
-  { href: '/#process', label: 'Process' },
-  { href: '/#contact', label: 'Contact' },
-]
+  { href: BOOKING_URL, label: 'Contact', external: true },
+] as const
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -40,12 +40,23 @@ export function Navbar() {
             <ul className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-heading text-sm text-zinc-500 hover:text-white transition-colors duration-300"
-                  >
-                    {link.label}
-                  </Link>
+                  {'external' in link && link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-heading text-sm text-zinc-500 hover:text-white transition-colors duration-300"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="font-heading text-sm text-zinc-500 hover:text-white transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -72,13 +83,25 @@ export function Navbar() {
         <ul className="flex flex-col items-center justify-center h-full gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="font-display text-3xl font-bold text-white hover:text-zinc-400 transition-colors"
-              >
-                {link.label}
-              </Link>
+              {'external' in link && link.external ? (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-display text-3xl font-bold text-white hover:text-zinc-400 transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-display text-3xl font-bold text-white hover:text-zinc-400 transition-colors"
+                >
+                  {link.label}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

@@ -1,6 +1,3 @@
-/** Homepage URL that opens the portfolio section (not the hero). */
-export const PORTFOLIO_HOME_HREF = '/?view=portfolio'
-
 export function applyHomeScrollLock() {
   const html = document.documentElement
   const body = document.body

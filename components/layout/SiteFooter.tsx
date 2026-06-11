@@ -3,8 +3,7 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { FooterWatermark } from '@/components/layout/FooterWatermark'
-
-const TIDYCAL_URL = 'https://tidycal.com/bitblabs/project-discussion'
+import { BOOKING_URL } from '@/lib/site'
 
 function SocialIcon({ name }: { name: 'instagram' | 'x' | 'linkedin' | 'github' }) {
   const paths: Record<typeof name, ReactNode> = {
@@ -46,8 +45,7 @@ const linkColumns = [
     title: 'Menu',
     links: [
       { href: '/work', label: 'Work' },
-      { href: '/#process', label: 'Process' },
-      { href: '/#contact', label: 'Contact' },
+      { href: BOOKING_URL, label: 'Contact', external: true },
     ],
   },
   {
@@ -94,7 +92,7 @@ export function SiteFooter() {
               <p>Digital Product Studio</p>
               <p>Remote · Worldwide</p>
               <a
-                href={TIDYCAL_URL}
+                href={BOOKING_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block pt-1 text-white transition-opacity hover:opacity-70"
@@ -113,12 +111,23 @@ export function SiteFooter() {
                 <ul className="mt-5 space-y-2.5">
                   {column.links.map((link) => (
                     <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="font-body text-sm text-white transition-opacity hover:opacity-60"
-                      >
-                        {link.label}
-                      </Link>
+                      {'external' in link && link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-body text-sm text-white transition-opacity hover:opacity-60"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="font-body text-sm text-white transition-opacity hover:opacity-60"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -131,7 +140,7 @@ export function SiteFooter() {
         <div className="relative mt-16 sm:mt-20">
           <div className="h-px w-full bg-white/20" />
           <a
-            href={TIDYCAL_URL}
+            href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-white px-7 py-3 font-heading text-sm font-medium text-black transition-opacity hover:opacity-85 sm:px-8"

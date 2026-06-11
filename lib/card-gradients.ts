@@ -4,6 +4,7 @@ export interface ProjectGradientSource {
   slug: string
   color: string
 }
+
 const PROJECT_GRADIENTS: Record<string, [string, string]> = {
   digipropass: ['#007CBE', '#FFF7AE'],
   'healthy-fasal': ['#02C3BD', '#4E148C'],

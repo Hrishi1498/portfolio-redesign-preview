@@ -9,7 +9,7 @@ import { getProjectCardGradientCss } from '@/lib/card-gradients'
 import { releaseHomeScrollLock } from '@/lib/home-scroll-lock'
 import { cn } from '@/lib/utils'
 
-export interface PortfolioShowcaseItem {
+interface PortfolioShowcaseItem {
   id: string
   name: string
   role: string
@@ -41,6 +41,9 @@ interface PortfolioShowcaseProps {
   projects: PortfolioProject[]
 }
 
+const CARD_CLASSNAME =
+  'h-[147px] w-[136px] sm:h-[174px] sm:w-[162px] md:h-[207px] md:w-[195px] lg:h-[220px] lg:w-[208px]'
+
 export function PortfolioShowcase({ projects }: PortfolioShowcaseProps) {
   const members = buildItems(projects)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
@@ -58,7 +61,7 @@ export function PortfolioShowcase({ projects }: PortfolioShowcaseProps) {
               key={item.id}
               item={item}
               index={i * 3}
-              className="h-[134px] w-[123px] sm:h-[158px] sm:w-[146px] md:h-[188px] md:w-[176px] lg:h-[200px] lg:w-[188px]"
+              className={CARD_CLASSNAME}
               hoveredId={hoveredId}
               onHover={setHoveredId}
             />
@@ -71,7 +74,7 @@ export function PortfolioShowcase({ projects }: PortfolioShowcaseProps) {
               key={item.id}
               item={item}
               index={i * 3 + 1}
-              className="h-[147px] w-[136px] sm:h-[174px] sm:w-[162px] md:h-[207px] md:w-[195px] lg:h-[220px] lg:w-[208px]"
+              className={CARD_CLASSNAME}
               hoveredId={hoveredId}
               onHover={setHoveredId}
             />
@@ -84,7 +87,7 @@ export function PortfolioShowcase({ projects }: PortfolioShowcaseProps) {
               key={item.id}
               item={item}
               index={i * 3 + 2}
-              className="h-[138px] w-[128px] sm:h-[164px] sm:w-[152px] md:h-[196px] md:w-[184px] lg:h-[208px] lg:w-[196px]"
+              className={CARD_CLASSNAME}
               hoveredId={hoveredId}
               onHover={setHoveredId}
             />

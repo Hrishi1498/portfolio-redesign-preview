@@ -40,15 +40,6 @@ export interface CaseStudy {
 
 export type Category = 'all' | 'llm' | 'agents' | 'prompts' | 'rag' | 'ux' | 'recruitment'
 
-export interface Article {
-  id: string
-  title: string
-  description: string
-  category: Exclude<Category, 'all'>
-  readTime: string
-  thumbnail: string
-}
-
 export const categories = [
   { id: 'all' as Category, label: 'All' },
   { id: 'llm' as Category, label: 'LLMs' },
@@ -218,33 +209,4 @@ export const caseStudies: CaseStudy[] = [
       'Human judgment remains the ultimate differentiator',
     ],
   },
-]
-
-export const articles: Article[] = caseStudies.map((study) => ({
-  id: study.id,
-  title: study.title,
-  description: study.description,
-  category: study.category as Exclude<Category, 'all'>,
-  readTime: study.readTime,
-  thumbnail: study.thumbnail,
-}))
-
-export const navLinks = [
-  { href: '/work', label: 'Work' },
-]
-
-export const socialLinks = [
-  { href: '#', label: 'Twitter' },
-  { href: '#', label: 'LinkedIn' },
-  { href: '#', label: 'GitHub' },
-]
-
-export const marqueeItems = [
-  'AI Agents',
-  'LLMs',
-  'RAG',
-  'Prompt Engineering',
-  'Fine-Tuning',
-  'Multi-Agent Systems',
-  'AI UX',
 ]

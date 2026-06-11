@@ -3,9 +3,8 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { VerticalMarquee } from '@/components/ui/VerticalMarquee'
+import { BOOKING_URL } from '@/lib/site'
 import { cn } from '@/lib/utils'
-
-const TIDYCAL_URL = 'https://tidycal.com/bitblabs/project-discussion'
 
 /** What we build — aligned with portfolio work */
 const marqueeItems = [
@@ -69,7 +68,7 @@ export function ContactCTA() {
             </p>
             <div className="flex animate-fade-in-up flex-wrap gap-4 [animation-delay:600ms]">
               <a
-                href={TIDYCAL_URL}
+                href={BOOKING_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative overflow-hidden rounded-full bg-white px-8 py-3.5 font-heading text-sm font-semibold text-black transition-all duration-300 hover:scale-[1.02] hover:bg-zinc-200"
