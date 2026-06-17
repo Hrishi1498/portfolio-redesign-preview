@@ -1,17 +1,48 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import type { MotionValue } from 'framer-motion'
 import * as THREE from 'three'
 
-export function ShaderAnimation() {
+const PAUSE_THRESHOLD = 0.015
+const LOW_QUALITY_THRESHOLD = 0.35
+
+interface ShaderAnimationProps {
+  scrollProgress?: MotionValue<number>
+}
+
+export function ShaderAnimation({ scrollProgress }: ShaderAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const pausedRef = useRef(false)
+  const lowQualityRef = useRef(false)
   const sceneRef = useRef<{
     camera: THREE.Camera
     scene: THREE.Scene
     renderer: THREE.WebGLRenderer
     uniforms: { time: { value: number }; resolution: { value: THREE.Vector2 } }
     animationId: number
+    basePixelRatio: number
   } | null>(null)
+
+  useEffect(() => {
+    if (!scrollProgress) return
+
+    const updateQuality = (value: number) => {
+      pausedRef.current = value > PAUSE_THRESHOLD
+      lowQualityRef.current = value > 0 && value < LOW_QUALITY_THRESHOLD
+
+      const scene = sceneRef.current
+      if (!scene) return
+
+      const ratio = lowQualityRef.current
+        ? Math.min(1, scene.basePixelRatio * 0.6)
+        : scene.basePixelRatio
+      scene.renderer.setPixelRatio(ratio)
+    }
+
+    updateQuality(scrollProgress.get())
+    return scrollProgress.on('change', updateQuality)
+  }, [scrollProgress])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -78,7 +109,8 @@ export function ShaderAnimation() {
       return
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const basePixelRatio = Math.min(window.devicePixelRatio, 2)
+    renderer.setPixelRatio(basePixelRatio)
     container.appendChild(renderer.domElement)
 
     const onWindowResize = () => {
@@ -92,10 +124,17 @@ export function ShaderAnimation() {
     onWindowResize()
     window.addEventListener('resize', onWindowResize, false)
 
-    const animate = () => {
+    let lastFrame = performance.now()
+
+    const animate = (now: number) => {
       const animationId = requestAnimationFrame(animate)
-      uniforms.time.value += 0.05
-      renderer.render(scene, camera)
+      const dt = Math.min(0.05, (now - lastFrame) / 1000)
+      lastFrame = now
+
+      if (!pausedRef.current) {
+        uniforms.time.value += dt * 3
+        renderer.render(scene, camera)
+      }
 
       if (sceneRef.current) {
         sceneRef.current.animationId = animationId
@@ -108,9 +147,10 @@ export function ShaderAnimation() {
       renderer,
       uniforms,
       animationId: 0,
+      basePixelRatio,
     }
 
-    animate()
+    requestAnimationFrame(animate)
 
     return () => {
       window.removeEventListener('resize', onWindowResize)
@@ -132,7 +172,7 @@ export function ShaderAnimation() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0 h-full w-full"
       style={{ background: '#000', overflow: 'hidden' }}
       aria-hidden
     />

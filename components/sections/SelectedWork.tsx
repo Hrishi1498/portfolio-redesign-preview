@@ -7,7 +7,7 @@ export function SelectedWork() {
   return (
     <section
       id="work"
-      className="relative flex h-full min-h-0 w-full flex-col justify-center overflow-x-hidden bg-black"
+      className="relative flex w-full flex-col justify-center overflow-hidden bg-black py-8 md:py-10"
     >
       <div className="w-full px-6 md:px-12 lg:px-20">
         <h2 className="mb-3 font-display text-4xl font-bold tracking-tight text-white md:text-6xl">

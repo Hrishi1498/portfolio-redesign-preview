@@ -6,10 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-const navLinks = [
-  { href: '/work', label: 'Work' },
-  { href: BOOKING_URL, label: 'Contact', external: true },
-] as const
+const navLinks = [{ href: BOOKING_URL, label: 'Contact', external: true }] as const
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -22,7 +19,7 @@ export function Navbar() {
   return (
     <>
       <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="w-full px-6 md:px-12 lg:px-16">
           <div className="flex items-center justify-between h-16 sm:h-20">
             <Link href="/" className="flex items-center gap-3 group" onClick={() => setMobileMenuOpen(false)}>
               <Image
@@ -32,7 +29,7 @@ export function Navbar() {
                 height={32}
                 className="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />
-              <span className="font-display font-bold text-white text-sm tracking-tight hidden sm:block">
+              <span className="font-display text-sm font-bold tracking-tight text-white">
                 BitBLabs
               </span>
             </Link>

@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
+import { motion, type MotionValue } from 'framer-motion'
 
 const ShaderAnimation = dynamic(
   () => import('./ShaderAnimation').then((m) => m.ShaderAnimation),
@@ -11,11 +11,15 @@ const ShaderAnimation = dynamic(
   }
 )
 
-export function HeroContent() {
+interface HeroContentProps {
+  scrollProgress?: MotionValue<number>
+}
+
+export function HeroContent({ scrollProgress }: HeroContentProps) {
   return (
     <>
       <div className="absolute inset-0 z-0">
-        <ShaderAnimation />
+        <ShaderAnimation scrollProgress={scrollProgress} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-[#050505]" />
       </div>
 
@@ -26,7 +30,7 @@ export function HeroContent() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mb-6 font-display text-display-sm font-bold text-white sm:text-display-md lg:text-display-lg"
         >
-          We Build Products
+          We Build AI Products
           <br />
           <span className="text-zinc-500">People Remember</span>
         </motion.h1>

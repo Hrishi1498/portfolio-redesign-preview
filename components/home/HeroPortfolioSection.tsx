@@ -1,10 +1,11 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import {
   motion,
   useMotionValue,
   useReducedMotion,
+  useSpring,
   useTransform,
 } from 'framer-motion'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -15,7 +16,18 @@ import { cn } from '@/lib/utils'
 
 /** Wheel progress 0→1: hero zoom finishes here, then portfolio reveal runs to 1 */
 const PROGRESS_ZOOM_END = 0.52
-const WHEEL_STEP = 0.0012
+const WHEEL_STEP = 0.0014
+const TOUCH_STEP = WHEEL_STEP * 2.5
+
+const SPRING = { stiffness: 140, damping: 32, mass: 0.65, restDelta: 0.0004 }
+
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3)
+}
+
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
 
 function getWheelDelta(event: WheelEvent) {
   if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) return event.deltaY * 32
@@ -40,7 +52,7 @@ export function HeroPortfolioSection({ onPortfolioActive }: HeroPortfolioSection
 
   if (prefersReducedMotion) {
     return (
-      <div className="h-full w-full overflow-x-hidden overflow-y-auto bg-black">
+      <div className="flex h-full w-full items-center justify-center overflow-hidden bg-black">
         <SelectedWork />
       </div>
     )
@@ -58,26 +70,113 @@ function HeroPortfolioParallax({
   onPortfolioActive,
   initialProgress,
 }: HeroPortfolioSectionProps & { initialProgress: number }) {
-  const portfolioScrollRef = useRef<HTMLDivElement>(null)
-  const { progress } = useMotionProgress(initialProgress, portfolioScrollRef)
+  const portfolioContainerRef = useRef<HTMLDivElement>(null)
+  const workSectionRef = useRef<HTMLDivElement>(null)
+  const heroLayerRef = useRef<HTMLDivElement>(null)
+  const portfolioLayerRef = useRef<HTMLDivElement>(null)
+  const portfolioOnTopRef = useRef(initialProgress >= PROGRESS_ZOOM_END)
+  const centerOffset = useMotionValue(0)
+  const { progress, targetProgress } = useMotionProgress(initialProgress)
   const pathname = usePathname()
-  const [portfolioOnTop, setPortfolioOnTop] = useState(initialProgress >= PROGRESS_ZOOM_END)
-  const [isFullyRevealed, setIsFullyRevealed] = useState(initialProgress >= 1)
 
-  const heroScale = useTransform(progress, [0, PROGRESS_ZOOM_END], [1, 3])
-  const heroOpacity = useTransform(progress, [PROGRESS_ZOOM_END * 0.85, PROGRESS_ZOOM_END], [1, 0])
-  const portfolioY = useTransform(progress, [PROGRESS_ZOOM_END, 1], ['12vh', '0vh'])
-  const portfolioOpacity = useTransform(progress, [PROGRESS_ZOOM_END, PROGRESS_ZOOM_END + 0.12], [0, 1])
+  const measureCenterOffset = useCallback(() => {
+    const container = portfolioContainerRef.current
+    const section = workSectionRef.current
+    if (!container || !section) return
+
+    const gap = container.clientHeight - section.offsetHeight
+    centerOffset.set(gap / 2)
+  }, [centerOffset])
+
+  useLayoutEffect(() => {
+    measureCenterOffset()
+
+    const section = workSectionRef.current
+    if (!section) return
+
+    const observer = new ResizeObserver(measureCenterOffset)
+    observer.observe(section)
+    window.addEventListener('resize', measureCenterOffset)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measureCenterOffset)
+    }
+  }, [measureCenterOffset])
+
+  const heroScale = useTransform(progress, (p) => {
+    const t = Math.min(1, Math.max(0, p / PROGRESS_ZOOM_END))
+    return 1 + 2 * easeOutCubic(t)
+  })
+
+  const heroOpacity = useTransform(progress, (p) => {
+    const fadeStart = PROGRESS_ZOOM_END * 0.85
+    if (p <= fadeStart) return 1
+    if (p >= PROGRESS_ZOOM_END) return 0
+    return 1 - (p - fadeStart) / (PROGRESS_ZOOM_END - fadeStart)
+  })
+
+  const portfolioOpacity = useTransform(progress, (p) => {
+    const fadeEnd = PROGRESS_ZOOM_END + 0.12
+    if (p <= PROGRESS_ZOOM_END) return 0
+    if (p >= fadeEnd) return 1
+    return (p - PROGRESS_ZOOM_END) / (fadeEnd - PROGRESS_ZOOM_END)
+  })
+
+  const portfolioY = useTransform([progress, centerOffset], ([p, endY]) => {
+    const progressValue = p as number
+    const endOffset = endY as number
+    const startY = window.innerHeight * 0.12
+
+    if (progressValue <= PROGRESS_ZOOM_END) {
+      return `${startY}px`
+    }
+
+    const t = easeInOutCubic(
+      Math.min(1, (progressValue - PROGRESS_ZOOM_END) / (1 - PROGRESS_ZOOM_END))
+    )
+    const y = startY + (endOffset - startY) * t
+    return `${y}px`
+  })
+
+  const applyLayerPhase = useCallback(
+    (portfolioOnTop: boolean) => {
+      const hero = heroLayerRef.current
+      const portfolio = portfolioLayerRef.current
+      const container = portfolioContainerRef.current
+
+      if (hero) {
+        hero.classList.toggle('z-0', portfolioOnTop)
+        hero.classList.toggle('z-20', !portfolioOnTop)
+      }
+
+      if (portfolio) {
+        portfolio.classList.toggle('z-30', portfolioOnTop)
+        portfolio.classList.toggle('z-10', !portfolioOnTop)
+      }
+
+      if (container) {
+        container.dataset.phase = portfolioOnTop ? 'portfolio' : 'hero'
+      }
+    },
+    []
+  )
+
+  useLayoutEffect(() => {
+    applyLayerPhase(portfolioOnTopRef.current)
+  }, [applyLayerPhase])
 
   useEffect(() => {
     const unsub = progress.on('change', (v) => {
       const portfolioActive = v >= PROGRESS_ZOOM_END
-      setPortfolioOnTop(portfolioActive)
-      setIsFullyRevealed(v >= 1)
-      onPortfolioActive?.(portfolioActive)
+      if (portfolioActive !== portfolioOnTopRef.current) {
+        portfolioOnTopRef.current = portfolioActive
+        applyLayerPhase(portfolioActive)
+        onPortfolioActive?.(portfolioActive)
+      }
     })
     return unsub
-  }, [progress, onPortfolioActive])
+  }, [progress, onPortfolioActive, applyLayerPhase])
 
   useEffect(() => {
     applyHomeScrollLock()
@@ -101,32 +200,30 @@ function HeroPortfolioParallax({
   return (
     <div className="absolute inset-0 overflow-hidden bg-black">
       <motion.div
+        ref={heroLayerRef}
         style={{ scale: heroScale, opacity: heroOpacity }}
-        className={cn(
-          'pointer-events-none absolute inset-0 overflow-hidden will-change-transform',
-          portfolioOnTop ? 'z-0' : 'z-20'
-        )}
+        className="pointer-events-none absolute inset-0 z-20 overflow-hidden will-change-transform"
       >
         <div className="absolute inset-0 flex origin-center items-center justify-center">
-          <HeroContent />
+          <HeroContent scrollProgress={progress} />
         </div>
       </motion.div>
 
       <motion.div
+        ref={portfolioLayerRef}
         style={{ y: portfolioY, opacity: portfolioOpacity }}
-        className={cn(
-          'absolute inset-0 min-h-0',
-          portfolioOnTop ? 'z-30 pointer-events-auto' : 'z-10 pointer-events-auto'
-        )}
+        className="pointer-events-auto absolute inset-0 z-10 min-h-0"
       >
         <div
-          ref={portfolioScrollRef}
+          ref={portfolioContainerRef}
+          data-phase="hero"
           className={cn(
-            'h-full overflow-x-hidden overscroll-y-contain pt-12 sm:pt-14 md:pt-16',
-            isFullyRevealed ? 'overflow-y-auto' : 'overflow-y-hidden'
+            'h-full overflow-hidden overscroll-none',
+            'data-[phase=hero]:pt-12 data-[phase=hero]:sm:pt-14 data-[phase=hero]:md:pt-16',
+            'data-[phase=portfolio]:pt-0'
           )}
         >
-          <div className="w-full shrink-0">
+          <div ref={workSectionRef} className="w-full shrink-0">
             <SelectedWork />
           </div>
         </div>
@@ -135,43 +232,34 @@ function HeroPortfolioParallax({
   )
 }
 
-function useMotionProgress(
-  initialProgress: number,
-  portfolioScrollRef: React.RefObject<HTMLDivElement | null>
-) {
-  const progress = useMotionValue(initialProgress)
-  const value = useRef(initialProgress)
+function useMotionProgress(initialProgress: number) {
+  const targetProgress = useMotionValue(initialProgress)
+  const progress = useSpring(targetProgress, SPRING)
 
-  const setProgress = useCallback(
-    (next: number) => {
-      const clamped = Math.max(0, Math.min(1, next))
-      value.current = clamped
-      progress.set(clamped)
+  const nudgeTarget = useCallback(
+    (delta: number) => {
+      const current = targetProgress.get()
+      const next = Math.max(0, Math.min(1, current + delta))
+      targetProgress.set(next)
     },
-    [progress]
+    [targetProgress]
   )
 
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
-      const scrollEl = portfolioScrollRef.current
       const delta = getWheelDelta(e)
+      const atEnd = targetProgress.get() >= 1
 
-      if (value.current >= 1 && scrollEl) {
-        const atTop = scrollEl.scrollTop <= 0
-
-        if (delta < 0 && atTop) {
-          e.preventDefault()
-          setProgress(value.current + delta * WHEEL_STEP)
-          return
-        }
-
+      if (atEnd) {
         e.preventDefault()
-        scrollEl.scrollBy({ top: delta, behavior: 'auto' })
+        if (delta < 0) {
+          nudgeTarget(delta * WHEEL_STEP)
+        }
         return
       }
 
       e.preventDefault()
-      setProgress(value.current + delta * WHEEL_STEP)
+      nudgeTarget(delta * WHEEL_STEP)
     }
 
     let touchY = 0
@@ -181,29 +269,24 @@ function useMotionProgress(
     }
 
     const onTouchMove = (e: TouchEvent) => {
-      const scrollEl = portfolioScrollRef.current
       const y = e.touches[0]?.clientY ?? touchY
       const delta = touchY - y
       touchY = y
 
       if (Math.abs(delta) < 2) return
 
-      if (value.current >= 1 && scrollEl) {
-        const atTop = scrollEl.scrollTop <= 0
+      const atEnd = targetProgress.get() >= 1
 
-        if (delta < 0 && atTop) {
-          e.preventDefault()
-          setProgress(value.current + delta * WHEEL_STEP * 2.5)
-          return
-        }
-
+      if (atEnd) {
         e.preventDefault()
-        scrollEl.scrollBy({ top: delta, behavior: 'auto' })
+        if (delta < 0) {
+          nudgeTarget(delta * TOUCH_STEP)
+        }
         return
       }
 
       e.preventDefault()
-      setProgress(value.current + delta * WHEEL_STEP * 2.5)
+      nudgeTarget(delta * TOUCH_STEP)
     }
 
     window.addEventListener('wheel', onWheel, { passive: false })
@@ -214,7 +297,7 @@ function useMotionProgress(
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
     }
-  }, [portfolioScrollRef, setProgress])
+  }, [nudgeTarget, targetProgress])
 
-  return { progress }
+  return { progress, targetProgress }
 }
