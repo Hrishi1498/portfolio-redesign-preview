@@ -64,6 +64,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
       !usedSlideIds.has(s.id) &&
       s.type !== 'stats' &&
       s.type !== 'intro' &&
+      s.type !== 'testimonial' &&
       !s.image &&
       !s.galleryImages?.length
   )
@@ -89,7 +90,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         <div className="h-px w-full" style={{ backgroundColor: `${accent}88` }} />
       </header>
 
-      {/* Scene 1 — Hero */}
+      {/* Scene 1 - Hero */}
       <section className="relative overflow-hidden px-6 pb-16 pt-16 md:px-12 md:pb-24 md:pt-24 lg:px-16">
         <div
           className="pointer-events-none absolute inset-0 opacity-30"
@@ -137,7 +138,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         )}
       </section>
 
-      {/* Scene 2 — Problem */}
+      {/* Scene 2 - Problem */}
       {problemSlide && (
         <StatementScene
           eyebrow={slideChapterLabel(problemSlide.type)}
@@ -149,7 +150,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         />
       )}
 
-      {/* Scene 3 — Solution */}
+      {/* Scene 3 - Solution */}
       {solutionSlide && (
         <StatementScene
           eyebrow={slideChapterLabel(solutionSlide.type)}
@@ -171,7 +172,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         />
       )}
 
-      {/* Platform experience — full-bleed visuals */}
+      {/* Platform experience - full-bleed visuals */}
       {platformSlides.map((slide, index) => (
         <FullBleedVisual
           key={slide.id}
@@ -209,7 +210,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         />
       ))}
 
-      {/* Results — huge metrics */}
+      {/* Results - huge metrics */}
       <MetricsShowcase
         eyebrow="Results & Impact"
         headline="Built for scale. Proven in market."
@@ -260,7 +261,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
                 className="inline-flex items-center rounded-full px-6 py-3 font-heading text-sm uppercase tracking-[0.18em] text-[#050505] transition-opacity hover:opacity-90"
                 style={{ backgroundColor: accent }}
               >
-                Next case study — {nextProject.title}
+                Next case study: {nextProject.title}
               </Link>
             )}
           </Reveal>

@@ -5,7 +5,6 @@ import {
   animate,
   motion,
   useMotionValue,
-  useMotionValueEvent,
   useReducedMotion,
   useTransform,
 } from 'framer-motion'
@@ -40,6 +39,8 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
   const exitArmedRef = useRef(false)
   const transitionDoneRef = useRef(false)
   const exitActiveRef = useRef(false)
+  const animationInFlightRef = useRef(false)
+  const processRevealedRef = useRef(false)
 
   const exitProgress = useMotionValue(0)
   const [caseStudyHeight, setCaseStudyHeight] = useState(0)
@@ -48,6 +49,7 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
   const [exitArmed, setExitArmed] = useState(false)
   const [exitActive, setExitActive] = useState(false)
   const [transitionDone, setTransitionDone] = useState(false)
+  const [processRevealed, setProcessRevealed] = useState(false)
 
   const resetEndGate = useCallback(() => {
     const now = Date.now()
@@ -70,7 +72,7 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
   }, [])
 
   const syncAtEnd = useCallback(() => {
-    if (exitProgress.get() > 0.01 || transitionDoneRef.current || exitActiveRef.current) {
+    if (exitProgress.get() > 0.01 || processRevealedRef.current || animationInFlightRef.current) {
       atEndRef.current = false
       exitArmedRef.current = false
       setAtEnd(false)
@@ -155,27 +157,6 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
     }
   }, [])
 
-  useMotionValueEvent(exitProgress, 'change', (value) => {
-    if (value >= 0.995) {
-      transitionDoneRef.current = true
-      setTransitionDone(true)
-      exitActiveRef.current = false
-      setExitActive(false)
-      unlockScroll(0)
-      return
-    }
-
-    if (transitionDoneRef.current) {
-      transitionDoneRef.current = false
-      setTransitionDone(false)
-    }
-
-    if (value > 0.001) {
-      exitActiveRef.current = true
-      setExitActive(true)
-    }
-  })
-
   useEffect(() => {
     if (prefersReducedMotion || exitActive) return
 
@@ -201,37 +182,61 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
     let lastActionAt = 0
     let wheelResetTimer: ReturnType<typeof setTimeout> | undefined
 
-    const canAct = () => Date.now() - lastActionAt >= COOLDOWN_MS
+    const canAct = () =>
+      animationInFlightRef.current || Date.now() - lastActionAt >= COOLDOWN_MS
 
     const runExitAnimation = (to: 0 | 1) => {
       exitAnimationRef.current?.stop()
       lastActionAt = Date.now()
+      animationInFlightRef.current = true
+      exitActiveRef.current = true
+      setExitActive(true)
 
       if (to === 1) {
         exitArmedRef.current = false
         setExitArmed(false)
+        processRevealedRef.current = true
+        setProcessRevealed(true)
         measureCaseStudy()
         lockScroll(window.scrollY)
       } else {
-        lockScroll(transitionDoneRef.current ? window.scrollY : lockedScrollYRef.current)
+        const scrollY = transitionDoneRef.current ? window.scrollY : lockedScrollYRef.current
+        transitionDoneRef.current = false
+        setTransitionDone(false)
+        lockScroll(scrollY)
       }
 
       exitAnimationRef.current = animate(exitProgress, to, {
         duration: EXIT_ANIMATION_DURATION,
         ease: [0.22, 1, 0.36, 1],
         onComplete: () => {
-          if (to === 0) {
+          animationInFlightRef.current = false
+
+          if (to === 1) {
+            exitProgress.set(1)
+            transitionDoneRef.current = true
+            setTransitionDone(true)
             exitActiveRef.current = false
             setExitActive(false)
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                measureCaseStudy()
-                unlockScroll(caseStudyPinYRef.current)
-                armExitImmediately()
-                syncAtEnd()
-              })
-            })
+            unlockScroll(0)
+            return
           }
+
+          exitProgress.set(0)
+          processRevealedRef.current = false
+          setProcessRevealed(false)
+          transitionDoneRef.current = false
+          setTransitionDone(false)
+          exitActiveRef.current = false
+          setExitActive(false)
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              measureCaseStudy()
+              unlockScroll(caseStudyPinYRef.current)
+              armExitImmediately()
+              syncAtEnd()
+            })
+          })
         },
       })
     }
@@ -248,7 +253,7 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
         return true
       }
 
-      if (value > 0.01 || transitionDoneRef.current) {
+      if (value > 0.01 || transitionDoneRef.current || processRevealedRef.current) {
         runExitAnimation(0)
         return true
       }
@@ -267,6 +272,17 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
     const handleWheel = (e: WheelEvent) => {
       const value = exitProgress.get()
 
+      if (animationInFlightRef.current) {
+        e.preventDefault()
+        if (e.deltaY >= 0) return
+        if (!canAct()) return
+        wheelAccumulator += e.deltaY
+        if (Math.abs(wheelAccumulator) < WHEEL_THRESHOLD) return
+        wheelAccumulator = 0
+        tryExit(-1)
+        return
+      }
+
       if (transitionDoneRef.current) {
         if (atProcessStart() && e.deltaY < 0) {
           e.preventDefault()
@@ -282,29 +298,6 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
           wheelAccumulator = 0
           tryExit(-1)
         }
-        return
-      }
-
-      if (value >= 0.995) {
-        if (e.deltaY < 0) {
-          e.preventDefault()
-          if (!canAct()) return
-          wheelAccumulator += e.deltaY
-          if (Math.abs(wheelAccumulator) < WHEEL_THRESHOLD) return
-          wheelAccumulator = 0
-          tryExit(-1)
-        }
-        return
-      }
-
-      if (value > 0.01) {
-        e.preventDefault()
-        if (e.deltaY >= 0) return
-        if (!canAct()) return
-        wheelAccumulator += e.deltaY
-        if (Math.abs(wheelAccumulator) < WHEEL_THRESHOLD) return
-        wheelAccumulator = 0
-        tryExit(-1)
         return
       }
 
@@ -344,6 +337,17 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
 
       const value = exitProgress.get()
 
+      if (animationInFlightRef.current) {
+        e.preventDefault()
+        if (delta >= 0) return
+        if (!canAct()) return
+        touchAccumulator += delta
+        if (Math.abs(touchAccumulator) < TOUCH_THRESHOLD) return
+        touchAccumulator = 0
+        tryExit(-1)
+        return
+      }
+
       if (transitionDoneRef.current) {
         if (atProcessStart() && delta < 0) {
           e.preventDefault()
@@ -353,28 +357,6 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
           touchAccumulator = 0
           tryExit(-1)
         }
-        return
-      }
-
-      if (value >= 0.995) {
-        if (delta >= 0) return
-        e.preventDefault()
-        if (!canAct()) return
-        touchAccumulator += delta
-        if (Math.abs(touchAccumulator) < TOUCH_THRESHOLD) return
-        touchAccumulator = 0
-        tryExit(-1)
-        return
-      }
-
-      if (value > 0.01) {
-        e.preventDefault()
-        if (delta >= 0) return
-        if (!canAct()) return
-        touchAccumulator += delta
-        if (Math.abs(touchAccumulator) < TOUCH_THRESHOLD) return
-        touchAccumulator = 0
-        tryExit(-1)
         return
       }
 
@@ -402,6 +384,7 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
     return () => {
       clearTimeout(wheelResetTimer)
       exitAnimationRef.current?.stop()
+      animationInFlightRef.current = false
       unlockScroll()
       window.removeEventListener('wheel', handleWheel, { capture: true })
       window.removeEventListener('touchstart', handleTouchStart)
@@ -419,8 +402,8 @@ export function CaseStudyExitTransition({ caseStudy, afterProcess, accent }: Cas
     )
   }
 
-  const hideCaseStudy = transitionDone && !exitActive
-  const showProcess = exitActive || transitionDone
+  const hideCaseStudy = processRevealed && transitionDone && !exitActive
+  const showProcess = processRevealed
 
   return (
     <main className="relative overflow-x-hidden bg-[#050505]" data-lenis-prevent>

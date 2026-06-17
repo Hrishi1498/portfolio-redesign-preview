@@ -39,6 +39,7 @@ const config: Config = {
         'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'marquee-vertical': 'marqueeVertical var(--duration, 30s) linear infinite',
+        'x-slider': 'xSlider var(--slider-duration, 45s) linear infinite',
         float: 'float 6s ease-in-out infinite',
       },
       keyframes: {
@@ -53,6 +54,10 @@ const config: Config = {
         marqueeVertical: {
           '0%': { transform: 'translateY(0)' },
           '100%': { transform: 'translateY(-50%)' },
+        },
+        xSlider: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },

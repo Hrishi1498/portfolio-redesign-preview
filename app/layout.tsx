@@ -5,11 +5,11 @@ import { interBlack } from '@/lib/fonts'
 
 export const metadata: Metadata = {
   title: {
-    default: 'BitBLabs — Digital Product Studio',
+    default: 'BitBLabs | Digital Product Studio',
     template: '%s | BitBLabs',
   },
   description:
-    'BitBLabs designs and builds exceptional digital products — AI platforms, web applications, and premium user experiences.',
+    'BitBLabs designs and builds exceptional digital products: AI platforms, web applications, and premium user experiences.',
   icons: {
     icon: '/logos/bitblabs-logo.svg',
     apple: '/logos/bitblabs-logo.svg',

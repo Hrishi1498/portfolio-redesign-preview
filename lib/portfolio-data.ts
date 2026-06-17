@@ -194,12 +194,6 @@ export const portfolioProjects: PortfolioProject[] = [
         image: '/step4-dashboard.png',
       },
       {
-        id: 14,
-        type: 'testimonial',
-        title: 'What Our Client Says',
-        content: 'Hear directly from Keishika Mahesh, Founder & CEO of DigiProPass, about her experience working with us.',
-      },
-      {
         id: 15,
         type: 'gallery',
         title: 'Project Gallery',

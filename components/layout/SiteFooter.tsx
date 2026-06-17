@@ -72,7 +72,7 @@ export function SiteFooter() {
   return (
     <footer className="relative bg-black px-6 pb-6 pt-16 sm:px-10 sm:pb-8 md:px-12 lg:px-16 lg:pt-20">
       <div className="relative z-10 mx-auto max-w-[1400px]">
-        {/* Top — social, contact & link columns */}
+        {/* Top - social, contact & link columns */}
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20">
           <div>
             <div className="flex flex-wrap gap-3">

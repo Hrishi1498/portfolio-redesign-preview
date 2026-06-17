@@ -107,7 +107,7 @@ export function PortfolioCard({
         )}
       </div>
 
-      {/* Glass panel — title + description */}
+      {/* Glass panel - title + description */}
       <div className={cn('relative z-10 shrink-0', isCompact ? 'px-3.5 pb-4' : 'px-4 pb-4 sm:px-5 sm:pb-5')}>
         <div
           className={cn(
@@ -140,7 +140,7 @@ export function PortfolioCard({
         )}
       </div>
 
-      {/* Extended details — default & featured only */}
+      {/* Extended details - default & featured only */}
       {!isCompact && (
         <div className="relative z-10 shrink-0 border-t border-white/30 bg-white/30 px-4 py-4 backdrop-blur-md sm:px-5 sm:py-5">
           <p className="line-clamp-3 text-base leading-relaxed text-zinc-900 sm:text-[17px]">

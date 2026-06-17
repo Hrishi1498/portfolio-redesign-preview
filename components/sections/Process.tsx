@@ -22,7 +22,7 @@ const steps = [
     title: 'Discover',
     shortLabel: 'Research',
     description:
-      'We immerse in your product vision, users, and constraints — mapping the problem before writing code.',
+      'We immerse in your product vision, users, and constraints, mapping the problem before writing code.',
   },
   {
     number: '02',
@@ -36,7 +36,7 @@ const steps = [
     title: 'Build',
     shortLabel: 'Execution',
     description:
-      'Full-stack execution across AI, web, and cloud — shipped in tight loops with relentless attention to detail.',
+      'Full-stack execution across AI, web, and cloud, shipped in tight loops with relentless attention to detail.',
   },
   {
     number: '04',
@@ -51,7 +51,7 @@ const principles = [
   {
     title: 'Strategic discovery',
     description:
-      'Every engagement starts with clarity — user research, constraints, and a shared definition of success.',
+      'Every engagement starts with clarity, user research, constraints, and a shared definition of success.',
   },
   {
     title: 'Product-grade UX',
@@ -61,7 +61,7 @@ const principles = [
   {
     title: 'Full-stack execution',
     description:
-      'From architecture to deployment, we ship cohesive systems — not handoffs between disconnected teams.',
+      'From architecture to deployment, we ship cohesive systems, not handoffs between disconnected teams.',
   },
   {
     title: 'Launch & iteration',
@@ -180,7 +180,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
 
   return (
     <div id="process" className="bg-white text-zinc-950 antialiased">
-      {/* Scene 1 — Hero */}
+      {/* Scene 1 - Hero */}
       <section className="relative overflow-hidden bg-white px-6 pb-16 pt-16 md:px-12 md:pb-24 md:pt-24 lg:px-16">
         <div
           className="pointer-events-none absolute inset-0 opacity-30"
@@ -202,7 +202,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
             startDelay={0.08}
           />
           <BlurTextAnimation
-            text="A focused four-phase process built for premium product work — from discovery through delivery."
+            text="A focused four-phase process built for premium product work, from discovery through delivery."
             className="mt-8 max-w-3xl font-body text-2xl text-zinc-600 md:text-3xl"
             theme="light"
             variant="body"
@@ -225,7 +225,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       <StatementScene
         eyebrow="The Philosophy"
         headline="Premium products deserve a process that matches."
-        body="We treat every engagement like a studio case study — strategic discovery, cinematic design, and engineering that ships. No generic playbooks. No documentation-first delivery."
+        body="We treat every engagement like a studio case study, strategic discovery, cinematic design, and engineering that ships. No generic playbooks. No documentation-first delivery."
         pullQuote="Every phase is designed to create clarity, momentum, and a product you are proud to launch."
         accent={accent}
         align="center"
@@ -236,7 +236,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       <StickyStorySection
         eyebrow="The Process"
         title="Four phases. One cohesive arc."
-        intro="Each phase builds on the last — moving from insight to interface to implementation to launch."
+        intro="Each phase builds on the last, moving from insight to interface to implementation to launch."
         steps={steps.map((step) => ({
           title: step.title,
           description: step.description,
@@ -249,7 +249,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       <FullBleedVisual
         eyebrow="In Practice"
         title="Design and engineering in the same rhythm."
-        body="We work in tight loops — validating flows with real interfaces, refining architecture alongside UX, and shipping incrementally so momentum never stalls."
+        body="We work in tight loops, validating flows with real interfaces, refining architecture alongside UX, and shipping incrementally so momentum never stalls."
         pullQuote="The same visual rigor you see in our portfolio is how we build for clients."
         image="/hf-products.png"
         accent={accent}
@@ -260,7 +260,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       <FeatureGridScene
         eyebrow="What You Get"
         title="End-to-end craft across every layer."
-        body="From strategy to shipped product — one team, one standard, one cohesive experience."
+        body="From strategy to shipped product, one team, one standard, one cohesive experience."
         features={principles}
         accent={accent}
         theme={processTheme}
@@ -270,7 +270,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       <MetricsShowcase
         eyebrow="The Phases"
         headline="Structured for momentum."
-        subline="Each phase has a clear outcome — so you always know where we are and what comes next."
+        subline="Each phase has a clear outcome, so you always know where we are and what comes next."
         metrics={processMetrics}
         accent={accent}
         theme={processTheme}
@@ -280,7 +280,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       {galleryImages.length > 0 && (
         <ParallaxGallery
           title="Built with the same standard."
-          description="A glimpse of the product experiences we craft across industries — from platforms to AI systems."
+          description="A glimpse of the product experiences we craft across industries, from platforms to AI systems."
           images={galleryImages}
           accent={accent}
           theme={processTheme}
@@ -291,7 +291,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
       <StatementScene
         eyebrow="Next Step"
         headline="Ready when you are."
-        body="When the case study ends, the conversation begins. Scroll down to connect — or explore more work from the portfolio."
+        body="When the case study ends, the conversation begins. Scroll down to connect, or explore more work from the portfolio."
         accent={accent}
         align="center"
         theme={processTheme}

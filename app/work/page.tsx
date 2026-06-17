@@ -17,7 +17,7 @@ export default function WorkPage() {
             <span className="font-editorial font-normal italic text-zinc-500"> portfolio</span>
           </h1>
           <p className="mt-6 max-w-xl font-body text-lg text-zinc-400">
-            Hover a project to preview — open the case study from the active row.
+            Hover a project to preview, then open the case study from the active row.
           </p>
         </div>
       </section>

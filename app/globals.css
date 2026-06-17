@@ -283,4 +283,17 @@ a {
       transform: translateY(-50%);
     }
   }
+
+  .animate-x-slider {
+    animation: xSlider var(--slider-duration, 40s) linear infinite;
+  }
+
+  @keyframes xSlider {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(calc(-50% - var(--slider-gap, 0px) / 2), 0, 0);
+    }
+  }
 }
