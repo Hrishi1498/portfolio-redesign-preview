@@ -692,6 +692,8 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     images: {
       thumbnail: '/axion-logo.png',
+      cover: '/axion-work-cover.png',
+      coverAspect: '1024/490',
     },
     links: {
       live: 'https://axionplan.com/',

@@ -17,7 +17,7 @@ interface WorkProjectCardProps {
 }
 
 const WORK_CARD_ASPECT = '1024/490'
-const WORK_CARD_IMAGE_SLUGS = new Set(['healthy-fasal', 'course-companion'])
+const WORK_CARD_IMAGE_SLUGS = new Set(['healthy-fasal', 'course-companion', 'axion-plan'])
 
 function getWorkCardCover(project: PortfolioProject): string | undefined {
   if (!WORK_CARD_IMAGE_SLUGS.has(project.slug)) return undefined
@@ -76,7 +76,10 @@ function ScreenshotVisual({
         </div>
 
         <div
-          className="relative overflow-hidden bg-zinc-100"
+          className={cn(
+            'relative overflow-hidden',
+            project.slug === 'axion-plan' ? 'bg-[#050505]' : 'bg-zinc-100'
+          )}
           style={{ aspectRatio: WORK_CARD_ASPECT }}
         >
           {cover ? (
@@ -84,9 +87,13 @@ function ScreenshotVisual({
               src={cover}
               alt={`${project.title} preview`}
               fill
-              className="object-cover object-center transition-transform duration-[650ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover/work-img:scale-[1.015]"
+              className="object-cover object-top transition-transform duration-[650ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover/work-img:scale-[1.015]"
               sizes="(max-width: 1024px) 100vw, 62vw"
-              priority={project.slug === 'healthy-fasal' || project.slug === 'course-companion'}
+              priority={
+                project.slug === 'healthy-fasal' ||
+                project.slug === 'course-companion' ||
+                project.slug === 'axion-plan'
+              }
             />
           ) : null}
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/[0.04]" />

@@ -26,11 +26,9 @@ export function HeroPortfolioSection() {
 
   return (
     <>
-      <section className="sticky top-0 z-0 h-[100dvh] w-full bg-black">
+      <section className="sticky top-0 z-0 h-[100dvh] w-full overflow-hidden bg-black">
         <Navbar position="absolute" theme="dark" />
-        <div className="absolute inset-0">
-          <HeroContent />
-        </div>
+        <HeroContent />
       </section>
       <SelectedWork />
     </>
