@@ -6,10 +6,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-const navLinks = [{ href: BOOKING_URL, label: 'Contact', external: true }] as const
+const navLinks = [
+  { href: BOOKING_URL, label: 'Contact', external: true },
+] as const
 
-export function Navbar() {
+interface NavbarProps {
+  theme?: 'light' | 'dark'
+}
+
+export function Navbar({ theme = 'dark' }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const light = theme === 'light'
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
@@ -29,7 +36,12 @@ export function Navbar() {
                 height={32}
                 className="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />
-              <span className="font-display text-sm font-bold tracking-tight text-white">
+              <span
+                className={cn(
+                  'font-display text-sm font-bold tracking-tight transition-colors',
+                  light ? 'text-zinc-950' : 'text-white'
+                )}
+              >
                 BitBLabs
               </span>
             </Link>
@@ -42,14 +54,20 @@ export function Navbar() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-heading text-sm text-zinc-500 hover:text-white transition-colors duration-300"
+                      className={cn(
+                        'font-heading text-sm transition-colors duration-300',
+                        light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
+                      )}
                     >
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="font-heading text-sm text-zinc-500 hover:text-white transition-colors duration-300"
+                      className={cn(
+                        'font-heading text-sm transition-colors duration-300',
+                        light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
+                      )}
                     >
                       {link.label}
                     </Link>
@@ -63,9 +81,27 @@ export function Navbar() {
               className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
               aria-label="Toggle menu"
             >
-              <span className={cn('block w-5 h-px bg-white transition-all', mobileMenuOpen && 'rotate-45 translate-y-[3.5px]')} />
-              <span className={cn('block w-5 h-px bg-white transition-all', mobileMenuOpen && 'opacity-0')} />
-              <span className={cn('block w-5 h-px bg-white transition-all', mobileMenuOpen && '-rotate-45 -translate-y-[3.5px]')} />
+              <span
+                className={cn(
+                  'block w-5 h-px transition-all',
+                  light ? 'bg-zinc-950' : 'bg-white',
+                  mobileMenuOpen && 'rotate-45 translate-y-[3.5px]'
+                )}
+              />
+              <span
+                className={cn(
+                  'block w-5 h-px transition-all',
+                  light ? 'bg-zinc-950' : 'bg-white',
+                  mobileMenuOpen && 'opacity-0'
+                )}
+              />
+              <span
+                className={cn(
+                  'block w-5 h-px transition-all',
+                  light ? 'bg-zinc-950' : 'bg-white',
+                  mobileMenuOpen && '-rotate-45 -translate-y-[3.5px]'
+                )}
+              />
             </button>
           </div>
         </div>

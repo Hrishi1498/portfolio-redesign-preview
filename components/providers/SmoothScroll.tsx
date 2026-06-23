@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
 
 function isCaseStudyPath(pathname: string) {
-  return /^\/(work|case-studies|projects)\/[^/]+$/.test(pathname)
+  return /^\/work\/[^/]+$/.test(pathname)
 }
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {

@@ -1,4 +1,4 @@
-import type { CaseStudy, StorySlide } from './data'
+import type { StorySlide } from './story-slide'
 import type { PortfolioProject } from './portfolio-data'
 import { getCategoryLabel, getIndustry } from './project-utils'
 
@@ -16,6 +16,7 @@ export interface CaseStudyProject {
   metrics?: { label: string; value: string }[]
   color: string
   thumbnail?: string
+  cover?: string
   slides?: StorySlide[]
   links?: {
     live?: string
@@ -38,25 +39,8 @@ export function fromPortfolioProject(project: PortfolioProject): CaseStudyProjec
     metrics: project.metrics,
     color: project.color,
     thumbnail: project.images.thumbnail,
+    cover: project.images.cover,
     slides: project.slides,
     links: project.links,
-  }
-}
-
-export function fromLegacyCaseStudy(study: CaseStudy): CaseStudyProject {
-  return {
-    slug: study.slug,
-    title: study.title,
-    tagline: study.subtitle ?? study.description,
-    description: study.description,
-    role: study.author ?? 'BitBLabs',
-    duration: study.readTime,
-    year: study.date ?? '',
-    industry: study.category,
-    categoryLabel: study.category,
-    tech: [],
-    color: study.color,
-    thumbnail: study.thumbnail || undefined,
-    slides: study.slides,
   }
 }

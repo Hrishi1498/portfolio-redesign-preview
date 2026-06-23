@@ -15,6 +15,26 @@ const nextConfig = {
         destination: '/work/:slug',
         permanent: true,
       },
+      {
+        source: '/case-studies',
+        destination: '/work',
+        permanent: true,
+      },
+      {
+        source: '/case-studies/:slug',
+        destination: '/work',
+        permanent: true,
+      },
+      {
+        source: '/brain-stuff',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/side-quests',
+        destination: '/',
+        permanent: true,
+      },
     ]
   },
 }

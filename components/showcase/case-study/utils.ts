@@ -1,4 +1,4 @@
-import type { StorySlide } from '@/lib/data'
+import type { StorySlide } from '@/lib/story-slide'
 import type { CaseStudyProject } from '@/lib/case-study-project'
 
 export function slideChapterLabel(type: StorySlide['type']) {
@@ -33,6 +33,8 @@ export function collectProjectImages(project: CaseStudyProject): string[] {
 }
 
 export function heroImage(project: CaseStudyProject): string | undefined {
+  if (project.cover) return project.cover
+
   const scene = project.slides?.find((s) => s.image && s.type === 'scene')
   if (scene?.image) return scene.image
 

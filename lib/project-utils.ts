@@ -24,3 +24,17 @@ export function getCategoryLabel(category: PortfolioProject['category']): string
 export function getIndustry(project: PortfolioProject): string {
   return INDUSTRY_MAP[project.slug] ?? getCategoryLabel(project.category)
 }
+
+export function getProjectTags(project: PortfolioProject): string {
+  const tags = [
+    getCategoryLabel(project.category),
+    getIndustry(project),
+    ...project.tech.slice(0, 2),
+  ]
+
+  return Array.from(new Set(tags)).slice(0, 3).join(', ').toUpperCase()
+}
+
+export function isLogoAsset(src: string): boolean {
+  return /\.svg$/i.test(src) || /logo/i.test(src)
+}

@@ -1,4 +1,4 @@
-import type { StorySlide } from './data'
+import type { StorySlide } from './story-slide'
 
 export interface PortfolioProject {
   id: string
@@ -18,6 +18,10 @@ export interface PortfolioProject {
   }[]
   images: {
     thumbnail: string
+    /** Preferred image for work listing cards and hero previews */
+    cover?: string
+    /** CSS aspect-ratio for cover image, e.g. "1024/490" */
+    coverAspect?: string
     gallery?: string[]
   }
   links: {
@@ -29,14 +33,6 @@ export interface PortfolioProject {
   featured?: boolean
   slides?: StorySlide[]
 }
-
-export const portfolioCategories = [
-  { id: 'all', label: 'All Work' },
-  { id: 'ai', label: 'AI / ML' },
-  { id: 'web', label: 'Web Apps' },
-  { id: 'mobile', label: 'Mobile' },
-  { id: 'data', label: 'Data' },
-]
 
 export const portfolioProjects: PortfolioProject[] = [
   {
@@ -227,6 +223,8 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     images: {
       thumbnail: '/hf-logo.png',
+      cover: '/hf-work-cover.png',
+      coverAspect: '1024/490',
     },
     links: {
       live: 'https://healthyfasal.com/',
@@ -863,6 +861,8 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     images: {
       thumbnail: '/cc-logo.png',
+      cover: '/cc-work-cover.png',
+      coverAspect: '1024/492',
     },
     links: {},
     color: '#14B8A6',

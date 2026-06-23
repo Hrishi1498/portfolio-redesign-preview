@@ -29,6 +29,8 @@ const config: Config = {
         heading: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
         editorial: ['Instrument Serif', 'Georgia', 'serif'],
+        garamond: ['Cormorant Garamond', 'Georgia', 'serif'],
+        caslon: ['"Libre Caslon Text"', 'Georgia', 'serif'],
       },
       fontSize: {
         'display-sm': ['3.5rem', { lineHeight: '1', letterSpacing: '-0.03em' }],

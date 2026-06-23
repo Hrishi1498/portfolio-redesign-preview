@@ -1,20 +1,29 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { HeroPortfolioSection } from '@/components/home/HeroPortfolioSection'
-export function HomePage() {
+
+function HomePageContent() {
   const searchParams = useSearchParams()
   const openPortfolio = searchParams.get('view') === 'portfolio'
   const [portfolioActive, setPortfolioActive] = useState(openPortfolio)
 
   return (
     <main className="fixed inset-0 overflow-hidden overscroll-none bg-black">
-      {!portfolioActive && <Navbar />}
+      <Navbar theme={portfolioActive ? 'light' : 'dark'} />
       <div className="absolute inset-0">
         <HeroPortfolioSection onPortfolioActive={setPortfolioActive} />
       </div>
     </main>
+  )
+}
+
+export function HomePage() {
+  return (
+    <Suspense fallback={null}>
+      <HomePageContent />
+    </Suspense>
   )
 }

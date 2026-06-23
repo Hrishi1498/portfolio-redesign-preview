@@ -23,7 +23,7 @@ export function HeroContent({ scrollProgress }: HeroContentProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-[#050505]" />
       </div>
 
-      <div className="relative z-10 mx-auto mt-16 max-w-4xl px-4 text-center sm:mt-20 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
