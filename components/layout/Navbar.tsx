@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { BOOKING_URL } from '@/lib/site'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const navLinks = [
   { href: BOOKING_URL, label: 'Contact', external: true },
@@ -12,11 +12,20 @@ const navLinks = [
 
 interface NavbarProps {
   theme?: 'light' | 'dark'
+  /** fixed = viewport; absolute = hero overlay; static = scrolls with page */
+  position?: 'fixed' | 'absolute' | 'static'
 }
 
-export function Navbar({ theme = 'dark' }: NavbarProps) {
+export function Navbar({ theme = 'dark', position = 'fixed' }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const light = theme === 'light'
+
+  const headerPositionClass =
+    position === 'fixed'
+      ? 'fixed inset-x-0 top-0 z-[100]'
+      : position === 'absolute'
+        ? 'absolute inset-x-0 top-0 z-50'
+        : 'relative z-10'
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
@@ -25,95 +34,97 @@ export function Navbar({ theme = 'dark' }: NavbarProps) {
 
   return (
     <>
-      <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
-        <div className="w-full px-6 md:px-12 lg:px-16">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            <Link href="/" className="flex items-center gap-3 group" onClick={() => setMobileMenuOpen(false)}>
-              <Image
-                src="/logos/bitblabs-logo.svg"
-                alt="BitBLabs"
-                width={32}
-                height={32}
-                className="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
-              />
-              <span
-                className={cn(
-                  'font-display text-sm font-bold tracking-tight transition-colors',
-                  light ? 'text-zinc-950' : 'text-white'
-                )}
-              >
-                BitBLabs
-              </span>
-            </Link>
-
-            <ul className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  {'external' in link && link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        'font-heading text-sm transition-colors duration-300',
-                        light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
-                      )}
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className={cn(
-                        'font-heading text-sm transition-colors duration-300',
-                        light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
-                      )}
-                    >
-                      {link.label}
-                    </Link>
+      <header className={headerPositionClass}>
+        <nav className="w-full bg-transparent">
+          <div className="w-full px-6 md:px-12 lg:px-16">
+            <div className="flex h-16 items-center justify-between sm:h-20">
+              <Link href="/" className="flex items-center gap-3 group" onClick={() => setMobileMenuOpen(false)}>
+                <Image
+                  src="/logos/bitblabs-logo.svg"
+                  alt="BitBLabs"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 object-contain opacity-90 transition-opacity group-hover:opacity-100"
+                />
+                <span
+                  className={cn(
+                    'font-display text-sm font-bold tracking-tight transition-colors',
+                    light ? 'text-zinc-950' : 'text-white'
                   )}
-                </li>
-              ))}
-            </ul>
+                >
+                  BitBLabs
+                </span>
+              </Link>
 
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
-              aria-label="Toggle menu"
-            >
-              <span
-                className={cn(
-                  'block w-5 h-px transition-all',
-                  light ? 'bg-zinc-950' : 'bg-white',
-                  mobileMenuOpen && 'rotate-45 translate-y-[3.5px]'
-                )}
-              />
-              <span
-                className={cn(
-                  'block w-5 h-px transition-all',
-                  light ? 'bg-zinc-950' : 'bg-white',
-                  mobileMenuOpen && 'opacity-0'
-                )}
-              />
-              <span
-                className={cn(
-                  'block w-5 h-px transition-all',
-                  light ? 'bg-zinc-950' : 'bg-white',
-                  mobileMenuOpen && '-rotate-45 -translate-y-[3.5px]'
-                )}
-              />
-            </button>
+              <ul className="hidden items-center gap-8 md:flex">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    {'external' in link && link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(
+                          'font-heading text-sm transition-colors duration-300',
+                          light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
+                        )}
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className={cn(
+                          'font-heading text-sm transition-colors duration-300',
+                          light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+                aria-label="Toggle menu"
+              >
+                <span
+                  className={cn(
+                    'block h-px w-5 transition-all',
+                    light ? 'bg-zinc-950' : 'bg-white',
+                    mobileMenuOpen && 'translate-y-[3.5px] rotate-45'
+                  )}
+                />
+                <span
+                  className={cn(
+                    'block h-px w-5 transition-all',
+                    light ? 'bg-zinc-950' : 'bg-white',
+                    mobileMenuOpen && 'opacity-0'
+                  )}
+                />
+                <span
+                  className={cn(
+                    'block h-px w-5 transition-all',
+                    light ? 'bg-zinc-950' : 'bg-white',
+                    mobileMenuOpen && '-translate-y-[3.5px] -rotate-45'
+                  )}
+                />
+              </button>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
       <div
         className={cn(
-          'fixed inset-0 z-40 md:hidden bg-base/98 backdrop-blur-xl transition-all duration-300',
-          mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          'fixed inset-0 z-[90] bg-base/98 backdrop-blur-xl transition-all duration-300 md:hidden',
+          mobileMenuOpen ? 'visible opacity-100' : 'invisible opacity-0'
         )}
       >
-        <ul className="flex flex-col items-center justify-center h-full gap-8">
+        <ul className="flex h-full flex-col items-center justify-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
               {'external' in link && link.external ? (
@@ -122,7 +133,7 @@ export function Navbar({ theme = 'dark' }: NavbarProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-display text-3xl font-bold text-white hover:text-zinc-400 transition-colors"
+                  className="font-display text-3xl font-bold text-white transition-colors hover:text-zinc-400"
                 >
                   {link.label}
                 </a>
@@ -130,7 +141,7 @@ export function Navbar({ theme = 'dark' }: NavbarProps) {
                 <Link
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-display text-3xl font-bold text-white hover:text-zinc-400 transition-colors"
+                  className="font-display text-3xl font-bold text-white transition-colors hover:text-zinc-400"
                 >
                   {link.label}
                 </Link>

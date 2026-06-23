@@ -8,8 +8,8 @@ import { portfolioProjects } from '@/lib/portfolio-data'
 export default function WorkPage() {
   return (
     <main className="relative min-h-screen bg-white">
-      <Navbar theme="light" />
-      <section className="px-6 pb-28 pt-28 md:px-12 md:pt-32 lg:px-16 xl:px-20">
+      <Navbar theme="light" position="static" />
+      <section className="px-6 pb-28 pt-8 md:px-12 md:pt-12 lg:px-16 xl:px-20">
         <WorkProjectsList
           projects={portfolioProjects}
           title="Our work"
