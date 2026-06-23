@@ -1,20 +1,10 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import type { MotionValue } from 'framer-motion'
 import * as THREE from 'three'
 
-const PAUSE_THRESHOLD = 0.015
-const LOW_QUALITY_THRESHOLD = 0.35
-
-interface ShaderAnimationProps {
-  scrollProgress?: MotionValue<number>
-}
-
-export function ShaderAnimation({ scrollProgress }: ShaderAnimationProps) {
+export function ShaderAnimation() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const pausedRef = useRef(false)
-  const lowQualityRef = useRef(false)
   const sceneRef = useRef<{
     camera: THREE.Camera
     scene: THREE.Scene
@@ -23,26 +13,6 @@ export function ShaderAnimation({ scrollProgress }: ShaderAnimationProps) {
     animationId: number
     basePixelRatio: number
   } | null>(null)
-
-  useEffect(() => {
-    if (!scrollProgress) return
-
-    const updateQuality = (value: number) => {
-      pausedRef.current = value > PAUSE_THRESHOLD
-      lowQualityRef.current = value > 0 && value < LOW_QUALITY_THRESHOLD
-
-      const scene = sceneRef.current
-      if (!scene) return
-
-      const ratio = lowQualityRef.current
-        ? Math.min(1, scene.basePixelRatio * 0.6)
-        : scene.basePixelRatio
-      scene.renderer.setPixelRatio(ratio)
-    }
-
-    updateQuality(scrollProgress.get())
-    return scrollProgress.on('change', updateQuality)
-  }, [scrollProgress])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -131,10 +101,8 @@ export function ShaderAnimation({ scrollProgress }: ShaderAnimationProps) {
       const dt = Math.min(0.05, (now - lastFrame) / 1000)
       lastFrame = now
 
-      if (!pausedRef.current) {
-        uniforms.time.value += dt * 3
-        renderer.render(scene, camera)
-      }
+      uniforms.time.value += dt * 3
+      renderer.render(scene, camera)
 
       if (sceneRef.current) {
         sceneRef.current.animationId = animationId
