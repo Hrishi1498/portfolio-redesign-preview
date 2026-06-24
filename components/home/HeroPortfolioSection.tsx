@@ -26,7 +26,10 @@ export function HeroPortfolioSection() {
 
   return (
     <>
-      <section className="sticky top-0 z-0 h-[100dvh] w-full overflow-hidden bg-black">
+      <section
+        className="relative sticky top-0 z-0 w-full overflow-hidden bg-black"
+        style={{ height: '100vh', minHeight: '100dvh' }}
+      >
         <Navbar position="absolute" theme="dark" />
         <HeroContent />
       </section>
