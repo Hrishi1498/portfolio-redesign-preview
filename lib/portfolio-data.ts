@@ -28,6 +28,8 @@ export interface PortfolioProject {
     live?: string
     github?: string
     case_study?: string
+    /** Custom CTA label when linking to live (e.g. "Live Page") */
+    ctaLabel?: string
   }
   color: string
   featured?: boolean

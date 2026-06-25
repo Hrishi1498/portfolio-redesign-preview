@@ -51,7 +51,7 @@ html.lenis body {
 body {
   background-color: var(--bg-base);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-noto-sans-display), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -90,21 +90,20 @@ a {
 
 @layer utilities {
   .font-apple {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
-      'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+    font-family: var(--font-noto-sans-display), sans-serif;
   }
 
   .text-display {
-    font-family: 'Syne', 'Outfit', sans-serif;
+    font-family: var(--font-noto-sans-display), sans-serif;
     letter-spacing: -0.03em;
   }
 
   .text-editorial {
-    font-family: 'Instrument Serif', Georgia, serif;
+    font-family: var(--font-noto-sans-display), sans-serif;
   }
 
   .footer-watermark {
-    font-family: var(--font-footer-wordmark), 'Inter', sans-serif;
+    font-family: var(--font-noto-sans-display), sans-serif;
     font-size: clamp(6.5rem, 22vw, 18rem);
     font-weight: 900;
     line-height: 1;
