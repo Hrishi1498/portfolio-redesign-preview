@@ -10,6 +10,10 @@ export interface StorySlide {
   code?: string
   emoji?: string
   image?: string
+  /** CSS aspect-ratio for screenshot frame, e.g. "1024/490" */
+  imageAspect?: string
+  /** How the image fills its frame when aspect ratios differ. */
+  imageFit?: 'contain' | 'cover'
   testimonialImages?: string[]
   galleryImages?: string[]
   features?: { icon: string; title: string; description: string }[]

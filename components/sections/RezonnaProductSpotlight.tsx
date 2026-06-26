@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import type { CSSProperties } from 'react'
+import { PRODUCT_IMAGE_FRAME_LIGHT_CLASS } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import { cn } from '@/lib/utils'
 
 const REZONNA_LIVE_URL = 'https://www.rezonna.com/'
@@ -36,13 +37,13 @@ export function RezonnaProductSpotlight({
       <div className="rezonna-stage relative mx-auto aspect-[1.28/1] w-full max-w-[min(100%,90rem)]">
         {/* Layer 1 — background headline */}
         <h2
-          className="absolute -left-4 top-2 z-[1] whitespace-nowrap font-body text-[clamp(3rem,15vw,300px)] font-bold leading-[0.9] tracking-[-0.04em] text-white md:-left-5 md:top-4 lg:-left-6 lg:top-6 xl:-left-7 xl:top-8"
+          className="absolute -left-4 top-2 z-[1] whitespace-nowrap font-body text-[clamp(2.5rem,11vw,200px)] font-bold leading-[0.9] tracking-[-0.04em] text-white md:-left-5 md:top-4 lg:-left-6 lg:top-6 xl:-left-7 xl:top-8"
         >
-          Our Product
+          Made at <span className="text-red-500">BitBLabs</span>
         </h2>
 
         {/* Layer 2 — product screenshot (overlaps headline from the right) */}
-        <figure className="group/rezonna-img absolute left-[34%] top-[18%] z-[2] w-[66%]">
+        <figure className="group/rezonna-img absolute left-[34%] top-[14%] z-[2] w-[66%]">
           <div
             aria-hidden
             className="pointer-events-none absolute -inset-8 -z-10 rounded-[2.75rem] opacity-40 blur-3xl transition-opacity duration-500 group-hover/rezonna-img:opacity-55"
@@ -52,7 +53,11 @@ export function RezonnaProductSpotlight({
             }}
           />
           <div
-            className="relative w-full overflow-hidden rounded-[2.5rem] border-[3px] border-black bg-white shadow-[0_0_0_3px_#fff,0_28px_80px_-32px_rgba(0,0,0,0.5)] transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover/rezonna-img:-translate-y-1 group-hover/rezonna-img:shadow-[0_0_0_3px_#fff,0_38px_110px_-30px_rgba(0,0,0,0.6)]"
+            className={cn(
+              'relative w-full',
+              PRODUCT_IMAGE_FRAME_LIGHT_CLASS,
+              'transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover/rezonna-img:-translate-y-1 group-hover/rezonna-img:shadow-[0_0_0_3px_#fff,0_38px_110px_-30px_rgba(0,0,0,0.6)]'
+            )}
             style={{ aspectRatio: IMAGE_ASPECT }}
           >
             <Image
@@ -69,7 +74,7 @@ export function RezonnaProductSpotlight({
         </figure>
 
         {/* Layer 3 — foreground product card */}
-        <div className="rezonna-panel absolute bottom-[26%] left-[2%] z-[3] w-full min-w-[min(100%,22rem)] max-w-[min(100%,32rem)] rounded-2xl border-[3px] border-white/90 bg-black/85 px-5 pt-5 pb-5 text-white backdrop-blur-sm md:left-[3%] md:min-w-[28rem] md:max-w-[min(48%,34rem)] md:rounded-[1.25rem] md:px-6 md:pt-6 md:pb-6 lg:left-[4%] lg:px-8 lg:pt-8 lg:pb-8">
+        <div className="rezonna-panel absolute bottom-[29%] left-[2%] z-[3] w-full min-w-[min(100%,22rem)] max-w-[min(100%,32rem)] rounded-2xl border-[3px] border-white/90 bg-black/85 px-5 pt-5 pb-5 text-white backdrop-blur-sm md:left-[3%] md:min-w-[28rem] md:max-w-[min(48%,34rem)] md:rounded-[1.25rem] md:px-6 md:pt-6 md:pb-6 lg:left-[4%] lg:px-8 lg:pt-8 lg:pb-8">
           <div className="flex flex-col gap-3 md:gap-4">
             <h3 className="font-display text-[clamp(1.75rem,3.2vw,2.75rem)] font-medium leading-[1.02] tracking-[-0.04em] text-white">
               Rezonna

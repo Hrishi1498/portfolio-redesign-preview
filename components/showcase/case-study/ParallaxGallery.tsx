@@ -1,10 +1,8 @@
 'use client'
 
-import { useRef } from 'react'
-import Image from 'next/image'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
+import { CaseStudyScreenshot } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, type SceneTheme } from '@/components/showcase/case-study/utils'
 
@@ -25,14 +23,6 @@ export function ParallaxGallery({
   theme = 'dark',
   blurText = false,
 }: ParallaxGalleryProps) {
-  const prefersReducedMotion = useReducedMotion()
-  const sectionRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-
-  const trackX = useTransform(scrollYProgress, [0, 1], ['8%', '-18%'])
   const styles = sceneThemeClasses(theme)
   const blurTheme = theme === 'light' ? 'light' : 'dark'
 
@@ -82,34 +72,24 @@ export function ParallaxGallery({
   )
 
   return (
-    <section ref={sectionRef} className={cn('relative overflow-hidden pb-32 pt-24 md:pb-44 md:pt-32', styles.sectionAlt)}>
+    <section className={cn('relative pb-32 pt-24 md:pb-44 md:pt-32', styles.sectionAlt)}>
       <div className="mx-auto mb-12 max-w-7xl px-6 md:mb-16 md:px-12 lg:px-16">
         {blurText ? header : <Reveal>{header}</Reveal>}
+        <p className={cn('mt-3 font-body text-sm', styles.body)}>Scroll horizontally to view all {images.length} screens.</p>
       </div>
 
-      <motion.div
-        style={prefersReducedMotion ? undefined : { x: trackX }}
-        className="flex w-max gap-5 px-6 md:gap-8 md:px-12"
-      >
-        {images.map((src, index) => (
-          <div
-            key={`${src}-${index}`}
-            className={cn(
-              'relative h-[42vh] w-[82vw] shrink-0 overflow-hidden rounded-2xl md:h-[56vh] md:w-[58vw]',
-              styles.galleryFrame
-            )}
-          >
-            <div className="absolute inset-x-0 top-0 z-10 h-px" style={{ backgroundColor: `${accent}88` }} />
-            <Image
+      <div className="overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory">
+        <div className="flex w-max min-w-full gap-5 px-6 md:gap-8 md:px-12 lg:px-16">
+          {images.map((src, index) => (
+            <CaseStudyScreenshot
+              key={`${src}-${index}`}
               src={src}
               alt={`${title} screenshot ${index + 1}`}
-              fill
-              className="object-cover object-top"
-              sizes="60vw"
+              layout="gallery"
             />
-          </div>
-        ))}
-      </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }

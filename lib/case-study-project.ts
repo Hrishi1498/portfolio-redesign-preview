@@ -14,9 +14,14 @@ export interface CaseStudyProject {
   categoryLabel: string
   tech: string[]
   metrics?: { label: string; value: string }[]
+  metricsSection?: {
+    eyebrow: string
+    headline: string
+  }
   color: string
   thumbnail?: string
   cover?: string
+  screenshotFrame?: 'light' | 'dark'
   slides?: StorySlide[]
   links?: {
     live?: string
@@ -37,9 +42,11 @@ export function fromPortfolioProject(project: PortfolioProject): CaseStudyProjec
     categoryLabel: getCategoryLabel(project.category),
     tech: project.tech,
     metrics: project.metrics,
+    metricsSection: project.metricsSection,
     color: project.color,
     thumbnail: project.images.thumbnail,
     cover: project.images.cover,
+    screenshotFrame: project.images.screenshotFrame,
     slides: project.slides,
     links: project.links,
   }

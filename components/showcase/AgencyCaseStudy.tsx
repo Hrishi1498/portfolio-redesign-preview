@@ -5,19 +5,15 @@ import { Reveal } from '@/components/ui/Reveal'
 import type { CaseStudyProject } from '@/lib/case-study-project'
 import { portfolioProjects } from '@/lib/portfolio-data'
 import { MetricsShowcase } from '@/components/showcase/case-study/MetricsShowcase'
-import { ParallaxGallery } from '@/components/showcase/case-study/ParallaxGallery'
+import { CaseStudyStatsBlock } from '@/components/showcase/case-study/CaseStudyStatsBlock'
 import { StickyStorySection } from '@/components/showcase/case-study/StickyStorySection'
 import {
   FeatureGridScene,
   FullBleedVisual,
-  HeroVisual,
   MetaItem,
   StatementScene,
 } from '@/components/showcase/case-study/CaseStudyScenes'
 import {
-  collectProjectImages,
-  heroImage,
-  mergeMetrics,
   slideChapterLabel,
   stickyStoryFromSlides,
 } from '@/components/showcase/case-study/utils'
@@ -30,14 +26,12 @@ interface AgencyCaseStudyProps {
 export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: AgencyCaseStudyProps) {
   const slides = project.slides ?? []
   const accent = project.color
-  const cover = heroImage(project)
-  const galleryImages = collectProjectImages(project).filter((src) => src !== project.thumbnail)
-  const metrics = mergeMetrics(project)
+  const snapshotMetrics = project.metrics ?? []
+  const statsSlides = slides.filter((s) => s.type === 'stats' && s.stats?.length)
 
   const problemSlide = slides.find((s) => s.type === 'problem')
   const solutionSlide = slides.find((s) => s.type === 'solution')
   const featuresSlide = slides.find((s) => s.type === 'features')
-  const gallerySlide = slides.find((s) => s.type === 'gallery')
   const conclusionSlide = slides.find((s) => s.type === 'conclusion') ?? slides[slides.length - 1]
   const stickyStory = stickyStoryFromSlides(slides)
 
@@ -49,9 +43,9 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
     problemSlide?.id,
     solutionSlide?.id,
     featuresSlide?.id,
-    gallerySlide?.id,
     conclusionSlide?.id,
     ...platformSlides.map((s) => s.id),
+    ...statsSlides.map((s) => s.id),
   ].filter((id): id is number => id !== undefined))
 
   if (stickyStory) {
@@ -130,12 +124,6 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
             />
           </Reveal>
         </div>
-
-        {cover && (
-          <Reveal className="relative mx-auto mt-16 max-w-[1400px]" delay={0.1}>
-            <HeroVisual src={cover} alt={`${project.title} product visual`} accent={accent} />
-          </Reveal>
-        )}
       </section>
 
       {/* Scene 2 - Problem */}
@@ -161,17 +149,6 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         />
       )}
 
-      {/* Sticky storytelling */}
-      {stickyStory && (
-        <StickyStorySection
-          eyebrow={stickyStory.eyebrow}
-          title={stickyStory.title}
-          intro={stickyStory.intro}
-          steps={stickyStory.steps}
-          accent={accent}
-        />
-      )}
-
       {/* Platform experience - full-bleed visuals */}
       {platformSlides.map((slide, index) => (
         <FullBleedVisual
@@ -183,8 +160,22 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
           image={slide.image!}
           accent={accent}
           reverse={index % 2 === 1}
+          imageAspect={slide.imageAspect}
+          screenshotFrame={project.screenshotFrame}
+          imageFit={slide.imageFit}
         />
       ))}
+
+      {/* Sticky storytelling */}
+      {stickyStory && (
+        <StickyStorySection
+          eyebrow={stickyStory.eyebrow}
+          title={stickyStory.title}
+          intro={stickyStory.intro}
+          steps={stickyStory.steps}
+          accent={accent}
+        />
+      )}
 
       {/* Capabilities */}
       {featuresSlide?.features?.length ? (
@@ -196,6 +187,11 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
           accent={accent}
         />
       ) : null}
+
+      {/* Stats chapters — impact numbers or access matrices */}
+      {statsSlides.map((slide) => (
+        <CaseStudyStatsBlock key={slide.id} slide={slide} accent={accent} />
+      ))}
 
       {/* Extra narrative beats without visuals */}
       {narrativeSlides.map((slide) => (
@@ -210,20 +206,12 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
         />
       ))}
 
-      {/* Results - huge metrics */}
+      {/* Project snapshot / results metrics */}
       <MetricsShowcase
-        eyebrow="Results & Impact"
-        headline="Built for scale. Proven in market."
+        eyebrow={project.metricsSection?.eyebrow ?? 'Results & Impact'}
+        headline={project.metricsSection?.headline ?? 'Built for scale. Proven in market.'}
         subline={conclusionSlide?.content}
-        metrics={metrics}
-        accent={accent}
-      />
-
-      {/* Parallax gallery */}
-      <ParallaxGallery
-        title={gallerySlide?.title ?? `${project.title} in production`}
-        description={gallerySlide?.content}
-        images={gallerySlide?.galleryImages ?? galleryImages}
+        metrics={snapshotMetrics}
         accent={accent}
       />
 

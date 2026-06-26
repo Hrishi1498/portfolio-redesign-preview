@@ -16,12 +16,19 @@ export interface PortfolioProject {
     label: string
     value: string
   }[]
+  /** Optional override for the project metrics section heading copy. */
+  metricsSection?: {
+    eyebrow: string
+    headline: string
+  }
   images: {
     thumbnail: string
     /** Preferred image for work listing cards and hero previews */
     cover?: string
     /** CSS aspect-ratio for cover image, e.g. "1024/490" */
     coverAspect?: string
+    /** Screenshot frame background — dark UI products use a black frame instead of white. */
+    screenshotFrame?: 'light' | 'dark'
     gallery?: string[]
   }
   links: {
@@ -290,18 +297,26 @@ export const portfolioProjects: PortfolioProject[] = [
         ],
       },
       {
+        id: 17,
+        type: 'scene',
+        title: 'Sign-In Experience',
+        content: 'A welcoming split-screen login pairs farm photography with a focused sign-in flow, setting the tone for a platform built around fresh produce and operational clarity from the first interaction.',
+        highlight: 'Brand and product identity aligned from the first screen.',
+        image: '/hf-login.png',
+      },
+      {
         id: 7,
         type: 'scene',
-        title: 'Product Catalog',
-        content: 'The admin panel features a comprehensive product catalog with pricing tiers based on shop type (Canteen, Outlet, Franchise, Restaurant). Each product shows cost price, selling prices, and can be managed across multiple collection centers.',
-        highlight: 'Dynamic pricing based on vendor type ensures fair margins for everyone.',
-        image: '/hf-products.png',
+        title: 'Trade Inquiries',
+        content: 'Sales teams capture leads from on-ground shop visits with status tracking, city filters, and assignment workflows. Admins review pending, approved, and rejected inquiries with full shop and contact details in a card-based grid.',
+        highlight: 'On-ground sales execution with structured lead capture and approval.',
+        image: '/hf-trade-inquiries.png',
       },
       {
         id: 8,
         type: 'scene',
         title: 'Vendor Ordering Experience',
-        content: 'Vendors get a clean, intuitive interface to browse available products, view prices in their local language, and add items to cart. The wallet-based system shows their balance and allows quick checkout without payment friction.',
+        content: 'Vendors get a clean, intuitive interface to browse available products, view prices in Hindi and Marathi, and add items to cart. The wallet-based system shows their balance and allows quick checkout without payment friction.',
         highlight: 'Wallet credits eliminate payment delays and simplify operations.',
         image: '/hf-vendor.png',
       },
@@ -322,9 +337,17 @@ export const portfolioProjects: PortfolioProject[] = [
         id: 10,
         type: 'scene',
         title: 'Order Management',
-        content: 'Real-time order tracking with status filters, payment tracking, and multi-center support. Admins can see total orders, confirmed, dispatched, and delivered counts at a glance with detailed order information.',
+        content: 'Real-time order tracking with status filters, payment tracking, and multi-center support. Admins can see dispatched and delivered orders at a glance with detailed line items and one-click access to order details.',
         highlight: 'Complete visibility from order placement to delivery.',
         image: '/hf-orders.png',
+      },
+      {
+        id: 16,
+        type: 'scene',
+        title: 'Wallet Management',
+        content: 'Shop wallets power the zero-inventory ordering flow. Admins view total balances, locked amounts, and available credits across collection centers, with search, filtering, and top-up workflows for every vendor account.',
+        highlight: 'Centralized wallet control keeps vendor checkout fast and reliable.',
+        image: '/hf-wallet.png',
       },
       {
         id: 11,
@@ -371,14 +394,19 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Why This Project Stands Out',
         content: 'Healthy Fasal solves a real, ground-level problem with the founder\'s deep domain expertise. The strong operational logic combined with the zero-inventory model reduces risk while the proven traction and revenue validate the business model.',
         highlight: 'From farm to vendor, fresh produce with zero waste.',
-        image: '/hf-login.png',
       },
       {
         id: 15,
         type: 'gallery',
         title: 'Platform Gallery',
-        content: 'Explore the Healthy Fasal platform through these screenshots showcasing the admin dashboard, vendor ordering, order management, and product catalog.',
-        galleryImages: ['/hf-products.png', '/hf-vendor.png', '/hf-orders.png', '/hf-login.png'],
+        content: 'Explore the Healthy Fasal platform through vendor ordering, order management, wallet controls, trade inquiries, and the sign-in experience.',
+        galleryImages: [
+          '/hf-login.png',
+          '/hf-vendor.png',
+          '/hf-orders.png',
+          '/hf-wallet.png',
+          '/hf-trade-inquiries.png',
+        ],
       },
     ],
   },
@@ -692,10 +720,15 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: 'Users', value: 'Enterprise' },
       { label: 'AI Features', value: '3+' },
     ],
+    metricsSection: {
+      eyebrow: 'Project Snapshot',
+      headline: 'Enterprise financial planning, powered by AI.',
+    },
     images: {
       thumbnail: '/axion-logo.png',
       cover: '/axion-work-cover.png',
       coverAspect: '1024/490',
+      screenshotFrame: 'dark',
     },
     links: {
       live: 'https://axionplan.com/',
@@ -712,7 +745,7 @@ export const portfolioProjects: PortfolioProject[] = [
       },
       {
         id: 2,
-        type: 'scene',
+        type: 'insight',
         title: 'Meet Dr. Steven',
         content: 'The platform was built in collaboration with Dr. Steven, a Malaysia-based investment banker and executive coach who works with C-suite leaders. He brought investment banking experience, executive coaching expertise, and proven revenue-generating Excel-based financial models.',
         highlight: 'Before Axion Plan, forecasting was done using custom Excel templates  it worked, but it wasn\'t scalable.',
@@ -730,6 +763,51 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Why This Was Hard',
         content: 'From a tech perspective, this was one of the most challenging projects. The domain was pure finance  P&L statements, balance sheets, cash flow logic, revenue modeling. Coming from a pure tech background required multiple deep-dive sessions, asking critical questions, and reverse-engineering Excel formulas.',
         highlight: 'This project doubled as a hands-on commerce masterclass.',
+      },
+      {
+        id: 17,
+        type: 'scene',
+        title: 'Sign-In Experience',
+        content: 'A focused sign-in screen supports Google OAuth and credential login, with clear access to financial projects and portfolio tools from the first interaction.',
+        highlight: 'Secure entry into role-based financial workspaces.',
+        image: '/axion-login-framed.png',
+        imageAspect: '1024/490',
+      },
+      {
+        id: 18,
+        type: 'scene',
+        title: 'Portfolio Overview',
+        content: 'The portfolio dashboard consolidates revenue, profitability, and operating expenditure across projects — with KPI cards, recent projects, and activity feeds in one executive view.',
+        highlight: 'Executive-ready financial summaries without spreadsheet complexity.',
+        image: '/axion-portfolio.png',
+        imageAspect: '1024/490',
+      },
+      {
+        id: 19,
+        type: 'scene',
+        title: 'User Profile',
+        content: 'Account management covers personal details, role visibility, security settings, and wallet balance — giving owners and team members a single place to manage identity and access.',
+        highlight: 'Profile, security, and billing context in one view.',
+        image: '/axion-profile.png',
+        imageAspect: '1024/490',
+      },
+      {
+        id: 20,
+        type: 'scene',
+        title: 'Key Performance Indicators',
+        content: 'Four metric cards — total projects, YTD revenue, profit before tax, and OPEX — give leaders an at-a-glance read on portfolio health without opening individual models.',
+        highlight: 'Headline metrics surfaced where executives need them.',
+        image: '/axion-kpi.png',
+        imageAspect: '1024/490',
+      },
+      {
+        id: 21,
+        type: 'scene',
+        title: 'Token Wallet',
+        content: 'Usage-based monetization runs through a token wallet — users see balance, purchase history, and per-action costs for AI insights, projections, and cashflow analysis updates.',
+        highlight: 'Transparent token economics aligned with platform value.',
+        image: '/axion-wallet-framed.png',
+        imageAspect: '1024/490',
       },
       {
         id: 5,
@@ -755,14 +833,6 @@ export const portfolioProjects: PortfolioProject[] = [
           { icon: '💵', title: 'Cash Flow Analysis', description: 'Understand cash position over time' },
           { icon: '🎯', title: 'Target Planning', description: 'Model target-based scenarios' },
         ],
-      },
-      {
-        id: 7,
-        type: 'scene',
-        title: 'The Platform',
-        content: 'All workflows mirror real-world financial thinking  without Excel complexity. Users can create multiple financial planning projects, input revenue and cost data, and generate comprehensive forecasts.',
-        highlight: 'From spreadsheet logic to guided UI workflows.',
-        image: '/axion-dashboard.png',
       },
       {
         id: 8,
@@ -829,14 +899,6 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Why This Project Stands Out',
         content: 'Heavy non-tech domain complexity. Required deep learning outside comfort zone. Accurate translation of financial logic into software. AI used for real augmentation, not gimmicks. Strong alignment between UX, business, and AI.',
         highlight: 'This proves we can build tech for domains we don\'t come from  and still get it right.',
-        image: '/axion-screen3.png',
-      },
-      {
-        id: 14,
-        type: 'gallery',
-        title: 'Platform Gallery',
-        content: 'Explore the Axion Plan platform through these screenshots showcasing the dashboard, financial modeling, and AI-powered features.',
-        galleryImages: ['/axion-dashboard.png', '/axion-screen2.png', '/axion-screen3.png', '/axion-screen4.png'],
       },
     ],
   },
@@ -863,6 +925,10 @@ export const portfolioProjects: PortfolioProject[] = [
       { label: 'Domain', value: 'EdTech' },
       { label: 'Focus', value: 'Privacy' },
     ],
+    metricsSection: {
+      eyebrow: 'Project Snapshot',
+      headline: 'A privacy-first teaching platform in active development.',
+    },
     images: {
       thumbnail: '/cc-logo.png',
       cover: '/cc-work-cover.png',
@@ -927,6 +993,46 @@ export const portfolioProjects: PortfolioProject[] = [
         ],
       },
       {
+        id: 17,
+        type: 'scene',
+        title: 'Sign-In Experience',
+        content: 'A focused sign-in flow welcomes professors back with email and password fields, optional extended sessions, and a clear path to account creation — minimal friction before reaching the teacher portal.',
+        highlight: 'Trust starts at the front door with a calm, professional login.',
+        image: '/cc-login.png',
+      },
+      {
+        id: 18,
+        type: 'scene',
+        title: 'Teacher Dashboard',
+        content: 'The dashboard surfaces institution branding, course and student counts, AI conversation metrics, and quick actions to create courses — giving professors a single home for their teaching workspace.',
+        highlight: 'Institution-aware branding with at-a-glance course health.',
+        image: '/cc-dashboard.png',
+      },
+      {
+        id: 19,
+        type: 'scene',
+        title: 'Course Management',
+        content: 'Each course view shows enrollment, chat sessions, uploaded materials, and homework mode controls. Professors configure the AI tutor persona and manage documents that ground student conversations.',
+        highlight: 'Professor-owned course spaces with AI tutor configuration built in.',
+        image: '/cc-course.png',
+      },
+      {
+        id: 20,
+        type: 'scene',
+        title: 'Student Roster',
+        content: 'The students view tracks enrollments across courses with invite flows and empty states that guide professors to onboard their first class — keeping roster management simple and actionable.',
+        highlight: 'Invite and track students without leaving the portal.',
+        image: '/cc-students.png',
+      },
+      {
+        id: 21,
+        type: 'scene',
+        title: 'Institution Branding',
+        content: 'Professors upload an institution banner to extract theme colors automatically, preview the active brand, or fall back to a default professional theme — keeping the portal visually aligned with their department.',
+        highlight: 'Custom theming without sacrificing a polished default experience.',
+        image: '/cc-branding.png',
+      },
+      {
         id: 7,
         type: 'features',
         title: 'Student Experience',
@@ -955,22 +1061,15 @@ export const portfolioProjects: PortfolioProject[] = [
       {
         id: 9,
         type: 'stats',
-        title: 'Super Admin Design',
-        content: 'Unlike traditional platforms, the super admin panel is intentionally restricted.',
+        title: 'Super Admin Boundaries',
+        content: 'Unlike traditional platforms, the super admin panel is intentionally restricted. Admins receive only the visibility required to operate the platform — never access to teaching content or private student interactions.',
         stats: [
-          { value: '✓', label: 'Professor Count', icon: '👨‍🏫' },
-          { value: '✓', label: 'Student Count', icon: '👨‍🎓' },
-          { value: '✗', label: 'Conversations', icon: '🚫' },
-          { value: '✗', label: 'Course Content', icon: '🔒' },
+          { value: '✓', label: 'Professor Count', icon: 'Aggregate platform totals' },
+          { value: '✓', label: 'Student Count', icon: 'Enrollment summaries only' },
+          { value: '✗', label: 'Conversations', icon: 'Student–AI chats stay private' },
+          { value: '✗', label: 'Course Content', icon: 'Uploaded materials remain professor-owned' },
         ],
-        highlight: 'Enforces platform-level trust and compliance.',
-      },
-      {
-        id: 10,
-        type: 'scene',
-        title: 'Target Users',
-        content: 'Primary users include university professors, academic institutions, and research-driven educators. Secondary users include teaching assistants, academic departments, and private education institutes with strict data policies.',
-        highlight: 'Built for the most privacy-conscious institutions.',
+        highlight: 'Privacy enforced by architecture, not policy promises alone.',
       },
       {
         id: 11,

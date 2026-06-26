@@ -3,12 +3,23 @@
 import Link from 'next/link'
 import { FooterWatermark } from '@/components/layout/FooterWatermark'
 import { BOOKING_URL } from '@/lib/site'
+import { cn } from '@/lib/utils'
 
-export function SiteFooter() {
+interface SiteFooterProps {
+  /** Tighter top spacing when placed directly after portfolio / Rezonna. */
+  compact?: boolean
+}
+
+export function SiteFooter({ compact = false }: SiteFooterProps) {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative bg-black px-6 pb-6 pt-16 sm:px-10 sm:pb-8 md:px-12 lg:px-16 lg:pt-20">
+    <footer
+      className={cn(
+        'relative bg-black px-6 pb-6 sm:px-10 sm:pb-8 md:px-12 lg:px-16',
+        compact ? 'relative z-30 -mt-[clamp(5rem,16vw,13rem)] pt-8 md:pt-10' : 'pt-16 lg:pt-20'
+      )}
+    >
       <div className="relative z-10 mx-auto max-w-[1400px]">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
           <div className="space-y-6">

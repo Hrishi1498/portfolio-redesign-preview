@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
+import { CaseStudyScreenshot } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, type SceneTheme } from '@/components/showcase/case-study/utils'
 
@@ -177,6 +178,9 @@ export function FullBleedVisual({
   reverse = false,
   theme = 'dark',
   blurText = false,
+  imageAspect,
+  screenshotFrame = 'light',
+  imageFit,
 }: {
   eyebrow: string
   title: string
@@ -187,6 +191,9 @@ export function FullBleedVisual({
   reverse?: boolean
   theme?: SceneTheme
   blurText?: boolean
+  imageAspect?: string
+  screenshotFrame?: 'light' | 'dark'
+  imageFit?: 'contain' | 'cover'
 }) {
   const styles = sceneThemeClasses(theme)
   const blurTheme = sceneThemeForBlur(theme)
@@ -246,19 +253,21 @@ export function FullBleedVisual({
     <section className={cn('border-t', styles.border, styles.section)}>
       <div
         className={cn(
-          'mx-auto grid max-w-[1400px] items-center gap-10 px-6 py-20 md:gap-16 md:px-12 md:py-28 lg:grid-cols-2 lg:px-16',
+          'mx-auto grid max-w-[min(100%,96rem)] items-center gap-10 px-6 py-20 md:gap-16 md:px-12 md:py-28 lg:grid-cols-2 lg:gap-16 lg:px-16',
           reverse && 'lg:[&>*:first-child]:order-2'
         )}
       >
         {blurText ? copy : <Reveal>{copy}</Reveal>}
 
         <Reveal delay={0.08}>
-          <figure className={cn('relative overflow-hidden rounded-2xl', styles.imageFrame)}>
-            <div className="absolute inset-x-0 top-0 z-10 h-px" style={{ backgroundColor: `${accent}99` }} />
-            <div className="relative aspect-[16/10] w-full">
-              <Image src={image} alt={title} fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" />
-            </div>
-          </figure>
+          <CaseStudyScreenshot
+            src={image}
+            alt={title}
+            layout="inline"
+            aspectRatio={imageAspect}
+            frameTheme={screenshotFrame}
+            imageFit={imageFit}
+          />
         </Reveal>
       </div>
     </section>
