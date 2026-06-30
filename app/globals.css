@@ -121,7 +121,19 @@ a {
   .footer-watermark__base {
     position: relative;
     z-index: 1;
-    display: block;
+    display: inline-block;
+  }
+
+  @media (max-width: 767px) {
+    .footer-watermark {
+      font-size: clamp(3rem, 16vw, 4.5rem);
+    }
+
+    .work-card-index-watermark {
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 2px rgb(212 212 216);
+    }
   }
 
   .footer-watermark__band {

@@ -17,12 +17,12 @@ export function SiteFooter({ compact = false }: SiteFooterProps) {
     <footer
       className={cn(
         'relative bg-black px-6 pb-6 sm:px-10 sm:pb-8 md:px-12 lg:px-16',
-        compact ? 'relative z-30 -mt-[clamp(5rem,16vw,13rem)] pt-8 md:pt-10' : 'pt-16 lg:pt-20'
+        compact ? 'relative z-30 max-md:mt-0 pt-12 md:-mt-[clamp(5rem,16vw,13rem)] md:pt-10' : 'pt-16 lg:pt-20'
       )}
     >
       <div className="relative z-10 mx-auto max-w-[1400px]">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
-          <div className="space-y-6">
+        <div className="flex flex-col items-center gap-10 text-center md:items-stretch md:text-left lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+          <div className="flex flex-col items-center space-y-6 md:items-start">
             <div className="space-y-1.5 font-body text-sm leading-relaxed text-white">
               <p className="font-heading text-xs uppercase tracking-[0.2em] text-zinc-500">BitBLabs</p>
               <p>Digital Product Studio</p>
@@ -30,7 +30,7 @@ export function SiteFooter({ compact = false }: SiteFooterProps) {
             </div>
 
             <nav aria-label="Footer">
-              <ul className="flex flex-wrap gap-x-8 gap-y-2">
+              <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 md:justify-start">
                 <li>
                   <Link
                     href="/work"
@@ -75,7 +75,7 @@ export function SiteFooter({ compact = false }: SiteFooterProps) {
         <p className="mt-8 font-body text-xs text-zinc-600">© {year} BitBLabs</p>
       </div>
 
-      <div className="relative mx-auto mt-10 max-w-[1400px] sm:mt-12">
+      <div className="relative mx-auto mt-10 flex max-w-[1400px] justify-center overflow-visible sm:mt-12">
         <div
           className="pointer-events-none absolute inset-0"
           aria-hidden
