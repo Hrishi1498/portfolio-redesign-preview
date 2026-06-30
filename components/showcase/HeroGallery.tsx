@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
+import { spaceGrotesk, syne } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 
 const ShaderAnimation = dynamic(
@@ -36,7 +37,8 @@ export function HeroContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'font-display mb-6 max-md:!text-[clamp(2.75rem,11vw,3.75rem)] max-md:!leading-[0.98] text-display-sm font-bold text-white sm:text-display-md lg:text-display-lg'
+              syne.className,
+              'mb-6 max-md:!text-[clamp(2.75rem,11vw,3.75rem)] max-md:!leading-[0.98] text-display-sm font-bold text-white sm:text-display-md lg:text-display-lg'
             )}
           >
             We Build AI Products
@@ -48,7 +50,8 @@ export function HeroContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'font-body mx-auto max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg'
+              spaceGrotesk.className,
+              'mx-auto max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg'
             )}
           >
             A digital product studio crafting{' '}
