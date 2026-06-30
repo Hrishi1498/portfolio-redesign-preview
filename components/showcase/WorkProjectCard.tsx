@@ -72,7 +72,7 @@ function ScreenshotVisual({
 
       <div
         className={cn(
-          'overflow-hidden rounded-2xl border-[3px] border-black bg-white md:border',
+          'overflow-hidden rounded-2xl border-[3px] border-black bg-white',
           'shadow-[0_22px_70px_-28px_rgba(15,23,42,0.22)]',
           'transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]',
           'group-hover/work-img:-translate-y-1',
@@ -255,7 +255,7 @@ export function WorkProjectCard({
       <div className="relative overflow-visible py-1">
         <span
           aria-hidden
-          className="work-card-index-watermark pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-[42%] select-none font-caslon text-[clamp(5rem,12vw,13rem)] font-normal leading-[0.74] tracking-[-0.05em] text-zinc-200/60 proportional-nums"
+          className="work-card-index-watermark pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-[42%] select-none font-caslon text-[clamp(5rem,12vw,13rem)] font-normal leading-[0.74] tracking-[-0.05em] proportional-nums"
         >
           {number}
         </span>

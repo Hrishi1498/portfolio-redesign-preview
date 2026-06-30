@@ -137,9 +137,9 @@ export function RezonnaProductSpotlight({
       <div className="rezonna-stage relative mx-auto hidden aspect-[1.28/1] w-full max-w-[min(100%,90rem)] md:block">
         <RezonnaHeadline className="absolute -left-5 top-4 z-[1] whitespace-nowrap text-[clamp(2.5rem,11vw,200px)] lg:-left-6 lg:top-6 xl:-left-7 xl:top-8" />
 
-        <RezonnaScreenshot className="absolute left-[34%] top-[14%] z-[2] w-[66%]" />
+        <RezonnaScreenshot className="absolute left-[34%] top-[18%] z-[2] w-[66%]" />
 
-        <RezonnaPanel className="absolute bottom-[29%] left-[3%] z-[3] w-full min-w-[28rem] max-w-[min(48%,34rem)] lg:left-[4%]" />
+        <RezonnaPanel className="absolute bottom-[26%] left-[3%] z-[3] w-full min-w-[28rem] max-w-[min(48%,34rem)] lg:left-[4%]" />
       </div>
     </section>
   )
