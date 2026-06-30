@@ -6,7 +6,7 @@ import { BOOKING_URL } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 interface SiteFooterProps {
-  /** Tighter top spacing when placed directly after portfolio / Rezonna. */
+  /** Spacing when placed directly after portfolio / Rezonna. */
   compact?: boolean
 }
 
@@ -17,7 +17,7 @@ export function SiteFooter({ compact = false }: SiteFooterProps) {
     <footer
       className={cn(
         'relative bg-black px-6 pb-6 sm:px-10 sm:pb-8 md:px-12 lg:px-16',
-        compact ? 'relative z-30 max-md:mt-0 pt-12 md:-mt-[clamp(5rem,16vw,13rem)] md:pt-10' : 'pt-16 lg:pt-20'
+        compact ? 'relative z-30 pt-16 md:mt-12 md:pt-16 lg:mt-16 lg:pt-20' : 'pt-16 lg:pt-20'
       )}
     >
       <div className="relative z-10 mx-auto max-w-[1400px]">

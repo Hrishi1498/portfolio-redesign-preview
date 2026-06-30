@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { spaceGrotesk, syne } from '@/lib/fonts'
 import { BOOKING_URL } from '@/lib/site'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -50,8 +49,7 @@ export function Navbar({ theme = 'dark', position = 'fixed' }: NavbarProps) {
                 />
                 <span
                   className={cn(
-                    heroTypography ? syne.className : 'font-display',
-                    'text-sm font-bold tracking-tight transition-colors',
+                    'font-display text-sm font-bold tracking-tight transition-colors',
                     light ? 'text-zinc-950' : 'text-white'
                   )}
                 >
@@ -68,8 +66,7 @@ export function Navbar({ theme = 'dark', position = 'fixed' }: NavbarProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={cn(
-                          heroTypography ? spaceGrotesk.className : 'font-heading',
-                          'text-sm transition-colors duration-300',
+                          'font-heading text-sm transition-colors duration-300',
                           light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
                         )}
                       >
@@ -79,8 +76,7 @@ export function Navbar({ theme = 'dark', position = 'fixed' }: NavbarProps) {
                       <Link
                         href={link.href}
                         className={cn(
-                          heroTypography ? spaceGrotesk.className : 'font-heading',
-                          'text-sm transition-colors duration-300',
+                          'font-heading text-sm transition-colors duration-300',
                           light ? 'text-zinc-500 hover:text-zinc-950' : 'text-zinc-500 hover:text-white'
                         )}
                       >
@@ -139,8 +135,7 @@ export function Navbar({ theme = 'dark', position = 'fixed' }: NavbarProps) {
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    heroTypography ? syne.className : 'font-display',
-                    'text-3xl font-bold text-white transition-colors hover:text-zinc-400'
+                    'font-display text-3xl font-bold text-white transition-colors hover:text-zinc-400'
                   )}
                 >
                   {link.label}
@@ -150,8 +145,7 @@ export function Navbar({ theme = 'dark', position = 'fixed' }: NavbarProps) {
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    heroTypography ? syne.className : 'font-display',
-                    'text-3xl font-bold text-white transition-colors hover:text-zinc-400'
+                    'font-display text-3xl font-bold text-white transition-colors hover:text-zinc-400'
                   )}
                 >
                   {link.label}

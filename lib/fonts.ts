@@ -1,22 +1,18 @@
-import { Noto_Sans_Display, Space_Grotesk, Syne } from 'next/font/google'
+import localFont from 'next/font/local'
 
-export const notoSansDisplay = Noto_Sans_Display({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+/** Google Sans Flex — open-source brand sans (SIL OFL). */
+export const googleSansFlex = localFont({
+  src: [
+    {
+      path: '../node_modules/@fontsource-variable/google-sans-flex/files/google-sans-flex-latin-wght-normal.woff2',
+      style: 'normal',
+    },
+    {
+      path: '../node_modules/@fontsource-variable/google-sans-flex/files/google-sans-flex-latin-ext-wght-normal.woff2',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-google-sans-flex',
   display: 'swap',
-  variable: '--font-noto-sans-display',
-})
-
-export const syne = Syne({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  display: 'swap',
-  variable: '--font-syne',
-})
-
-export const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  display: 'swap',
-  variable: '--font-space-grotesk',
+  fallback: ['system-ui', 'sans-serif'],
 })

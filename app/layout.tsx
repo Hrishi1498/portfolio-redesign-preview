@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { notoSansDisplay, spaceGrotesk, syne } from '@/lib/fonts'
+import { googleSansFlex } from '@/lib/fonts'
 import { SmoothScroll } from '@/components/providers/SmoothScroll'
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${notoSansDisplay.variable} ${syne.variable} ${spaceGrotesk.variable}`}>
-      <body className={notoSansDisplay.className}>
+    <html lang="en" className={googleSansFlex.variable}>
+      <body className={`${googleSansFlex.className} antialiased`}>
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

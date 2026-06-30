@@ -25,7 +25,8 @@ function RezonnaHeadline({ className }: { className?: string }) {
         className
       )}
     >
-      Made at <span className="text-red-500">BitBLabs</span>
+      <span className="text-[0.68em]">Made at</span>{' '}
+      <span className="text-red-500">BitBLabs</span>
     </h2>
   )
 }
@@ -117,7 +118,7 @@ export function RezonnaProductSpotlight({
       className={cn(
         'relative w-full overflow-visible bg-black text-white antialiased',
         embedded
-          ? 'px-0 pb-16 pt-14 max-md:pb-20 md:pb-10 md:pt-20 lg:pb-12'
+          ? 'px-0 pb-20 pt-14 max-md:pb-24 md:pb-20 md:pt-20 lg:pb-24'
           : 'px-6 pb-16 pt-14 max-md:pb-20 md:px-12 md:pb-10 md:pt-20 lg:px-16 lg:pb-12 xl:px-20',
         className
       )}
@@ -125,7 +126,7 @@ export function RezonnaProductSpotlight({
     >
       {/* Mobile — stacked, left-aligned within section padding */}
       <div className="mx-auto flex w-full max-w-[min(100%,90rem)] flex-col gap-8 md:hidden">
-        <RezonnaHeadline className="-ml-2 whitespace-nowrap text-[clamp(2.75rem,12vw,3.75rem)]" />
+        <RezonnaHeadline className="-ml-4 whitespace-nowrap text-[clamp(3rem,13vw,4.25rem)]" />
         <RezonnaScreenshot
           className="relative w-full overflow-visible px-2"
           frameClassName="max-md:rounded-[1.75rem] max-md:shadow-[0_0_0_2px_#fff,0_24px_70px_-28px_rgba(0,0,0,0.55)]"
@@ -135,11 +136,11 @@ export function RezonnaProductSpotlight({
 
       {/* Desktop — layered absolute layout (unchanged) */}
       <div className="rezonna-stage relative mx-auto hidden aspect-[1.28/1] w-full max-w-[min(100%,90rem)] md:block">
-        <RezonnaHeadline className="absolute -left-5 top-4 z-[1] whitespace-nowrap text-[clamp(2.5rem,11vw,200px)] lg:-left-6 lg:top-6 xl:-left-7 xl:top-8" />
+        <RezonnaHeadline className="absolute -left-7 top-4 z-[1] whitespace-nowrap text-[clamp(3rem,13vw,220px)] lg:-left-8 lg:top-6 xl:-left-10 xl:top-8" />
 
-        <RezonnaScreenshot className="absolute left-[34%] top-[18%] z-[2] w-[66%]" />
+        <RezonnaScreenshot className="absolute left-[34%] top-[34%] z-[2] w-[66%]" />
 
-        <RezonnaPanel className="absolute bottom-[26%] left-[3%] z-[3] w-full min-w-[28rem] max-w-[min(48%,34rem)] lg:left-[4%]" />
+        <RezonnaPanel className="absolute bottom-[18%] left-[3%] z-[3] w-full min-w-[28rem] max-w-[min(48%,34rem)] lg:left-[4%]" />
       </div>
     </section>
   )
