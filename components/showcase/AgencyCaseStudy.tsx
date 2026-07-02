@@ -23,7 +23,7 @@ interface AgencyCaseStudyProps {
   backHref?: string
 }
 
-export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: AgencyCaseStudyProps) {
+export function AgencyCaseStudy({ project, backHref = '/projects' }: AgencyCaseStudyProps) {
   const slides = project.slides ?? []
   const accent = project.color
   const snapshotMetrics = project.metrics ?? []
@@ -245,7 +245,7 @@ export function AgencyCaseStudy({ project, backHref = '/?view=portfolio' }: Agen
             )}
             {nextProject && (
               <Link
-                href={`/work/${nextProject.slug}`}
+                href={`/projects/${nextProject.slug}`}
                 className="inline-flex items-center rounded-full px-6 py-3 font-heading text-sm uppercase tracking-[0.18em] text-[#050505] transition-opacity hover:opacity-90"
                 style={{ backgroundColor: accent }}
               >

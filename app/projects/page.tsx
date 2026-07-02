@@ -5,7 +5,7 @@ import { WorkProjectsList } from '@/components/showcase/WorkProjectsList'
 import { RezonnaProductSpotlight } from '@/components/sections/RezonnaProductSpotlight'
 import { portfolioProjects } from '@/lib/portfolio-data'
 
-export default function WorkPage() {
+export default function ProjectsPage() {
   return (
     <main className="relative min-h-screen bg-black">
       <Navbar theme="dark" position="static" />

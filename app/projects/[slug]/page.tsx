@@ -8,16 +8,16 @@ import {
 import { fromPortfolioProject } from '@/lib/case-study-project'
 import { portfolioProjects } from '@/lib/portfolio-data'
 
-export default function WorkDetailPage() {
+export default function ProjectDetailPage() {
   const params = useParams()
   const slug = params.slug as string
   const project = portfolioProjects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <CaseStudyNotFound backHref="/?view=portfolio" backLabel="Back to work" />
+      <CaseStudyNotFound backHref="/projects" backLabel="Back to projects" />
     )
   }
 
-  return <CaseStudyPageLayout project={fromPortfolioProject(project)} backHref="/?view=portfolio" />
+  return <CaseStudyPageLayout project={fromPortfolioProject(project)} backHref="/projects" />
 }

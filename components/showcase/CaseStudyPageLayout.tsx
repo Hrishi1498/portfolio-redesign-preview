@@ -13,7 +13,7 @@ interface CaseStudyPageLayoutProps {
   backHref?: string
 }
 
-export function CaseStudyPageLayout({ project, backHref = '/?view=portfolio' }: CaseStudyPageLayoutProps) {
+export function CaseStudyPageLayout({ project, backHref = '/projects' }: CaseStudyPageLayoutProps) {
   return (
     <CaseStudyExitTransition
       accent={project.color}

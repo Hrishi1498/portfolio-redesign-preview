@@ -9,33 +9,13 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/projects',
-        destination: '/work',
+        source: '/work',
+        destination: '/projects',
         permanent: true,
       },
       {
-        source: '/projects/:slug',
-        destination: '/work/:slug',
-        permanent: true,
-      },
-      {
-        source: '/case-studies',
-        destination: '/work',
-        permanent: true,
-      },
-      {
-        source: '/case-studies/:slug',
-        destination: '/work',
-        permanent: true,
-      },
-      {
-        source: '/brain-stuff',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/side-quests',
-        destination: '/',
+        source: '/work/:slug',
+        destination: '/projects/:slug',
         permanent: true,
       },
     ]

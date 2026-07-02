@@ -1,4 +1,5 @@
 import type { StorySlide } from './story-slide'
+import type { CaseStudy } from './data'
 import type { PortfolioProject } from './portfolio-data'
 import { getCategoryLabel, getIndustry } from './project-utils'
 
@@ -49,5 +50,23 @@ export function fromPortfolioProject(project: PortfolioProject): CaseStudyProjec
     screenshotFrame: project.images.screenshotFrame,
     slides: project.slides,
     links: project.links,
+  }
+}
+
+export function fromLegacyCaseStudy(study: CaseStudy): CaseStudyProject {
+  return {
+    slug: study.slug,
+    title: study.title,
+    tagline: study.subtitle ?? study.description,
+    description: study.description,
+    role: study.author ?? 'BitBLabs',
+    duration: study.readTime,
+    year: study.date ?? '',
+    industry: study.category,
+    categoryLabel: study.category,
+    tech: [],
+    color: study.color,
+    thumbnail: study.thumbnail || undefined,
+    slides: study.slides,
   }
 }
