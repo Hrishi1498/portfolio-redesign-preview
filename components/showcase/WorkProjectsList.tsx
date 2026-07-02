@@ -20,6 +20,8 @@ interface WorkProjectsListProps {
   subtitle?: ReactNode
   /** Rendered inside the sticky stack container so cards stay pinned while it scrolls in. */
   trailingContent?: ReactNode
+  /** Show company legal details in footer (home page only). */
+  showLegalInfo?: boolean
 }
 
 export function WorkProjectsList({
@@ -34,6 +36,7 @@ export function WorkProjectsList({
     </>
   ),
   trailingContent,
+  showLegalInfo = false,
 }: WorkProjectsListProps) {
   const sorted = sortProjects(projects)
 
@@ -62,7 +65,7 @@ export function WorkProjectsList({
           {trailingContent}
         </div>
       </div>
-      <SiteFooter compact />
+      <SiteFooter compact showLegalInfo={showLegalInfo} />
     </>
   )
 }

@@ -2,15 +2,25 @@
 
 import Link from 'next/link'
 import { FooterWatermark } from '@/components/layout/FooterWatermark'
-import { BOOKING_URL } from '@/lib/site'
+import {
+  BOOKING_URL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DISPLAY,
+  LEGAL_ADDRESS_LINES,
+  LEGAL_NAME,
+  PRIVACY_PATH,
+  TERMS_PATH,
+} from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 interface SiteFooterProps {
   /** Spacing when placed directly after portfolio / Rezonna. */
   compact?: boolean
+  /** Company legal details and policy links (home page only). */
+  showLegalInfo?: boolean
 }
 
-export function SiteFooter({ compact = false }: SiteFooterProps) {
+export function SiteFooter({ compact = false, showLegalInfo = false }: SiteFooterProps) {
   const year = new Date().getFullYear()
 
   return (
@@ -73,6 +83,50 @@ export function SiteFooter({ compact = false }: SiteFooterProps) {
         </p>
 
         <p className="mt-8 font-body text-xs text-zinc-600">© {year} BitBLabs</p>
+
+        {showLegalInfo ? (
+          <div className="mt-10 space-y-4 text-center md:text-left lg:mt-12">
+            <div className="space-y-1.5 font-body text-xs leading-relaxed text-zinc-500">
+              <p className="font-heading text-[0.65rem] uppercase tracking-[0.2em] text-zinc-600">
+                Legal information
+              </p>
+              <p className="text-zinc-400">{LEGAL_NAME}</p>
+              <address className="not-italic text-zinc-500">
+                {LEGAL_ADDRESS_LINES.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </address>
+              <p>
+                <a
+                  href={`tel:${CONTACT_PHONE}`}
+                  className="text-zinc-400 transition-opacity hover:opacity-60"
+                >
+                  {CONTACT_PHONE_DISPLAY}
+                </a>
+              </p>
+            </div>
+
+            <nav aria-label="Legal" className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start">
+              <Link
+                href={PRIVACY_PATH}
+                className="font-body text-xs text-zinc-500 transition-opacity hover:opacity-60"
+              >
+                Privacy Policy
+              </Link>
+              <span className="text-zinc-700" aria-hidden>
+                ·
+              </span>
+              <Link
+                href={TERMS_PATH}
+                className="font-body text-xs text-zinc-500 transition-opacity hover:opacity-60"
+              >
+                Terms &amp; Conditions
+              </Link>
+            </nav>
+          </div>
+        ) : null}
       </div>
 
       <div className="relative mx-auto mt-10 flex max-w-[1400px] justify-center overflow-visible sm:mt-12">

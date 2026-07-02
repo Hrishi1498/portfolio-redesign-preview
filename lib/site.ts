@@ -1,1 +1,15 @@
 export const BOOKING_URL = 'https://tidycal.com/bitblabs/project-discussion'
+
+export const LEGAL_NAME = 'BitB Labs LLP'
+
+export const LEGAL_ADDRESS_LINES = [
+  'SR NO 45/4B H NO 236 NEAR SAMARTH SPORTS, CLUB CHANDAN NAGAR',
+  'Pune, Pune City, Pune- 411014',
+  'Maharashtra, India',
+] as const
+
+export const CONTACT_PHONE = '+918208901203'
+export const CONTACT_PHONE_DISPLAY = '+91 82089 01203'
+
+export const PRIVACY_PATH = '/privacy'
+export const TERMS_PATH = '/terms'
