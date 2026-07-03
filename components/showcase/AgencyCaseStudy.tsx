@@ -13,6 +13,7 @@ import {
   MetaItem,
   StatementScene,
 } from '@/components/showcase/case-study/CaseStudyScenes'
+import { PORTFOLIO_SECTION_HREF } from '@/lib/site'
 import {
   slideChapterLabel,
   stickyStoryFromSlides,
@@ -23,7 +24,7 @@ interface AgencyCaseStudyProps {
   backHref?: string
 }
 
-export function AgencyCaseStudy({ project, backHref = '/projects' }: AgencyCaseStudyProps) {
+export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: AgencyCaseStudyProps) {
   const slides = project.slides ?? []
   const accent = project.color
   const snapshotMetrics = project.metrics ?? []

@@ -7,13 +7,14 @@ import { ContactCTA } from '@/components/sections/ContactCTA'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import type { CaseStudyProject } from '@/lib/case-study-project'
+import { PORTFOLIO_SECTION_HREF } from '@/lib/site'
 
 interface CaseStudyPageLayoutProps {
   project: CaseStudyProject
   backHref?: string
 }
 
-export function CaseStudyPageLayout({ project, backHref = '/projects' }: CaseStudyPageLayoutProps) {
+export function CaseStudyPageLayout({ project, backHref = PORTFOLIO_SECTION_HREF }: CaseStudyPageLayoutProps) {
   return (
     <CaseStudyExitTransition
       accent={project.color}
