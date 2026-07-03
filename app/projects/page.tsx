@@ -20,7 +20,7 @@ export default function ProjectsPage() {
               <b className="font-normal text-zinc-200">intent</b>.
             </>
           }
-          trailingContent={<RezonnaProductSpotlight className="relative z-20" embedded />}
+          trailingContent={<RezonnaProductSpotlight embedded />}
         />
       </section>
     </main>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, type RefObject } from 'react'
 import Image from 'next/image'
 import { motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
 import type { PortfolioProject } from '@/lib/portfolio-data'
@@ -27,8 +27,15 @@ interface WorkProjectCardProps {
   project: PortfolioProject
   index: number
   onNavigate?: () => void
-  /** Extra scroll runway so the card recedes before the next section (e.g. Rezonna). */
+  /** Extra scroll runway so the card recedes before the next card. */
   enableScrollRunway?: boolean
+  /**
+   * Sticky pin without a fixed-height segment — parent must wrap trailing content
+   * so the card stays on screen while the next section scrolls over it.
+   */
+  extendStickyThroughTrailing?: boolean
+  /** Scroll container shared with trailing content (for enter progress). */
+  stackContainerRef?: RefObject<HTMLElement | null>
 }
 
 const WORK_CARD_ASPECT = '1024/490'
@@ -132,6 +139,8 @@ export function WorkProjectCard({
   index,
   onNavigate,
   enableScrollRunway = false,
+  extendStickyThroughTrailing = false,
+  stackContainerRef,
 }: WorkProjectCardProps) {
   const segmentRef = useRef<HTMLDivElement>(null)
   const segmentMetricsRef = useRef({ start: 0, span: 1 })
@@ -143,17 +152,24 @@ export function WorkProjectCard({
   const reduceMotion = prefersReducedMotion === true
 
   const [exitStart, exitEnd] = getWorkCardExitRange()
-  const needsScrollAnimation = enableScrollRunway || index > 0
+  const hasScrollSegment = enableScrollRunway
+  const needsScrollAnimation =
+    enableScrollRunway || extendStickyThroughTrailing || index > 0
 
   useLayoutEffect(() => {
-    const el = segmentRef.current
-    if (!el || !needsScrollAnimation) return
+    const measureEl = extendStickyThroughTrailing
+      ? stackContainerRef?.current
+      : segmentRef.current
+    if (!measureEl || !needsScrollAnimation) return
 
     const measure = () => {
-      const rect = el.getBoundingClientRect()
+      const rect = measureEl.getBoundingClientRect()
+      const span = extendStickyThroughTrailing
+        ? Math.max(measureEl.offsetHeight, window.innerHeight)
+        : measureEl.offsetHeight
       segmentMetricsRef.current = {
         start: rect.top + window.scrollY,
-        span: el.offsetHeight,
+        span,
       }
     }
 
@@ -163,8 +179,12 @@ export function WorkProjectCard({
       let y = 0
       let blur = 0
 
-      if (index > 0 && progress < WORK_CARD_ENTER_END) {
-        const enterT = easeOutCubic(progress / WORK_CARD_ENTER_END)
+      const enterProgress = extendStickyThroughTrailing
+        ? Math.min(Math.max((window.scrollY - segmentMetricsRef.current.start) / window.innerHeight, 0), 1)
+        : progress
+
+      if (index > 0 && !extendStickyThroughTrailing && enterProgress < WORK_CARD_ENTER_END) {
+        const enterT = easeOutCubic(enterProgress / WORK_CARD_ENTER_END)
         scale = reduceMotion ? 1 : WORK_CARD_ENTER_SCALE - enterT * (WORK_CARD_ENTER_SCALE - 1)
         y = reduceMotion ? 0 : (1 - enterT) * WORK_CARD_ENTER_OFFSET_Y
         opacity = WORK_CARD_ENTER_OPACITY + enterT * (1 - WORK_CARD_ENTER_OPACITY)
@@ -210,7 +230,7 @@ export function WorkProjectCard({
     updateProgress()
 
     const resizeObserver = new ResizeObserver(onResize)
-    resizeObserver.observe(el)
+    resizeObserver.observe(measureEl)
     window.addEventListener('resize', onResize)
     window.addEventListener('scroll', onScroll, { passive: true })
 
@@ -222,11 +242,13 @@ export function WorkProjectCard({
     }
   }, [
     enableScrollRunway,
+    extendStickyThroughTrailing,
     exitEnd,
     exitStart,
     index,
     needsScrollAnimation,
     project.slug,
+    stackContainerRef,
     cardBlur,
     cardOpacity,
     cardScale,
@@ -255,7 +277,7 @@ export function WorkProjectCard({
       <div className="relative overflow-visible py-1">
         <span
           aria-hidden
-          className="work-card-index-watermark pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-[42%] select-none font-caslon text-[clamp(5rem,12vw,13rem)] font-normal leading-[0.74] tracking-[-0.05em] proportional-nums"
+          className="pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-[42%] select-none font-caslon text-[clamp(5rem,12vw,13rem)] font-normal leading-[0.74] tracking-[-0.05em] text-zinc-400/90 proportional-nums"
         >
           {number}
         </span>
@@ -282,38 +304,46 @@ export function WorkProjectCard({
     </div>
   )
 
+  const stickyCard = (
+    <motion.div
+      className={cn(
+        'sticky mx-auto w-full rounded-t-[2rem] border-t-[3px] border-black bg-white md:rounded-t-[2.5rem]',
+        index > 0 && !extendStickyThroughTrailing && 'shadow-[0_-8px_24px_-6px_rgba(0,0,0,0.4)]'
+      )}
+      style={{
+        zIndex: index + 1,
+        top: 0,
+        minHeight: '100svh',
+        transformOrigin: 'center top',
+        scale: needsScrollAnimation ? cardScale : 1,
+        opacity: needsScrollAnimation ? cardOpacity : 1,
+        y: needsScrollAnimation ? cardY : 0,
+        filter: needsScrollAnimation ? filter : undefined,
+      }}
+    >
+      <article
+        className={cn(
+          'flex min-h-[100svh] w-full min-w-0 flex-col items-stretch gap-10 px-6 py-14 sm:px-8 md:flex-row md:items-center md:gap-[clamp(2rem,5vw,4.5rem)] md:px-10 md:py-20 lg:gap-[clamp(2.5rem,6vw,5.5rem)] lg:px-12 lg:py-[clamp(3.5rem,8vw,6.5rem)] xl:px-14',
+          reversed && 'md:flex-row-reverse'
+        )}
+      >
+        <ProjectVisual project={project} />
+        {info}
+      </article>
+    </motion.div>
+  )
+
+  if (extendStickyThroughTrailing) {
+    return stickyCard
+  }
+
   return (
     <div
       ref={segmentRef}
-      className={cn('relative w-full', enableScrollRunway && 'h-[100svh]')}
-      style={enableScrollRunway ? { height: WORK_CARD_SEGMENT_HEIGHT } : undefined}
+      className={cn('relative w-full', hasScrollSegment && 'h-[100svh]')}
+      style={hasScrollSegment ? { height: WORK_CARD_SEGMENT_HEIGHT } : undefined}
     >
-      <motion.div
-        className={cn(
-          'sticky mx-auto w-full rounded-t-[2rem] border-t-[3px] border-black bg-white md:rounded-t-[2.5rem]',
-          index > 0 && 'shadow-[0_-8px_24px_-6px_rgba(0,0,0,0.4)]'
-        )}
-        style={{
-          zIndex: index + 1,
-          top: 0,
-          minHeight: '100svh',
-          transformOrigin: 'center top',
-          scale: needsScrollAnimation ? cardScale : 1,
-          opacity: needsScrollAnimation ? cardOpacity : 1,
-          y: needsScrollAnimation ? cardY : 0,
-          filter: needsScrollAnimation ? filter : undefined,
-        }}
-      >
-        <article
-          className={cn(
-            'flex min-h-[100svh] w-full min-w-0 flex-col items-stretch gap-10 px-6 py-14 sm:px-8 md:flex-row md:items-center md:gap-[clamp(2rem,5vw,4.5rem)] md:px-10 md:py-20 lg:gap-[clamp(2.5rem,6vw,5.5rem)] lg:px-12 lg:py-[clamp(3.5rem,8vw,6.5rem)] xl:px-14',
-            reversed && 'md:flex-row-reverse'
-          )}
-        >
-          <ProjectVisual project={project} />
-          {info}
-        </article>
-      </motion.div>
+      {stickyCard}
     </div>
   )
 }

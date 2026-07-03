@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 import type { PortfolioProject } from '@/lib/portfolio-data'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { WorkProjectCard } from '@/components/showcase/WorkProjectCard'
@@ -39,6 +39,8 @@ export function WorkProjectsList({
   showLegalInfo = false,
 }: WorkProjectsListProps) {
   const sorted = sortProjects(projects)
+  const trailingStackRef = useRef<HTMLDivElement>(null)
+  const lastIndex = sorted.length - 1
 
   return (
     <>
@@ -53,16 +55,35 @@ export function WorkProjectsList({
         </header>
 
         <div className="relative mx-auto w-full max-w-[min(100%,90rem)] overflow-visible">
-          {sorted.map((project, index) => (
-            <WorkProjectCard
-              key={project.slug}
-              project={project}
-              index={index}
-              onNavigate={onNavigate}
-              enableScrollRunway={index < sorted.length - 1 || Boolean(trailingContent)}
-            />
-          ))}
-          {trailingContent}
+          {sorted.map((project, index) => {
+            const isLast = index === lastIndex
+            const hasTrailing = isLast && Boolean(trailingContent)
+
+            if (hasTrailing) {
+              return (
+                <div key={project.slug} ref={trailingStackRef} className="relative w-full">
+                  <WorkProjectCard
+                    project={project}
+                    index={index}
+                    onNavigate={onNavigate}
+                    extendStickyThroughTrailing
+                    stackContainerRef={trailingStackRef}
+                  />
+                  {trailingContent}
+                </div>
+              )
+            }
+
+            return (
+              <WorkProjectCard
+                key={project.slug}
+                project={project}
+                index={index}
+                onNavigate={onNavigate}
+                enableScrollRunway={index < lastIndex}
+              />
+            )
+          })}
         </div>
       </div>
       <SiteFooter compact showLegalInfo={showLegalInfo} />

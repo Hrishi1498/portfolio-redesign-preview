@@ -14,7 +14,7 @@ export function SelectedWork() {
       <WorkProjectsList
         projects={portfolioProjects}
         onNavigate={() => releaseHomeScrollLock()}
-        trailingContent={<RezonnaProductSpotlight className="relative z-20" embedded />}
+        trailingContent={<RezonnaProductSpotlight embedded />}
         showLegalInfo
       />
     </section>

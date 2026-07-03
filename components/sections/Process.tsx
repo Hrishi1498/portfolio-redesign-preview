@@ -1,16 +1,11 @@
 'use client'
 
-import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
 import { cn } from '@/lib/utils'
-import { portfolioProjects } from '@/lib/portfolio-data'
 import { MetricsShowcase } from '@/components/showcase/case-study/MetricsShowcase'
-import { ParallaxGallery } from '@/components/showcase/case-study/ParallaxGallery'
 import { StickyStorySection } from '@/components/showcase/case-study/StickyStorySection'
 import {
   FeatureGridScene,
-  FullBleedVisual,
-  HeroVisual,
   MetaItem,
   StatementScene,
 } from '@/components/showcase/case-study/CaseStudyScenes'
@@ -75,20 +70,6 @@ const processMetrics = steps.map((step) => ({
   label: step.title,
 }))
 
-function collectProcessGalleryImages(limit = 8): string[] {
-  const images: string[] = []
-
-  for (const project of portfolioProjects) {
-    const gallerySlide = project.slides?.find((slide) => slide.galleryImages?.length)
-    if (gallerySlide?.galleryImages) {
-      images.push(...gallerySlide.galleryImages)
-    }
-  }
-
-  return Array.from(new Set(images)).slice(0, limit)
-}
-
-const processHeroImage = '/axion-dashboard.png'
 const blurText = true
 
 interface ProcessProps {
@@ -175,7 +156,6 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
     )
   }
 
-  const galleryImages = collectProcessGalleryImages()
   const styles = sceneThemeClasses(processTheme)
 
   return (
@@ -216,10 +196,6 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
             <MetaItem label="Focus" value="Product craft" theme={processTheme} blurText startDelay={0.22} />
           </div>
         </div>
-
-        <Reveal className="relative mx-auto mt-16 max-w-[1400px]" delay={0.1}>
-          <HeroVisual src={processHeroImage} alt="Product work from our studio" accent={accent} theme={processTheme} />
-        </Reveal>
       </section>
 
       <StatementScene
@@ -246,13 +222,13 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         blurText={blurText}
       />
 
-      <FullBleedVisual
+      <StatementScene
         eyebrow="In Practice"
-        title="Design and engineering in the same rhythm."
+        headline="Design and engineering in the same rhythm."
         body="We work in tight loops, validating flows with real interfaces, refining architecture alongside UX, and shipping incrementally so momentum never stalls."
         pullQuote="The same visual rigor you see in our portfolio is how we build for clients."
-        image="/hf-products.png"
         accent={accent}
+        align="center"
         theme={processTheme}
         blurText={blurText}
       />
@@ -276,17 +252,6 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
         theme={processTheme}
         blurText={blurText}
       />
-
-      {galleryImages.length > 0 && (
-        <ParallaxGallery
-          title="Built with the same standard."
-          description="A glimpse of the product experiences we craft across industries, from platforms to AI systems."
-          images={galleryImages}
-          accent={accent}
-          theme={processTheme}
-          blurText={blurText}
-        />
-      )}
 
       <StatementScene
         eyebrow="Next Step"
