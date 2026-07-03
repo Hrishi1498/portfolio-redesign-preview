@@ -32,7 +32,7 @@ interface WorkProjectCardProps {
 }
 
 const WORK_CARD_ASPECT = '1024/490'
-const WORK_CARD_IMAGE_SLUGS = new Set(['healthy-fasal', 'course-companion', 'axion-plan'])
+const WORK_CARD_IMAGE_SLUGS = new Set(['digipropass', 'healthy-fasal', 'course-companion', 'axion-plan'])
 /** Mockup caps at 52rem (832px); request full source width for retina. */
 const WORK_CARD_IMAGE_SIZES = '(max-width: 768px) calc(100vw - 3rem), 832px'
 
