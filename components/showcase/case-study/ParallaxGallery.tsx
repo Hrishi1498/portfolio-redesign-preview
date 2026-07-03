@@ -2,6 +2,7 @@
 
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
+import { ChapterMarker } from '@/components/showcase/case-study/CaseStudyScenes'
 import { CaseStudyScreenshot } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, type SceneTheme } from '@/components/showcase/case-study/utils'
@@ -11,6 +12,12 @@ interface ParallaxGalleryProps {
   description?: string
   images: string[]
   accent: string
+  eyebrow?: string
+  chapterNumber?: number
+  chapterLabel?: string
+  screenshotFrame?: 'light' | 'dark'
+  screenshotStyle?: 'minimal' | 'device'
+  deviceLabel?: string
   theme?: SceneTheme
   blurText?: boolean
 }
@@ -20,6 +27,12 @@ export function ParallaxGallery({
   description,
   images,
   accent,
+  eyebrow = 'Showcase',
+  chapterNumber,
+  chapterLabel,
+  screenshotFrame = 'light',
+  screenshotStyle,
+  deviceLabel,
   theme = 'dark',
   blurText = false,
 }: ParallaxGalleryProps) {
@@ -30,20 +43,22 @@ export function ParallaxGallery({
 
   const header = (
     <>
-      {blurText ? (
+      {chapterNumber != null && chapterLabel ? (
+        <ChapterMarker number={chapterNumber} label={chapterLabel} accent={accent} theme={theme} />
+      ) : blurText ? (
         <BlurTextAnimation
           as="p"
-          text="Showcase"
+          text={eyebrow}
           variant="label"
           theme={blurTheme}
           textClassName="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500"
         />
       ) : (
-        <p className="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500">Showcase</p>
+        <p className="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500">{eyebrow}</p>
       )}
       <h2
         className={cn(
-          'mt-4 font-display text-[clamp(2.5rem,5.5vw,4rem)] font-bold tracking-[-0.03em]',
+          'mt-8 font-display text-[clamp(2.5rem,5.5vw,4rem)] font-bold tracking-[-0.03em]',
           styles.heading
         )}
       >
@@ -86,6 +101,10 @@ export function ParallaxGallery({
               src={src}
               alt={`${title} screenshot ${index + 1}`}
               layout="gallery"
+              frameTheme={screenshotFrame}
+              sectionTheme={theme}
+              projectStyle={screenshotStyle}
+              deviceLabel={deviceLabel}
             />
           ))}
         </div>

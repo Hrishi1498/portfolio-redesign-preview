@@ -1,9 +1,13 @@
 import type { StorySlide } from '@/lib/story-slide'
 import type { CaseStudyProject } from '@/lib/case-study-project'
 
+export function chapterEyebrow(index: number, label: string) {
+  return `/${String(index).padStart(2, '0')} ${label}`
+}
+
 export function slideChapterLabel(type: StorySlide['type']) {
   const labels: Record<string, string> = {
-    intro: 'Overview',
+    intro: 'Context',
     problem: 'The Problem',
     solution: 'The Solution',
     scene: 'Platform',
@@ -67,30 +71,38 @@ export function mergeMetrics(project: CaseStudyProject) {
   return merged.slice(0, 8)
 }
 
-export function stickyStoryFromSlides(slides: StorySlide[]) {
+export function stickySourceSlide(slides: StorySlide[]): StorySlide | undefined {
   const withSteps = slides.filter((s) => s.steps && s.steps.length >= 3)
   if (withSteps.length > 0) {
-    const best = withSteps.sort((a, b) => (b.steps?.length ?? 0) - (a.steps?.length ?? 0))[0]
+    return withSteps.sort((a, b) => (b.steps?.length ?? 0) - (a.steps?.length ?? 0))[0]
+  }
+  return slides.find((s) => s.layers && s.layers.length > 0)
+}
+
+export function stickyStoryFromSlides(slides: StorySlide[]) {
+  const source = stickySourceSlide(slides)
+  if (!source) return null
+
+  if (source.steps?.length) {
     return {
-      eyebrow: slideChapterLabel(best.type),
-      title: best.title ?? 'How it works',
-      intro: best.content,
+      eyebrow: slideChapterLabel(source.type),
+      title: source.title ?? 'How it works',
+      intro: source.content,
       steps:
-        best.steps?.map((step) => ({
+        source.steps.map((step) => ({
           title: step.title,
           description: step.description,
         })) ?? [],
     }
   }
 
-  const withLayers = slides.find((s) => s.layers && s.layers.length > 0)
-  if (withLayers) {
+  if (source.layers?.length) {
     return {
-      eyebrow: slideChapterLabel(withLayers.type),
-      title: withLayers.title ?? 'Architecture',
-      intro: withLayers.content,
+      eyebrow: slideChapterLabel(source.type),
+      title: source.title ?? 'Architecture',
+      intro: source.content,
       steps:
-        withLayers.layers?.map((layer) => ({
+        source.layers.map((layer) => ({
           title: layer.name,
           description: layer.description,
         })) ?? [],

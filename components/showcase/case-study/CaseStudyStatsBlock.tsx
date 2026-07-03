@@ -1,6 +1,7 @@
 'use client'
 
 import { Reveal } from '@/components/ui/Reveal'
+import { ChapterMarker } from '@/components/showcase/case-study/CaseStudyScenes'
 import type { StorySlide } from '@/lib/story-slide'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, slideChapterLabel } from '@/components/showcase/case-study/utils'
@@ -8,6 +9,9 @@ import { sceneThemeClasses, slideChapterLabel } from '@/components/showcase/case
 interface CaseStudyStatsBlockProps {
   slide: StorySlide
   accent: string
+  eyebrow?: string
+  chapterNumber?: number
+  chapterLabel?: string
 }
 
 function isAccessMatrix(stats: NonNullable<StorySlide['stats']>) {
@@ -103,7 +107,7 @@ function ImpactStats({
   )
 }
 
-export function CaseStudyStatsBlock({ slide, accent }: CaseStudyStatsBlockProps) {
+export function CaseStudyStatsBlock({ slide, accent, eyebrow, chapterNumber, chapterLabel }: CaseStudyStatsBlockProps) {
   const stats = slide.stats ?? []
   if (stats.length === 0) return null
 
@@ -114,10 +118,14 @@ export function CaseStudyStatsBlock({ slide, accent }: CaseStudyStatsBlockProps)
     <section className={cn('border-t px-6 py-24 md:px-12 md:py-32 lg:px-16', styles.border, styles.sectionAlt)}>
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <p className="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500">
-            {slideChapterLabel(slide.type)}
-          </p>
-          <h2 className="mt-4 max-w-3xl font-display text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.03em] text-white">
+          {chapterNumber != null && chapterLabel ? (
+            <ChapterMarker number={chapterNumber} label={chapterLabel} accent={accent} />
+          ) : (
+            <p className="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500">
+              {eyebrow ?? slideChapterLabel(slide.type)}
+            </p>
+          )}
+          <h2 className="mt-8 max-w-3xl font-display text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.03em] text-white">
             {slide.title}
           </h2>
           <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-zinc-400 md:text-xl">

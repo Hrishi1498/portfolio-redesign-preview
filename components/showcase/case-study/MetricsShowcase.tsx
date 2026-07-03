@@ -2,6 +2,7 @@
 
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
+import { ChapterMarker } from '@/components/showcase/case-study/CaseStudyScenes'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, type SceneTheme } from '@/components/showcase/case-study/utils'
 
@@ -11,7 +12,9 @@ interface Metric {
 }
 
 interface MetricsShowcaseProps {
-  eyebrow: string
+  eyebrow?: string
+  chapterNumber?: number
+  chapterLabel?: string
   headline: string
   subline?: string
   metrics: Metric[]
@@ -22,6 +25,8 @@ interface MetricsShowcaseProps {
 
 export function MetricsShowcase({
   eyebrow,
+  chapterNumber,
+  chapterLabel,
   headline,
   subline,
   metrics,
@@ -36,10 +41,12 @@ export function MetricsShowcase({
 
   const intro = (
     <>
-      {blurText ? (
+      {chapterNumber != null && chapterLabel ? (
+        <ChapterMarker number={chapterNumber} label={chapterLabel} accent={accent} theme={theme} />
+      ) : blurText ? (
         <BlurTextAnimation
           as="p"
-          text={eyebrow}
+          text={eyebrow ?? ''}
           variant="label"
           theme={blurTheme}
           textClassName="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500"
@@ -49,7 +56,7 @@ export function MetricsShowcase({
       )}
       <h2
         className={cn(
-          'mt-4 max-w-3xl font-display text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.02] tracking-[-0.03em]',
+          'mt-8 max-w-3xl font-display text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.02] tracking-[-0.03em]',
           styles.heading
         )}
       >

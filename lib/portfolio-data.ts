@@ -29,6 +29,8 @@ export interface PortfolioProject {
     coverAspect?: string
     /** Screenshot frame background — dark UI products use a black frame instead of white. */
     screenshotFrame?: 'light' | 'dark'
+    /** Default frame style for this project's screenshots. */
+    screenshotStyle?: 'minimal' | 'device'
     gallery?: string[]
   }
   links: {
@@ -71,6 +73,7 @@ export const portfolioProjects: PortfolioProject[] = [
       thumbnail: '/dpplogo.svg',
       cover: '/dpp-dashboard.png',
       coverAspect: '1024/490',
+      screenshotStyle: 'device',
     },
     links: {
       live: 'https://digipropass.com/',
@@ -250,6 +253,7 @@ export const portfolioProjects: PortfolioProject[] = [
       thumbnail: '/hf-logo.png',
       cover: '/hf-work-cover.png',
       coverAspect: '1024/490',
+      screenshotStyle: 'device',
     },
     links: {
       live: 'https://healthyfasal.com/',
@@ -451,6 +455,7 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     images: {
       thumbnail: '/nv-logo.jpeg',
+      screenshotFrame: 'dark',
     },
     links: {
       live: 'https://natsoft.com/',
@@ -493,6 +498,7 @@ export const portfolioProjects: PortfolioProject[] = [
         content: 'A user-friendly drag-and-drop flow builder where users can create conversation nodes, define prompts and responses, connect logic paths visually, configure fallback scenarios, and design complex multi-step call flows.',
         highlight: 'Usable by HR, Ops, and Business teams  not just engineers.',
         image: '/nv-designer.png',
+        imageAspect: '1906/791',
       },
       {
         id: 6,
@@ -515,6 +521,7 @@ export const portfolioProjects: PortfolioProject[] = [
         content: 'Create and manage multiple voice flows for different use cases  offer acceptance calls in English, Telugu, Kannada, insurance flows, and more. Each flow can be duplicated, edited, and tracked independently.',
         highlight: 'One platform serving dozens of use cases across languages.',
         image: '/nv-flows.png',
+        imageAspect: '1920/793',
       },
       {
         id: 8,
@@ -535,6 +542,7 @@ export const portfolioProjects: PortfolioProject[] = [
         content: 'Track every call with detailed metrics including LLM latency, TTS latency, hangup reasons, and call status. Filter by date range and view conversation transcripts with a single click.',
         highlight: 'Complete visibility into AI performance and call outcomes.',
         image: '/nv-analytics.png',
+        imageAspect: '1905/851',
       },
       {
         id: 10,
@@ -543,6 +551,7 @@ export const portfolioProjects: PortfolioProject[] = [
         content: 'Review actual AI conversations with timestamped messages, latency metrics per response, and full transcript history. See exactly how the AI handles different scenarios in real-time.',
         highlight: 'Every conversation becomes actionable intelligence.',
         image: '/nv-conversation.png',
+        imageAspect: '1917/866',
       },
       {
         id: 11,
@@ -604,6 +613,7 @@ export const portfolioProjects: PortfolioProject[] = [
         content: 'What started as a recruitment automation tool evolved into a full enterprise voice platform. Now deployed across recruitment, insurance, sales, and customer support  all from the same configurable platform.',
         highlight: 'One platform. Infinite voice use cases.',
         image: '/nv-dashboard.png',
+        imageAspect: '1917/791',
       },
       {
         id: 16,
@@ -788,6 +798,8 @@ export const portfolioProjects: PortfolioProject[] = [
         highlight: 'Secure entry into role-based financial workspaces.',
         image: '/axion-login-framed.png',
         imageAspect: '1024/490',
+        imageFrame: 'none',
+        imageFit: 'cover',
       },
       {
         id: 18,
@@ -824,6 +836,8 @@ export const portfolioProjects: PortfolioProject[] = [
         highlight: 'Transparent token economics aligned with platform value.',
         image: '/axion-wallet-framed.png',
         imageAspect: '1024/490',
+        imageFrame: 'none',
+        imageFit: 'cover',
       },
       {
         id: 5,
@@ -949,6 +963,7 @@ export const portfolioProjects: PortfolioProject[] = [
       thumbnail: '/cc-logo.png',
       cover: '/cc-work-cover.png',
       coverAspect: '1024/492',
+      screenshotStyle: 'device',
     },
     links: {},
     color: '#14B8A6',

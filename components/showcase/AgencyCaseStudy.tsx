@@ -1,22 +1,35 @@
 'use client'
 
 import Link from 'next/link'
+import { type ReactNode } from 'react'
 import { Reveal } from '@/components/ui/Reveal'
 import type { CaseStudyProject } from '@/lib/case-study-project'
 import { portfolioProjects } from '@/lib/portfolio-data'
+import type { StorySlide } from '@/lib/story-slide'
 import { MetricsShowcase } from '@/components/showcase/case-study/MetricsShowcase'
 import { CaseStudyStatsBlock } from '@/components/showcase/case-study/CaseStudyStatsBlock'
 import { StickyStorySection } from '@/components/showcase/case-study/StickyStorySection'
+import { ParallaxGallery } from '@/components/showcase/case-study/ParallaxGallery'
 import {
+  CASE_STUDY_UI_ASPECT,
+  CaseStudyScreenshot,
+} from '@/components/showcase/case-study/CaseStudyScreenshot'
+import { liveUrlLabel } from '@/components/showcase/case-study/screenshot-frame'
+import {
+  ChapterMarker,
   FeatureGridScene,
   FullBleedVisual,
   MetaItem,
   StatementScene,
+  TestimonialScene,
 } from '@/components/showcase/case-study/CaseStudyScenes'
 import { PORTFOLIO_SECTION_HREF } from '@/lib/site'
 import {
+  heroImage,
   slideChapterLabel,
+  stickySourceSlide,
   stickyStoryFromSlides,
+  type SceneTheme,
 } from '@/components/showcase/case-study/utils'
 
 interface AgencyCaseStudyProps {
@@ -24,51 +37,222 @@ interface AgencyCaseStudyProps {
   backHref?: string
 }
 
+function sectionTheme(chapterNumber: number): SceneTheme {
+  return chapterNumber % 2 === 0 ? 'light' : 'dark'
+}
+
 export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: AgencyCaseStudyProps) {
   const slides = project.slides ?? []
   const accent = project.color
   const snapshotMetrics = project.metrics ?? []
-  const statsSlides = slides.filter((s) => s.type === 'stats' && s.stats?.length)
+  const coverSrc = heroImage(project)
 
-  const problemSlide = slides.find((s) => s.type === 'problem')
-  const solutionSlide = slides.find((s) => s.type === 'solution')
-  const featuresSlide = slides.find((s) => s.type === 'features')
-  const conclusionSlide = slides.find((s) => s.type === 'conclusion') ?? slides[slides.length - 1]
-  const stickyStory = stickyStoryFromSlides(slides)
-
-  const platformSlides = slides.filter(
-    (s) => s.type === 'scene' && s.image && s.id !== problemSlide?.id
-  )
-
-  const usedSlideIds = new Set<number>([
-    problemSlide?.id,
-    solutionSlide?.id,
-    featuresSlide?.id,
-    conclusionSlide?.id,
-    ...platformSlides.map((s) => s.id),
-    ...statsSlides.map((s) => s.id),
-  ].filter((id): id is number => id !== undefined))
-
-  if (stickyStory) {
-    const stickySource = slides.find((s) => s.steps?.length || s.layers?.length)
-    if (stickySource) usedSlideIds.add(stickySource.id)
+  let chapterNum = 0
+  const nextChapter = (label: string) => {
+    chapterNum += 1
+    return { number: chapterNum, label, theme: sectionTheme(chapterNum) }
   }
 
-  const narrativeSlides = slides.filter(
-    (s) =>
-      !usedSlideIds.has(s.id) &&
-      s.type !== 'stats' &&
-      s.type !== 'intro' &&
-      s.type !== 'testimonial' &&
-      !s.image &&
-      !s.galleryImages?.length
-  )
+  const stickySource = stickySourceSlide(slides)
+  const stickyStory = stickyStoryFromSlides(slides)
+  let stickyRendered = false
+
+  const deviceLabel = liveUrlLabel(project.liveUrl, `${project.slug.replace(/-/g, '')}.com`)
+  const conclusionSlide = slides.find((s) => s.type === 'conclusion') ?? slides[slides.length - 1]
 
   const currentIndex = portfolioProjects.findIndex((p) => p.slug === project.slug)
   const nextProject =
     currentIndex >= 0
       ? portfolioProjects[(currentIndex + 1) % portfolioProjects.length]
       : portfolioProjects[0]
+
+  const renderStatement = (
+    slide: StorySlide,
+    ch: { number: number; label: string; theme: SceneTheme },
+    align: 'left' | 'center' = 'left'
+  ) => (
+    <StatementScene
+      key={slide.id}
+      chapterNumber={ch.number}
+      chapterLabel={ch.label}
+      headline={slide.title ?? ch.label}
+      body={slide.content}
+      pullQuote={slide.highlight}
+      accent={accent}
+      align={align}
+      theme={ch.theme}
+    />
+  )
+
+  const slideSections: ReactNode[] = []
+
+  for (const slide of slides) {
+    const ch = nextChapter(slideChapterLabel(slide.type))
+
+    if (
+      stickyStory &&
+      stickySource?.id === slide.id &&
+      !stickyRendered &&
+      (slide.type === 'process' || slide.type === 'architecture')
+    ) {
+      stickyRendered = true
+      slideSections.push(
+        <StickyStorySection
+          key={`sticky-${slide.id}`}
+          chapterNumber={ch.number}
+          chapterLabel={ch.label}
+          title={stickyStory.title}
+          intro={stickyStory.intro}
+          steps={stickyStory.steps}
+          accent={accent}
+          theme={ch.theme}
+        />
+      )
+      continue
+    }
+
+    switch (slide.type) {
+      case 'intro':
+      case 'problem':
+      case 'solution':
+      case 'insight':
+        slideSections.push(
+          renderStatement(slide, ch, slide.type === 'problem' ? 'center' : 'left')
+        )
+        break
+
+      case 'scene':
+        if (slide.image) {
+          slideSections.push(
+            <FullBleedVisual
+              key={slide.id}
+              chapterNumber={ch.number}
+              chapterLabel={ch.label}
+              title={slide.title ?? project.title}
+              body={slide.content}
+              pullQuote={slide.highlight}
+              image={slide.image}
+              accent={accent}
+              layout="cinematic"
+              theme={ch.theme}
+              imageAspect={slide.imageAspect}
+              screenshotFrame={project.screenshotFrame}
+              screenshotStyle={project.screenshotStyle}
+              slideFrame={slide.imageFrame}
+              deviceLabel={deviceLabel}
+              imageFit={slide.imageFit}
+            />
+          )
+        } else {
+          slideSections.push(renderStatement(slide, ch))
+        }
+        break
+
+      case 'process':
+      case 'architecture':
+        slideSections.push(renderStatement(slide, ch))
+        break
+
+      case 'features':
+        if (slide.features?.length) {
+          slideSections.push(
+            <FeatureGridScene
+              key={slide.id}
+              chapterNumber={ch.number}
+              chapterLabel={ch.label}
+              title={slide.title ?? 'Capabilities'}
+              body={slide.content}
+              features={slide.features}
+              accent={accent}
+              theme={ch.theme}
+            />
+          )
+        }
+        break
+
+      case 'stats':
+        if (slide.stats?.length) {
+          slideSections.push(
+            <CaseStudyStatsBlock
+              key={slide.id}
+              slide={slide}
+              accent={accent}
+              chapterNumber={ch.number}
+              chapterLabel={ch.label}
+            />
+          )
+        }
+        break
+
+      case 'gallery':
+        if (slide.galleryImages?.length) {
+          slideSections.push(
+            <ParallaxGallery
+              key={slide.id}
+              chapterNumber={ch.number}
+              chapterLabel={ch.label}
+              title={slide.title ?? 'Project Gallery'}
+              description={slide.content}
+              images={slide.galleryImages}
+              accent={accent}
+              theme={ch.theme}
+              screenshotFrame={project.screenshotFrame}
+              screenshotStyle={project.screenshotStyle}
+              deviceLabel={deviceLabel}
+            />
+          )
+        }
+        break
+
+      case 'conclusion':
+        if (slide.image) {
+          slideSections.push(
+            <FullBleedVisual
+              key={slide.id}
+              chapterNumber={ch.number}
+              chapterLabel={ch.label}
+              title={slide.title ?? project.title}
+              body={slide.content}
+              pullQuote={slide.highlight}
+              image={slide.image}
+              accent={accent}
+              layout="cinematic"
+              theme={ch.theme}
+              imageAspect={slide.imageAspect}
+              screenshotFrame={project.screenshotFrame}
+              screenshotStyle={project.screenshotStyle}
+              slideFrame={slide.imageFrame}
+              deviceLabel={deviceLabel}
+              imageFit={slide.imageFit}
+            />
+          )
+        } else {
+          slideSections.push(renderStatement(slide, ch, 'center'))
+        }
+        break
+
+      case 'testimonial':
+        slideSections.push(
+          <TestimonialScene
+            key={slide.id}
+            chapterNumber={ch.number}
+            chapterLabel={ch.label}
+            quote={slide.highlight ?? slide.content}
+            attribution={slide.title ?? slide.dialogue}
+            accent={accent}
+            theme={ch.theme}
+          />
+        )
+        break
+
+      default:
+        slideSections.push(renderStatement(slide, ch))
+        break
+    }
+  }
+
+  const metricsChapter = nextChapter(project.metricsSection?.eyebrow ?? 'Results & Impact')
+  const closingChapter = nextChapter('Next Project')
 
   return (
     <article id="case-study-article" className="bg-[#050505] text-white antialiased">
@@ -85,37 +269,56 @@ export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: 
         <div className="h-px w-full" style={{ backgroundColor: `${accent}88` }} />
       </header>
 
-      {/* Scene 1 - Hero */}
-      <section className="relative overflow-hidden px-6 pb-16 pt-16 md:px-12 md:pb-24 md:pt-24 lg:px-16">
+      {/* Cinematic hero */}
+      <section className="relative flex min-h-[min(100vh,920px)] flex-col justify-end overflow-hidden">
         <div
-          className="pointer-events-none absolute inset-0 opacity-30"
+          className="pointer-events-none absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 70% 55% at 80% 10%, ${accent}20 0%, transparent 65%)`,
+            background: `radial-gradient(ellipse 90% 70% at 70% -10%, ${accent}30 0%, transparent 55%), linear-gradient(to bottom, #0a0a0a 0%, #050505 100%)`,
           }}
         />
 
-        <div className="relative mx-auto max-w-[1400px]">
+        <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-14 pt-32 md:px-12 md:pb-20 md:pt-40 lg:px-16">
           <Reveal>
             <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-white/10 px-3 py-1 font-heading text-xs uppercase tracking-[0.16em] text-zinc-400">
+              <span className="rounded-full border border-white/15 bg-black/30 px-3 py-1 font-heading text-xs uppercase tracking-[0.16em] text-zinc-300 backdrop-blur-sm">
                 {project.industry}
               </span>
               {project.year && (
-                <span className="rounded-full border border-white/10 px-3 py-1 font-heading text-xs uppercase tracking-[0.16em] text-zinc-400">
-                  {project.year}
+                <span className="rounded-full border border-white/15 bg-black/30 px-3 py-1 font-heading text-xs uppercase tracking-[0.16em] text-zinc-300 backdrop-blur-sm">
+                  {project.duration} · {project.year}
                 </span>
               )}
+              {project.tech.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-white/10 bg-black/20 px-3 py-1 font-heading text-xs uppercase tracking-[0.16em] text-zinc-400 backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
 
-            <h1 className="mt-8 max-w-5xl font-display text-[clamp(3.25rem,9vw,7.5rem)] font-bold leading-[0.95] tracking-[-0.045em] text-white">
+            <h1 className="mt-10 max-w-5xl font-display text-[clamp(3.5rem,10vw,8.5rem)] font-bold leading-[0.92] tracking-[-0.05em] text-white">
               {project.title}
             </h1>
-            <p className="mt-8 max-w-3xl font-body text-2xl leading-relaxed text-zinc-400 md:text-3xl md:leading-relaxed">
+            <p className="mt-8 max-w-3xl font-body text-xl leading-relaxed text-zinc-300 md:text-2xl md:leading-relaxed lg:text-3xl">
               {project.tagline}
             </p>
+
+            {project.links?.live && (
+              <a
+                href={project.links.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-10 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-7 py-3.5 font-heading text-sm uppercase tracking-[0.18em] text-white backdrop-blur-sm transition-colors hover:border-white/35 hover:bg-white/15"
+              >
+                View live product →
+              </a>
+            )}
           </Reveal>
 
-          <Reveal className="mt-12 grid gap-8 border-t border-white/[0.08] pt-10 sm:grid-cols-2 lg:grid-cols-4">
+          <Reveal className="mt-14 grid gap-8 border-t border-white/[0.12] pt-10 sm:grid-cols-2 lg:grid-cols-4">
             <MetaItem label="Industry" value={project.industry} />
             <MetaItem label="Timeline" value={project.duration} />
             <MetaItem label="Role" value={project.role} />
@@ -124,107 +327,49 @@ export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: 
               value={project.tech.length > 0 ? project.tech.slice(0, 3).join(' · ') : project.categoryLabel}
             />
           </Reveal>
+
+          {coverSrc && (
+            <Reveal className="mt-14 md:mt-16">
+              <CaseStudyScreenshot
+                src={coverSrc}
+                alt={project.title}
+                layout="cinematic"
+                aspectRatio={project.coverAspect ?? CASE_STUDY_UI_ASPECT}
+                frameTheme={project.screenshotFrame ?? 'light'}
+                sectionTheme="dark"
+                frameVariant={project.screenshotStyle === 'device' ? 'device' : undefined}
+                projectStyle={project.screenshotStyle}
+                deviceLabel={deviceLabel}
+                imageFit="contain"
+                className="mx-auto"
+              />
+            </Reveal>
+          )}
         </div>
       </section>
 
-      {/* Scene 2 - Problem */}
-      {problemSlide && (
-        <StatementScene
-          eyebrow={slideChapterLabel(problemSlide.type)}
-          headline={problemSlide.title ?? 'The Problem'}
-          body={problemSlide.content}
-          pullQuote={problemSlide.highlight}
-          accent={accent}
-          align="center"
-        />
-      )}
+      {slideSections}
 
-      {/* Scene 3 - Solution */}
-      {solutionSlide && (
-        <StatementScene
-          eyebrow={slideChapterLabel(solutionSlide.type)}
-          headline={solutionSlide.title ?? 'The Solution'}
-          body={solutionSlide.content}
-          pullQuote={solutionSlide.highlight}
-          accent={accent}
-        />
-      )}
-
-      {/* Platform experience - full-bleed visuals */}
-      {platformSlides.map((slide, index) => (
-        <FullBleedVisual
-          key={slide.id}
-          eyebrow={slideChapterLabel(slide.type)}
-          title={slide.title ?? project.title}
-          body={slide.content}
-          pullQuote={slide.highlight}
-          image={slide.image!}
-          accent={accent}
-          reverse={index % 2 === 1}
-          imageAspect={slide.imageAspect}
-          screenshotFrame={project.screenshotFrame}
-          imageFit={slide.imageFit}
-        />
-      ))}
-
-      {/* Sticky storytelling */}
-      {stickyStory && (
-        <StickyStorySection
-          eyebrow={stickyStory.eyebrow}
-          title={stickyStory.title}
-          intro={stickyStory.intro}
-          steps={stickyStory.steps}
-          accent={accent}
-        />
-      )}
-
-      {/* Capabilities */}
-      {featuresSlide?.features?.length ? (
-        <FeatureGridScene
-          eyebrow={slideChapterLabel(featuresSlide.type)}
-          title={featuresSlide.title ?? 'Capabilities'}
-          body={featuresSlide.content}
-          features={featuresSlide.features}
-          accent={accent}
-        />
-      ) : null}
-
-      {/* Stats chapters — impact numbers or access matrices */}
-      {statsSlides.map((slide) => (
-        <CaseStudyStatsBlock key={slide.id} slide={slide} accent={accent} />
-      ))}
-
-      {/* Extra narrative beats without visuals */}
-      {narrativeSlides.map((slide) => (
-        <StatementScene
-          key={slide.id}
-          eyebrow={slideChapterLabel(slide.type)}
-          headline={slide.title ?? slideChapterLabel(slide.type)}
-          body={slide.content}
-          pullQuote={slide.highlight}
-          accent={accent}
-          align={slide.type === 'conclusion' ? 'center' : 'left'}
-        />
-      ))}
-
-      {/* Project snapshot / results metrics */}
       <MetricsShowcase
-        eyebrow={project.metricsSection?.eyebrow ?? 'Results & Impact'}
+        chapterNumber={metricsChapter.number}
+        chapterLabel={metricsChapter.label}
         headline={project.metricsSection?.headline ?? 'Built for scale. Proven in market.'}
-        subline={conclusionSlide?.content}
         metrics={snapshotMetrics}
         accent={accent}
+        theme={metricsChapter.theme}
       />
 
-      {/* Closing CTA */}
       <section className="relative z-10 border-t border-white/[0.06] bg-[#050505] px-6 pb-24 pt-32 md:px-12 md:pb-32 md:pt-44 lg:px-16 lg:pt-52">
         <div className="mx-auto max-w-7xl text-center">
           <Reveal>
-            <p className="font-heading text-sm uppercase tracking-[0.28em] text-zinc-500" style={{ color: accent }}>
-              Next Project
-            </p>
-            <h2 className="mt-4 font-display text-[clamp(2.5rem,6vw,4.75rem)] font-bold tracking-[-0.03em] text-white">
-              {conclusionSlide?.title ?? 'Continue exploring our work'}
+            <ChapterMarker
+              number={closingChapter.number}
+              label={closingChapter.label}
+              accent={accent}
+              align="center"
+            />
+            <h2 className="mt-8 font-display text-[clamp(2.5rem,6vw,4.75rem)] font-bold tracking-[-0.03em] text-white">
+              {nextProject?.title ?? conclusionSlide?.title ?? 'Continue exploring our work'}
             </h2>
             {conclusionSlide?.highlight && (
               <p className="mx-auto mt-6 max-w-2xl font-body text-xl text-zinc-400 md:text-2xl">

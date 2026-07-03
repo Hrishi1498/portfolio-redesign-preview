@@ -22,7 +22,10 @@ export interface CaseStudyProject {
   color: string
   thumbnail?: string
   cover?: string
+  coverAspect?: string
   screenshotFrame?: 'light' | 'dark'
+  screenshotStyle?: 'minimal' | 'device'
+  liveUrl?: string
   slides?: StorySlide[]
   links?: {
     live?: string
@@ -47,9 +50,12 @@ export function fromPortfolioProject(project: PortfolioProject): CaseStudyProjec
     color: project.color,
     thumbnail: project.images.thumbnail,
     cover: project.images.cover,
+    coverAspect: project.images.coverAspect,
     screenshotFrame: project.images.screenshotFrame,
+    screenshotStyle: project.images.screenshotStyle,
     slides: project.slides,
     links: project.links,
+    liveUrl: project.links.live,
   }
 }
 

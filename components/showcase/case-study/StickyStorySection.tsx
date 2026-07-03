@@ -2,6 +2,7 @@
 
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
+import { ChapterMarker } from '@/components/showcase/case-study/CaseStudyScenes'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, type SceneTheme } from '@/components/showcase/case-study/utils'
 
@@ -11,7 +12,9 @@ interface StickyStoryStep {
 }
 
 interface StickyStorySectionProps {
-  eyebrow: string
+  eyebrow?: string
+  chapterNumber?: number
+  chapterLabel?: string
   title: string
   intro?: string
   steps: StickyStoryStep[]
@@ -22,6 +25,8 @@ interface StickyStorySectionProps {
 
 export function StickyStorySection({
   eyebrow,
+  chapterNumber,
+  chapterLabel,
   title,
   intro,
   steps,
@@ -36,9 +41,11 @@ export function StickyStorySection({
 
   const sidebar = (
     <>
-      {blurText ? (
+      {chapterNumber != null && chapterLabel ? (
+        <ChapterMarker number={chapterNumber} label={chapterLabel} accent={accent} theme={theme} />
+      ) : blurText ? (
         <p className="font-heading text-sm uppercase tracking-[0.28em]" style={{ color: accent }}>
-          <BlurTextAnimation as="span" text={eyebrow} variant="label" theme={blurTheme} />
+          <BlurTextAnimation as="span" text={eyebrow ?? ''} variant="label" theme={blurTheme} />
         </p>
       ) : (
         <p className="font-heading text-sm uppercase tracking-[0.28em]" style={{ color: accent }}>

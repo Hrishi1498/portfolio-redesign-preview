@@ -14,6 +14,8 @@ export interface StorySlide {
   imageAspect?: string
   /** How the image fills its frame when aspect ratios differ. */
   imageFit?: 'contain' | 'cover'
+  /** Override frame style for this slide's image. */
+  imageFrame?: 'none' | 'minimal' | 'device' | 'rezonna'
   testimonialImages?: string[]
   galleryImages?: string[]
   features?: { icon: string; title: string; description: string }[]
