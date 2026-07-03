@@ -19,18 +19,6 @@ export interface CaseStudy {
   prevSlug?: string
 }
 
-export type Category = 'all' | 'llm' | 'agents' | 'prompts' | 'rag' | 'ux' | 'recruitment'
-
-export const categories = [
-  { id: 'all' as Category, label: 'All' },
-  { id: 'llm' as Category, label: 'LLMs' },
-  { id: 'agents' as Category, label: 'AI Agents' },
-  { id: 'prompts' as Category, label: 'Prompting' },
-  { id: 'rag' as Category, label: 'RAG' },
-  { id: 'ux' as Category, label: 'AI UX' },
-  { id: 'recruitment' as Category, label: 'Recruitment' },
-]
-
 export const caseStudies: CaseStudy[] = [
   {
     id: '1',

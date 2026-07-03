@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
 import { CaseStudyScreenshot } from '@/components/showcase/case-study/CaseStudyScreenshot'
@@ -502,29 +501,6 @@ export function FeatureGridScene({
         </div>
       </div>
     </section>
-  )
-}
-
-export function HeroVisual({
-  src,
-  alt,
-  accent,
-  theme = 'dark',
-}: {
-  src: string
-  alt: string
-  accent: string
-  theme?: SceneTheme
-}) {
-  const styles = sceneThemeClasses(theme)
-
-  return (
-    <figure className={cn('relative overflow-hidden rounded-[1.25rem] md:rounded-[1.5rem]', styles.heroFrame)}>
-      <div className="absolute inset-x-0 top-0 z-10 h-px" style={{ backgroundColor: accent }} />
-      <div className="relative aspect-[16/9] w-full md:aspect-[21/9]">
-        <Image src={src} alt={alt} fill unoptimized className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 1024px" />
-      </div>
-    </figure>
   )
 }
 

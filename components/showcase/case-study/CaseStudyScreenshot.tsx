@@ -18,7 +18,6 @@ export const PRODUCT_IMAGE_FRAME_CLASS =
   'overflow-hidden rounded-[2.5rem] border-[3px] border-black shadow-[0_0_0_3px_#fff,0_28px_80px_-32px_rgba(0,0,0,0.5)]'
 
 export const PRODUCT_IMAGE_FRAME_LIGHT_CLASS = cn(PRODUCT_IMAGE_FRAME_CLASS, 'bg-white')
-export const PRODUCT_IMAGE_FRAME_DARK_CLASS = cn(PRODUCT_IMAGE_FRAME_CLASS, 'bg-[#050505]')
 
 export function nativeWidthFromAspect(aspectRatio: string): number | undefined {
   const [width] = aspectRatio.split('/').map(Number)

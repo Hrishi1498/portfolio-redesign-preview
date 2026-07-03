@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { googleSansFlex } from '@/lib/fonts'
-import { SmoothScroll } from '@/components/providers/SmoothScroll'
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={googleSansFlex.variable}>
       <body className={`${googleSansFlex.className} antialiased`}>
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
       </body>
     </html>
   )
