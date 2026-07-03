@@ -237,7 +237,7 @@ export function WorkProjectCard({
   const filter = useTransform(cardBlur, (value) => `blur(${value}px)`)
 
   const hasStory = Boolean(project.slides?.length)
-  const href = hasStory ? `/work/${project.slug}` : project.links.live
+  const href = hasStory ? `/projects/${project.slug}` : project.links.live
   const tags = getProjectTags(project)
   const number = String(index + 1).padStart(2, '0')
   const reversed = index % 2 === 1

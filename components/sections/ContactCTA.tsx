@@ -44,7 +44,7 @@ export function ContactCTA() {
                 <div className="absolute inset-0 translate-x-[-200%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-[200%]" />
               </a>
               <Link
-                href="/work"
+                href="/projects"
                 className="group relative overflow-hidden rounded-full border border-zinc-300 px-8 py-3.5 font-heading text-sm font-medium text-zinc-900 transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400 hover:bg-zinc-50"
               >
                 <span className="relative z-10">View our work</span>

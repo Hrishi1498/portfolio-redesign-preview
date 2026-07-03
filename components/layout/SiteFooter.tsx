@@ -43,7 +43,7 @@ export function SiteFooter({ compact = false, showLegalInfo = false }: SiteFoote
               <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 md:justify-start">
                 <li>
                   <Link
-                    href="/work"
+                    href="/projects"
                     className="font-body text-sm text-white transition-opacity hover:opacity-60"
                   >
                     Work
