@@ -2,16 +2,9 @@
 
 import type { ReactNode } from 'react'
 import type { PortfolioProject } from '@/lib/portfolio-data'
+import { sortPortfolioProjects } from '@/lib/project-utils'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { WorkProjectCard } from '@/components/showcase/WorkProjectCard'
-
-function sortProjects(projects: PortfolioProject[]) {
-  return [...projects].sort((a, b) => {
-    if (a.featured && !b.featured) return -1
-    if (!a.featured && b.featured) return 1
-    return Number(b.year) - Number(a.year)
-  })
-}
 
 interface WorkProjectsListProps {
   projects: PortfolioProject[]
@@ -36,7 +29,7 @@ export function WorkProjectsList({
   trailingContent,
   showLegalInfo = false,
 }: WorkProjectsListProps) {
-  const sorted = sortProjects(projects)
+  const sorted = sortPortfolioProjects(projects)
 
   return (
     <>

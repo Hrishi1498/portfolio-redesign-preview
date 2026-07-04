@@ -1,4 +1,4 @@
-export const BOOKING_URL = 'https://tidycal.com/bitblabs/project-discussion'
+export const BOOKING_URL = 'https://calendly.com/gshubham/discovery-call'
 
 export const LEGAL_NAME = 'BitB Labs LLP'
 

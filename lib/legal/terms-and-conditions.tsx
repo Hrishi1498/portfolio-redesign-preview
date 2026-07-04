@@ -94,7 +94,7 @@ export const termsSections: LegalSection[] = [
             rel="noopener noreferrer"
             className="text-zinc-300 transition-opacity hover:opacity-60"
           >
-            TidyCal
+            Calendly
           </a>
           . Booking a call does not create a client relationship until both parties agree to formal
           terms.
