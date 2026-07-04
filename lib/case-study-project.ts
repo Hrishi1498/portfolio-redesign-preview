@@ -22,6 +22,7 @@ export interface CaseStudyProject {
   color: string
   thumbnail?: string
   cover?: string
+  coverVideo?: string
   coverAspect?: string
   screenshotFrame?: 'light' | 'dark'
   screenshotStyle?: 'minimal' | 'device'
@@ -50,6 +51,7 @@ export function fromPortfolioProject(project: PortfolioProject): CaseStudyProjec
     color: project.color,
     thumbnail: project.images.thumbnail,
     cover: project.images.cover,
+    coverVideo: project.images.coverVideo,
     coverAspect: project.images.coverAspect,
     screenshotFrame: project.images.screenshotFrame,
     screenshotStyle: project.images.screenshotStyle,

@@ -1,11 +1,57 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { Reveal } from '@/components/ui/Reveal'
 import { BlurTextAnimation } from '@/components/ui/BlurTextAnimation'
 import { CaseStudyScreenshot } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import type { ImageFrameVariant } from '@/components/showcase/case-study/screenshot-frame'
 import { cn } from '@/lib/utils'
 import { sceneThemeClasses, type SceneTheme } from '@/components/showcase/case-study/utils'
+
+function SectionBackgroundVideo({ src }: { src: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+          void video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: [0, 0.2, 0.5, 1] },
+    )
+
+    observer.observe(video)
+    return () => {
+      observer.disconnect()
+      video.pause()
+    }
+  }, [src])
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      <video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover"
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+      />
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/25 to-black/45" />
+    </div>
+  )
+}
 
 export const labelClass = 'font-heading text-sm uppercase tracking-[0.28em] text-zinc-500'
 
@@ -143,6 +189,7 @@ export function StatementScene({
   align = 'left',
   theme = 'dark',
   blurText = false,
+  backgroundVideo,
 }: {
   eyebrow?: string
   chapterNumber?: number
@@ -154,9 +201,11 @@ export function StatementScene({
   align?: 'left' | 'center'
   theme?: SceneTheme
   blurText?: boolean
+  backgroundVideo?: string
 }) {
-  const styles = sceneThemeClasses(theme)
-  const blurTheme = sceneThemeForBlur(theme)
+  const effectiveTheme: SceneTheme = backgroundVideo ? 'dark' : theme
+  const styles = sceneThemeClasses(effectiveTheme)
+  const blurTheme = sceneThemeForBlur(effectiveTheme)
 
   const content = (
     <>
@@ -165,7 +214,7 @@ export function StatementScene({
         chapterLabel={chapterLabel}
         eyebrow={eyebrow}
         accent={accent}
-        theme={theme}
+        theme={effectiveTheme}
         align={align}
         blurText={blurText}
       />
@@ -192,7 +241,7 @@ export function StatementScene({
           theme={blurTheme}
           className={cn(
             'mt-8 font-body text-xl md:text-2xl md:leading-[1.75]',
-            styles.body,
+            backgroundVideo ? 'text-zinc-200' : styles.body,
             align === 'center' ? 'mx-auto max-w-3xl' : 'max-w-3xl'
           )}
           startDelay={0.16}
@@ -201,7 +250,7 @@ export function StatementScene({
         <p
           className={cn(
             'mt-8 font-body text-xl leading-relaxed md:text-2xl md:leading-[1.75]',
-            styles.body,
+            backgroundVideo ? 'text-zinc-200' : styles.body,
             align === 'center' ? 'mx-auto max-w-3xl' : 'max-w-3xl'
           )}
         >
@@ -213,7 +262,7 @@ export function StatementScene({
           <div
             className={cn(
               'mt-10 border-l-2 pl-6 font-display text-2xl italic md:text-3xl',
-              styles.pullQuote,
+              backgroundVideo ? 'text-white' : styles.pullQuote,
               align === 'center' && 'mx-auto max-w-3xl border-l-0 border-t pt-8 pl-0'
             )}
             style={{ borderColor: accent }}
@@ -224,7 +273,7 @@ export function StatementScene({
           <p
             className={cn(
               'mt-10 border-l-2 pl-6 font-display text-2xl italic leading-relaxed md:text-3xl',
-              styles.pullQuote,
+              backgroundVideo ? 'text-white' : styles.pullQuote,
               align === 'center' && 'mx-auto max-w-3xl border-l-0 border-t pt-8 pl-0'
             )}
             style={{ borderColor: accent }}
@@ -236,8 +285,20 @@ export function StatementScene({
   )
 
   return (
-    <section className={cn('border-t px-6 py-28 md:px-12 md:py-36 lg:px-16 lg:py-40', styles.border, styles.section)}>
-      <div className={cn('mx-auto max-w-7xl', align === 'center' && 'text-center')}>
+    <section
+      className={cn(
+        'relative overflow-hidden border-t px-6 py-28 md:px-12 md:py-36 lg:px-16 lg:py-40',
+        backgroundVideo ? 'border-white/[0.08] bg-[#050505]' : cn(styles.border, styles.section)
+      )}
+    >
+      {backgroundVideo ? <SectionBackgroundVideo src={backgroundVideo} /> : null}
+      <div
+        className={cn(
+          'relative z-[1] mx-auto max-w-7xl',
+          align === 'center' && 'text-center',
+          backgroundVideo && '[text-shadow:0_1px_18px_rgba(0,0,0,0.45)]'
+        )}
+      >
         {blurText ? content : <Reveal>{content}</Reveal>}
       </div>
     </section>
@@ -406,6 +467,7 @@ export function FeatureGridScene({
   accent,
   theme = 'dark',
   blurText = false,
+  backgroundVideo,
 }: {
   eyebrow?: string
   chapterNumber?: number
@@ -416,9 +478,15 @@ export function FeatureGridScene({
   accent: string
   theme?: SceneTheme
   blurText?: boolean
+  backgroundVideo?: string
 }) {
-  const styles = sceneThemeClasses(theme)
-  const blurTheme = sceneThemeForBlur(theme)
+  const effectiveTheme: SceneTheme = backgroundVideo ? 'dark' : theme
+  const styles = sceneThemeClasses(effectiveTheme)
+  const blurTheme = sceneThemeForBlur(effectiveTheme)
+  const bodyClass = backgroundVideo ? 'text-zinc-200' : styles.body
+  const cardClass = backgroundVideo
+    ? 'border-white/15 bg-black/55 backdrop-blur-sm'
+    : styles.card
 
   const intro = (
     <>
@@ -427,7 +495,7 @@ export function FeatureGridScene({
         chapterLabel={chapterLabel}
         eyebrow={eyebrow}
         accent={accent}
-        theme={theme}
+        theme={effectiveTheme}
         blurText={blurText}
       />
       <h2
@@ -448,23 +516,34 @@ export function FeatureGridScene({
           text={body}
           variant="body"
           theme={blurTheme}
-          className={cn('mt-6 max-w-2xl font-body text-xl md:text-2xl', styles.body)}
+          className={cn('mt-6 max-w-2xl font-body text-xl md:text-2xl', bodyClass)}
           startDelay={0.16}
         />
       ) : (
-        <p className={cn('mt-6 max-w-2xl font-body text-xl leading-relaxed md:text-2xl', styles.body)}>{body}</p>
+        <p className={cn('mt-6 max-w-2xl font-body text-xl leading-relaxed md:text-2xl', bodyClass)}>{body}</p>
       )}
     </>
   )
 
   return (
-    <section className={cn('border-t px-6 py-24 md:px-12 md:py-32 lg:px-16', styles.border, styles.sectionAlt)}>
-      <div className="mx-auto max-w-7xl">
+    <section
+      className={cn(
+        'relative overflow-hidden border-t px-6 py-24 md:px-12 md:py-32 lg:px-16',
+        backgroundVideo ? 'border-white/[0.08] bg-[#050505]' : cn(styles.border, styles.sectionAlt)
+      )}
+    >
+      {backgroundVideo ? <SectionBackgroundVideo src={backgroundVideo} /> : null}
+      <div
+        className={cn(
+          'relative z-[1] mx-auto max-w-7xl',
+          backgroundVideo && '[text-shadow:0_1px_18px_rgba(0,0,0,0.45)]'
+        )}
+      >
         {blurText ? intro : <Reveal>{intro}</Reveal>}
 
         <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, i) => (
-            <div key={feature.title} className={cn('h-full rounded-2xl p-6 md:p-8', styles.card)}>
+            <div key={feature.title} className={cn('h-full rounded-2xl p-6 md:p-8', cardClass)}>
               <div className="mb-5 h-px w-10" style={{ backgroundColor: accent }} />
               {blurText ? (
                 <>
@@ -482,7 +561,7 @@ export function FeatureGridScene({
                     text={feature.description}
                     variant="body"
                     theme={blurTheme}
-                    className={cn('mt-3 font-body text-base md:text-lg', styles.body)}
+                    className={cn('mt-3 font-body text-base md:text-lg', bodyClass)}
                     startDelay={i * 0.04 + 0.08}
                   />
                 </>
@@ -491,7 +570,7 @@ export function FeatureGridScene({
                   <h3 className={cn('font-display text-2xl font-semibold tracking-tight', styles.heading)}>
                     {feature.title}
                   </h3>
-                  <p className={cn('mt-3 font-body text-base leading-relaxed md:text-lg', styles.body)}>
+                  <p className={cn('mt-3 font-body text-base leading-relaxed md:text-lg', bodyClass)}>
                     {feature.description}
                   </p>
                 </Reveal>

@@ -2,7 +2,7 @@
 
 import { portfolioProjects } from '@/lib/portfolio-data'
 import { WorkProjectsList } from '@/components/showcase/WorkProjectsList'
-import { RezonnaProductSpotlight } from '@/components/sections/RezonnaProductSpotlight'
+import { StudioProducts } from '@/components/sections/StudioProducts'
 import { releaseHomeScrollLock } from '@/lib/home-scroll-lock'
 
 export function SelectedWork() {
@@ -14,7 +14,7 @@ export function SelectedWork() {
       <WorkProjectsList
         projects={portfolioProjects}
         onNavigate={() => releaseHomeScrollLock()}
-        trailingContent={<RezonnaProductSpotlight embedded />}
+        trailingContent={<StudioProducts embedded />}
         showLegalInfo
       />
     </section>

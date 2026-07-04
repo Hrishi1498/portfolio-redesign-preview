@@ -14,7 +14,7 @@ import {
 import { cn } from '@/lib/utils'
 
 interface SiteFooterProps {
-  /** Spacing when placed directly after portfolio / Rezonna. */
+  /** Spacing when placed directly after portfolio / studio products. */
   compact?: boolean
   /** Company legal details and policy links (home page only). */
   showLegalInfo?: boolean

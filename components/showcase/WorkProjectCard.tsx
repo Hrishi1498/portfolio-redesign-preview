@@ -173,30 +173,43 @@ export function WorkProjectCard({
       }
     }
 
+    const applyExit = (exitProgress: number, { fadeOpacity }: { fadeOpacity: boolean }) => {
+      const range = exitEnd - exitStart
+      const rawT = range <= 0 ? 0 : Math.min(Math.max((exitProgress - exitStart) / range, 0), 1)
+      const exitT = easeOutCubic(rawT)
+
+      return {
+        // Trailing handoff must stay opaque — fading reveals the page bg in the gap above products.
+        opacity: fadeOpacity ? 1 - exitT : 1,
+        scale: reduceMotion ? 1 : 1 - exitT * (1 - WORK_CARD_EXIT_SCALE),
+        y: reduceMotion ? 0 : exitT * WORK_CARD_EXIT_LIFT_PX,
+        blur: reduceMotion ? 0 : exitT * WORK_CARD_EXIT_BLUR_PX,
+      }
+    }
+
     const applyCardStyles = (progress: number) => {
       let scale = 1
       let opacity = 1
       let y = 0
       let blur = 0
 
-      const enterProgress = extendStickyThroughTrailing
-        ? Math.min(Math.max((window.scrollY - segmentMetricsRef.current.start) / window.innerHeight, 0), 1)
-        : progress
+      // Drive recede by how far products have covered the viewport (not total stack scroll).
+      let trailingExitProgress: number | null = null
+      if (extendStickyThroughTrailing) {
+        const productsEl = measureEl.lastElementChild as HTMLElement | null
+        const productsTop = productsEl?.getBoundingClientRect().top ?? window.innerHeight
+        trailingExitProgress = Math.min(Math.max(1 - productsTop / window.innerHeight, 0), 1)
+      }
 
-      if (index > 0 && !extendStickyThroughTrailing && enterProgress < WORK_CARD_ENTER_END) {
-        const enterT = easeOutCubic(enterProgress / WORK_CARD_ENTER_END)
+      if (index > 0 && !extendStickyThroughTrailing && progress < WORK_CARD_ENTER_END) {
+        const enterT = easeOutCubic(progress / WORK_CARD_ENTER_END)
         scale = reduceMotion ? 1 : WORK_CARD_ENTER_SCALE - enterT * (WORK_CARD_ENTER_SCALE - 1)
         y = reduceMotion ? 0 : (1 - enterT) * WORK_CARD_ENTER_OFFSET_Y
         opacity = WORK_CARD_ENTER_OPACITY + enterT * (1 - WORK_CARD_ENTER_OPACITY)
+      } else if (trailingExitProgress !== null && trailingExitProgress > exitStart) {
+        ;({ opacity, scale, y, blur } = applyExit(trailingExitProgress, { fadeOpacity: false }))
       } else if (enableScrollRunway && progress > exitStart) {
-        const range = exitEnd - exitStart
-        const rawT = range <= 0 ? 0 : Math.min(Math.max((progress - exitStart) / range, 0), 1)
-        const exitT = easeOutCubic(rawT)
-
-        opacity = 1 - exitT
-        scale = reduceMotion ? 1 : 1 - exitT * (1 - WORK_CARD_EXIT_SCALE)
-        y = reduceMotion ? 0 : exitT * WORK_CARD_EXIT_LIFT_PX
-        blur = reduceMotion ? 0 : exitT * WORK_CARD_EXIT_BLUR_PX
+        ;({ opacity, scale, y, blur } = applyExit(progress, { fadeOpacity: true }))
       }
 
       cardOpacity.set(opacity)
@@ -308,7 +321,8 @@ export function WorkProjectCard({
     <motion.div
       className={cn(
         'sticky mx-auto w-full rounded-t-[2rem] border-t-[3px] border-black bg-white md:rounded-t-[2.5rem]',
-        index > 0 && !extendStickyThroughTrailing && 'shadow-[0_-8px_24px_-6px_rgba(0,0,0,0.4)]'
+        (index > 0 || extendStickyThroughTrailing) &&
+          'shadow-[0_-8px_24px_-6px_rgba(0,0,0,0.4)]'
       )}
       style={{
         zIndex: index + 1,

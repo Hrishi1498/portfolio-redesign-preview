@@ -81,6 +81,7 @@ export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: 
       accent={accent}
       align={align}
       theme={ch.theme}
+      backgroundVideo={slide.backgroundVideo}
     />
   )
 
@@ -165,6 +166,7 @@ export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: 
               features={slide.features}
               accent={accent}
               theme={ch.theme}
+              backgroundVideo={slide.backgroundVideo}
             />
           )
         }
@@ -337,10 +339,17 @@ export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: 
                 aspectRatio={project.coverAspect ?? CASE_STUDY_UI_ASPECT}
                 frameTheme={project.screenshotFrame ?? 'light'}
                 sectionTheme="dark"
-                frameVariant={project.screenshotStyle === 'device' ? 'device' : undefined}
+                frameVariant={
+                  project.coverVideo
+                    ? 'minimal'
+                    : project.screenshotStyle === 'device'
+                      ? 'device'
+                      : undefined
+                }
                 projectStyle={project.screenshotStyle}
                 deviceLabel={deviceLabel}
-                imageFit="contain"
+                imageFit={project.coverVideo ? 'cover' : 'contain'}
+                videoSrc={project.coverVideo}
                 className="mx-auto"
               />
             </Reveal>

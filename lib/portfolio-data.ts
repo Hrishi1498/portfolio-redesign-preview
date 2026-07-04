@@ -25,6 +25,8 @@ export interface PortfolioProject {
     thumbnail: string
     /** Preferred image for work listing cards and hero previews */
     cover?: string
+    /** Optional looping hero video (case study header). Poster falls back to cover. */
+    coverVideo?: string
     /** CSS aspect-ratio for cover image, e.g. "1024/490" */
     coverAspect?: string
     /** Screenshot frame background — dark UI products use a black frame instead of white. */
@@ -252,6 +254,7 @@ export const portfolioProjects: PortfolioProject[] = [
     images: {
       thumbnail: '/hf-logo.png',
       cover: '/hf-work-cover.png',
+      coverVideo: '/farm5.mp4',
       coverAspect: '1024/490',
       screenshotStyle: 'device',
     },
@@ -281,6 +284,7 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'The Problem',
         content: 'Groceries often reach vendors late and stale due to inventory mismanagement. Middle layers cause delays, wastage, and poor quality control. Vendors lack a structured ordering system, and farmers are disconnected from real demand signals.',
         highlight: 'Traditional supply chains are broken - fresh produce becomes stale before reaching vendors.',
+        backgroundVideo: '/farm4.mp4',
       },
       {
         id: 4,
@@ -414,6 +418,7 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Why This Project Stands Out',
         content: 'Healthy Fasal solves a real, ground-level problem with the founder\'s deep domain expertise. The strong operational logic combined with the zero-inventory model reduces risk while the proven traction and revenue validate the business model.',
         highlight: 'From farm to vendor, fresh produce with zero waste.',
+        backgroundVideo: '/farm6.mp4',
       },
       {
         id: 15,
@@ -962,6 +967,7 @@ export const portfolioProjects: PortfolioProject[] = [
     images: {
       thumbnail: '/cc-logo.png',
       cover: '/cc-work-cover.png',
+      coverVideo: '/Course.mp4',
       coverAspect: '1024/492',
       screenshotStyle: 'device',
     },
@@ -989,6 +995,7 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'The Core Problem',
         content: 'Professors are hesitant to use AI tools. Universities often restrict or ban AI platforms. Key concerns include data privacy, student data misuse, intellectual property leakage, and vendor lock-in. Existing AI tools are generic, not professor-centric, and not institution-friendly.',
         highlight: 'Professors don\'t want AI tools. They want a trusted extension of themselves.',
+        backgroundVideo: '/Course3.mp4',
       },
       {
         id: 4,
@@ -1068,6 +1075,7 @@ export const portfolioProjects: PortfolioProject[] = [
         type: 'features',
         title: 'Student Experience',
         content: 'Students interact through a simple, ChatGPT-like UI  intentionally familiar and distraction-free.',
+        backgroundVideo: '/Course1.mp4',
         features: [
           { icon: '💬', title: 'Ask Questions', description: 'Directly related to course materials' },
           { icon: '📝', title: 'Clarify Concepts', description: 'Outside classroom hours' },
@@ -1115,7 +1123,9 @@ export const portfolioProjects: PortfolioProject[] = [
         title: 'Current Status & Vision',
         content: 'Product under active development. Core architecture finalized. Privacy-first design locked. Early-stage builds in progress. Course Companion positions itself at the intersection of AI, Education, Privacy, and Institutional trust.',
         highlight: 'Building AI systems people are comfortable trusting  not just using.',
+        backgroundVideo: '/Course2.mp4',
       },
     ],
   },
+
 ]

@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
   frameContentClass,
@@ -67,6 +68,116 @@ interface CaseStudyScreenshotProps {
   slideFrame?: ImageFrameVariant
   projectStyle?: ImageFrameVariant
   deviceLabel?: string
+  /** Optional looping video; `src` is used as the poster. */
+  videoSrc?: string
+}
+
+function MediaContent({
+  src,
+  alt,
+  videoSrc,
+  resolvedFit,
+  resolvedSizes,
+  priority,
+}: {
+  src: string
+  alt: string
+  videoSrc?: string
+  resolvedFit: 'contain' | 'cover'
+  resolvedSizes: string
+  priority: boolean
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoReady, setVideoReady] = useState(false)
+  const [reduceMotion, setReduceMotion] = useState(false)
+  const fitClass =
+    resolvedFit === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
+
+  useEffect(() => {
+    setReduceMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  }, [])
+
+  useEffect(() => {
+    if (!videoSrc || reduceMotion) return
+
+    const video = videoRef.current
+    if (!video) return
+
+    setVideoReady(false)
+
+    const markReady = () => setVideoReady(true)
+    const tryPlay = () => {
+      void video.play().then(markReady).catch(() => {})
+    }
+
+    video.addEventListener('playing', markReady)
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+          tryPlay()
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: [0, 0.2, 0.5, 1] },
+    )
+
+    observer.observe(video)
+    // Hero videos are above the fold — start loading/playing immediately.
+    if (priority) tryPlay()
+
+    return () => {
+      observer.disconnect()
+      video.removeEventListener('playing', markReady)
+      video.pause()
+    }
+  }, [videoSrc, priority, reduceMotion])
+
+  if (videoSrc && reduceMotion) {
+    return (
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        unoptimized
+        priority={priority}
+        className={fitClass}
+        sizes={resolvedSizes}
+      />
+    )
+  }
+
+  if (videoSrc) {
+    return (
+      <video
+        ref={videoRef}
+        className={cn(
+          'absolute inset-0 h-full w-full bg-zinc-950 transition-opacity duration-300',
+          fitClass,
+          videoReady ? 'opacity-100' : 'opacity-0'
+        )}
+        src={videoSrc}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-label={alt}
+      />
+    )
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      unoptimized
+      priority={priority}
+      className={fitClass}
+      sizes={resolvedSizes}
+    />
+  )
 }
 
 export function CaseStudyScreenshot({
@@ -83,13 +194,14 @@ export function CaseStudyScreenshot({
   slideFrame,
   projectStyle,
   deviceLabel = 'app.example.com',
+  videoSrc,
 }: CaseStudyScreenshotProps) {
   const variant =
     frameVariant ??
     resolveImageFrameVariant({ src, layout, slideFrame, projectStyle })
 
   const resolvedFit =
-    imageFit ?? (variant === 'none' ? 'cover' : 'contain')
+    imageFit ?? (variant === 'none' ? 'cover' : videoSrc ? 'cover' : 'contain')
 
   const nativeWidth = nativeWidthFromAspect(aspectRatio)
   const resolvedSizes =
@@ -110,17 +222,14 @@ export function CaseStudyScreenshot({
 
   const portrait = isPortraitAspect(aspectRatio)
 
-  const imageNode = (
-    <Image
+  const mediaNode = (
+    <MediaContent
       src={src}
       alt={alt}
-      fill
-      unoptimized
+      videoSrc={videoSrc}
+      resolvedFit={resolvedFit}
+      resolvedSizes={resolvedSizes}
       priority={layout === 'cinematic'}
-      className={cn(
-        resolvedFit === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
-      )}
-      sizes={resolvedSizes}
     />
   )
 
@@ -137,7 +246,7 @@ export function CaseStudyScreenshot({
             aspectRatio: `${portraitWidth}/${portraitHeight}`,
           }}
         >
-          {imageNode}
+          {mediaNode}
         </div>
       </figure>
     )
@@ -155,7 +264,7 @@ export function CaseStudyScreenshot({
     >
       {variant === 'device' && <DeviceChrome label={deviceLabel} />}
       <div className={cn('relative w-full', contentClass, contentRingClass)} style={{ aspectRatio }}>
-        {imageNode}
+        {mediaNode}
         {variant === 'device' && (
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/[0.04]" />
         )}

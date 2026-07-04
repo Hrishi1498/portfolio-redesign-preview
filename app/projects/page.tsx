@@ -2,7 +2,7 @@
 
 import { Navbar } from '@/components/layout/Navbar'
 import { WorkProjectsList } from '@/components/showcase/WorkProjectsList'
-import { RezonnaProductSpotlight } from '@/components/sections/RezonnaProductSpotlight'
+import { StudioProducts } from '@/components/sections/StudioProducts'
 import { portfolioProjects } from '@/lib/portfolio-data'
 
 export default function ProjectsPage() {
@@ -20,7 +20,7 @@ export default function ProjectsPage() {
               <b className="font-normal text-zinc-200">intent</b>.
             </>
           }
-          trailingContent={<RezonnaProductSpotlight embedded />}
+          trailingContent={<StudioProducts embedded />}
         />
       </section>
     </main>
