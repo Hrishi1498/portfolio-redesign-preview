@@ -1,10 +1,6 @@
 import type { StorySlide } from '@/lib/story-slide'
 import type { CaseStudyProject } from '@/lib/case-study-project'
 
-export function chapterEyebrow(index: number, label: string) {
-  return `/${String(index).padStart(2, '0')} ${label}`
-}
-
 export function slideChapterLabel(type: StorySlide['type']) {
   const labels: Record<string, string> = {
     intro: 'Context',
@@ -23,19 +19,6 @@ export function slideChapterLabel(type: StorySlide['type']) {
   return labels[type] ?? 'Chapter'
 }
 
-export function collectProjectImages(project: CaseStudyProject): string[] {
-  const images = new Set<string>()
-  if (project.thumbnail) images.add(project.thumbnail)
-
-  project.slides?.forEach((slide) => {
-    if (slide.image) images.add(slide.image)
-    slide.galleryImages?.forEach((img) => images.add(img))
-    slide.testimonialImages?.forEach((img) => images.add(img))
-  })
-
-  return Array.from(images)
-}
-
 export function heroImage(project: CaseStudyProject): string | undefined {
   if (project.cover) return project.cover
 
@@ -49,26 +32,6 @@ export function heroImage(project: CaseStudyProject): string | undefined {
   if (gallery?.galleryImages?.[0]) return gallery.galleryImages[0]
 
   return project.thumbnail
-}
-
-export function mergeMetrics(project: CaseStudyProject) {
-  const fromProject = project.metrics ?? []
-  const fromSlides =
-    project.slides
-      ?.filter((s) => s.type === 'stats' && s.stats?.length)
-      .flatMap((s) => s.stats!.map((stat) => ({ label: stat.label, value: stat.value }))) ?? []
-
-  const seen = new Set<string>()
-  const merged: { label: string; value: string }[] = []
-
-  for (const metric of [...fromProject, ...fromSlides]) {
-    const key = `${metric.label}-${metric.value}`
-    if (seen.has(key)) continue
-    seen.add(key)
-    merged.push(metric)
-  }
-
-  return merged.slice(0, 8)
 }
 
 export function stickySourceSlide(slides: StorySlide[]): StorySlide | undefined {

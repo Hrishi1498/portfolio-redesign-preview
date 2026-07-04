@@ -5,14 +5,12 @@ import type { PortfolioProject } from '@/lib/portfolio-data'
 import { heroImage } from '@/components/showcase/case-study/utils'
 import { fromPortfolioProject } from '@/lib/case-study-project'
 import { getCategoryLabel, getIndustry } from '@/lib/project-utils'
-import { releaseHomeScrollLock } from '@/lib/home-scroll-lock'
 import { WorkProjectLink } from '@/components/showcase/WorkProjectLink'
 import { cn } from '@/lib/utils'
 
 interface WorkProjectCardProps {
   project: PortfolioProject
   index: number
-  onNavigate?: () => void
   /** When false, shows the screenshot frame without a photo inside. */
   showImage?: boolean
 }
@@ -100,7 +98,6 @@ function ArticleFigure({
 export function WorkProjectCard({
   project,
   index,
-  onNavigate,
   showImage = true,
 }: WorkProjectCardProps) {
   const hasStory = Boolean(project.slides?.length)
@@ -114,11 +111,6 @@ export function WorkProjectCard({
   const linkLabel = hasStory
     ? 'Read case study'
     : (project.links.ctaLabel ?? (project.links.live ? 'View project' : 'Explore project'))
-
-  const handleNavigate = () => {
-    onNavigate?.()
-    releaseHomeScrollLock()
-  }
 
   const cover = showImage ? getWorkCardCover(project) : undefined
   const alignRight = index % 2 === 1
@@ -134,7 +126,7 @@ export function WorkProjectCard({
       <p className="max-w-none font-body text-base leading-[1.5] tracking-[-0.01em] text-zinc-600 md:text-[1.0625rem] md:leading-[1.5]">
         {project.description}
       </p>
-      {href ? <WorkProjectLink href={href} label={linkLabel} onNavigate={handleNavigate} /> : null}
+      {href ? <WorkProjectLink href={href} label={linkLabel} /> : null}
     </div>
   )
 

@@ -15,28 +15,24 @@ const steps = [
   {
     number: '01',
     title: 'Discover',
-    shortLabel: 'Research',
     description:
       'We immerse in your product vision, users, and constraints, mapping the problem before writing code.',
   },
   {
     number: '02',
     title: 'Design',
-    shortLabel: 'Architecture',
     description:
       'Interfaces, flows, and architecture shaped with the same care we bring to our own products.',
   },
   {
     number: '03',
     title: 'Build',
-    shortLabel: 'Execution',
     description:
       'Full-stack execution across AI, web, and cloud, shipped in tight loops with relentless attention to detail.',
   },
   {
     number: '04',
     title: 'Deliver',
-    shortLabel: 'Launch',
     description:
       'Production-ready systems with the polish, performance, and reliability premium products demand.',
   },
@@ -73,89 +69,12 @@ const processMetrics = steps.map((step) => ({
 const blurText = true
 
 interface ProcessProps {
-  embedded?: boolean
   accent?: string
 }
 
 const processTheme = 'light' as const
 
-function ProcessGrid({ accent, embedded = false }: { accent: string; embedded?: boolean }) {
-  const styles = sceneThemeClasses(processTheme)
-
-  return (
-    <div
-      className={cn(
-        'grid grid-cols-1 sm:grid-cols-2',
-        embedded ? 'mt-6 gap-3' : 'mt-14 gap-4 md:mt-16 md:gap-6 lg:grid-cols-4'
-      )}
-    >
-      {steps.map((step, i) => (
-        <div
-          key={step.number}
-          className={cn('group relative h-full overflow-hidden rounded-2xl', styles.card, embedded ? 'p-5' : 'p-6 md:p-8')}
-        >
-          <div className="mb-5 h-px w-10" style={{ backgroundColor: accent }} />
-          <BlurTextAnimation
-            as="p"
-            text={`Phase ${step.number} · ${step.shortLabel}`}
-            variant="label"
-            theme="light"
-            textClassName="font-heading text-xs uppercase tracking-[0.2em] text-zinc-500"
-            startDelay={i * 0.04}
-          />
-          <h3
-            className={cn(
-              'relative mt-4 font-display font-semibold tracking-tight',
-              styles.heading,
-              embedded ? 'text-xl' : 'text-2xl'
-            )}
-          >
-            <BlurTextAnimation
-              as="span"
-              text={step.title}
-              variant="headline"
-              theme="light"
-              startDelay={i * 0.04 + 0.06}
-            />
-          </h3>
-          <BlurTextAnimation
-            as="p"
-            text={step.description}
-            variant="body"
-            theme="light"
-            className={cn('relative mt-3 font-body', styles.body, embedded ? 'text-sm' : 'text-base')}
-            startDelay={i * 0.04 + 0.12}
-          />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) {
-  if (embedded) {
-    return (
-      <section
-        id="process"
-        className="relative min-h-0 overflow-hidden border-t border-zinc-200/80 bg-white px-5 py-6 text-zinc-950 antialiased sm:px-8"
-      >
-        <div className="relative mx-auto max-h-[min(88vh,720px)] w-full max-w-7xl">
-          <p className="mb-2 font-heading text-xs uppercase tracking-[0.28em]" style={{ color: accent }}>
-            <BlurTextAnimation as="span" text="How we work" variant="label" theme="light" />
-          </p>
-          <BlurTextAnimation
-            text="Craft, not templates"
-            className="mb-8 whitespace-nowrap"
-            textClassName="font-display font-bold text-zinc-950 text-3xl sm:text-4xl"
-            theme="light"
-            variant="headline"
-          />
-          <ProcessGrid accent={accent} embedded />
-        </div>
-      </section>
-    )
-  }
-
+export function Process({ accent = '#7c3aed' }: ProcessProps) {
   const styles = sceneThemeClasses(processTheme)
 
   return (

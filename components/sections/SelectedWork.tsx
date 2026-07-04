@@ -3,7 +3,6 @@
 import { portfolioProjects } from '@/lib/portfolio-data'
 import { WorkProjectsList } from '@/components/showcase/WorkProjectsList'
 import { StudioProducts } from '@/components/sections/StudioProducts'
-import { releaseHomeScrollLock } from '@/lib/home-scroll-lock'
 
 export function SelectedWork() {
   return (
@@ -13,7 +12,6 @@ export function SelectedWork() {
     >
       <WorkProjectsList
         projects={portfolioProjects}
-        onNavigate={() => releaseHomeScrollLock()}
         trailingContent={<StudioProducts embedded />}
         showLegalInfo
       />

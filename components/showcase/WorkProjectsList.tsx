@@ -15,7 +15,6 @@ function sortProjects(projects: PortfolioProject[]) {
 
 interface WorkProjectsListProps {
   projects: PortfolioProject[]
-  onNavigate?: () => void
   title?: string
   subtitle?: ReactNode
   /** Rendered after the project list (e.g. Rezonna spotlight). */
@@ -26,7 +25,6 @@ interface WorkProjectsListProps {
 
 export function WorkProjectsList({
   projects,
-  onNavigate,
   title = 'Portfolio',
   subtitle = (
     <>
@@ -59,7 +57,6 @@ export function WorkProjectsList({
                 key={project.slug}
                 project={project}
                 index={index}
-                onNavigate={onNavigate}
                 showImage={index < sorted.length - 2}
               />
             ))}

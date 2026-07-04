@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { PRODUCT_IMAGE_FRAME_LIGHT_CLASS } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import { cn } from '@/lib/utils'
 
@@ -82,8 +82,6 @@ export interface ProductSpotlightProps {
   showWave?: boolean
   /** Optional looping background video (muted, plays when section is in view). */
   backgroundVideoSrc?: string
-  /** Optional playlist of background videos; plays in order and loops the list. */
-  backgroundVideoSrcs?: string[]
   /**
    * Desktop composition.
    * `default` — panel left, screenshot right (Rezonna).
@@ -316,28 +314,15 @@ export function ProductSpotlight({
   showHeadline = true,
   showWave = true,
   backgroundVideoSrc,
-  backgroundVideoSrcs,
   layout = 'default',
 }: ProductSpotlightProps) {
   const mirrored = layout === 'mirrored'
   const screenshotImages =
     images && images.length > 0 ? images : [{ src: imageSrc, alt: imageAlt }]
-  const videoPlaylist = useMemo(
-    () =>
-      backgroundVideoSrcs && backgroundVideoSrcs.length > 0
-        ? backgroundVideoSrcs
-        : backgroundVideoSrc
-          ? [backgroundVideoSrc]
-          : [],
-    [backgroundVideoSrc, backgroundVideoSrcs],
-  )
-  const hasBackgroundVideo = videoPlaylist.length > 0
   const sectionRef = useRef<HTMLElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
   const videoBackdropRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const videoInViewRef = useRef(false)
-  const [videoIndex, setVideoIndex] = useState(0)
   const [sectionActive, setSectionActive] = useState(false)
   const [shaderPlaying, setShaderPlaying] = useState(false)
   const [shaderIntensity, setShaderIntensity] = useState(0)
@@ -349,10 +334,8 @@ export function ProductSpotlight({
 
   shaderIntensityRef.current = shaderIntensity
 
-  const activeVideoSrc = videoPlaylist[videoIndex] ?? videoPlaylist[0]
-
   useEffect(() => {
-    if (!hasBackgroundVideo) return
+    if (!backgroundVideoSrc) return
 
     const section = sectionRef.current
     const video = videoRef.current
@@ -391,18 +374,9 @@ export function ProductSpotlight({
       }
     }
 
-    const onEnded = () => {
-      if (videoPlaylist.length <= 1) return
-      setVideoIndex((current) => (current + 1) % videoPlaylist.length)
-    }
-
-    video.addEventListener('ended', onEnded)
-
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const inView = entry.isIntersecting && entry.intersectionRatio >= 0.2
-        videoInViewRef.current = inView
-        if (inView) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
           void video.play().catch(() => {})
         } else {
           video.pause()
@@ -414,24 +388,11 @@ export function ProductSpotlight({
     observer.observe(section)
     return () => {
       observer.disconnect()
-      video.removeEventListener('ended', onEnded)
       video.pause()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [hasBackgroundVideo, videoPlaylist])
-
-  useEffect(() => {
-    if (!hasBackgroundVideo) return
-
-    const video = videoRef.current
-    if (!video) return
-
-    video.load()
-    if (videoInViewRef.current) {
-      void video.play().catch(() => {})
-    }
-  }, [activeVideoSrc, hasBackgroundVideo])
+  }, [backgroundVideoSrc])
 
   useEffect(() => {
     if (!showWave) return
@@ -578,7 +539,7 @@ export function ProductSpotlight({
 
   const sectionBody = (
     <>
-      {hasBackgroundVideo && activeVideoSrc ? (
+      {backgroundVideoSrc ? (
         <div
           ref={videoBackdropRef}
           className="pointer-events-none fixed inset-0 z-0 bg-black"
@@ -588,10 +549,10 @@ export function ProductSpotlight({
           <video
             ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover"
-            src={activeVideoSrc}
+            src={backgroundVideoSrc}
             poster={imageSrc}
             muted
-            loop={videoPlaylist.length === 1}
+            loop
             playsInline
             preload="metadata"
           />
