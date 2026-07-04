@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import type { PortfolioProject } from '@/lib/portfolio-data'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { WorkProjectCard } from '@/components/showcase/WorkProjectCard'
@@ -18,7 +18,7 @@ interface WorkProjectsListProps {
   onNavigate?: () => void
   title?: string
   subtitle?: ReactNode
-  /** Rendered inside the sticky stack container so cards stay pinned while it scrolls in. */
+  /** Rendered after the project list (e.g. Rezonna spotlight). */
   trailingContent?: ReactNode
   /** Show company legal details in footer (home page only). */
   showLegalInfo?: boolean
@@ -39,13 +39,11 @@ export function WorkProjectsList({
   showLegalInfo = false,
 }: WorkProjectsListProps) {
   const sorted = sortProjects(projects)
-  const trailingStackRef = useRef<HTMLDivElement>(null)
-  const lastIndex = sorted.length - 1
 
   return (
     <>
       <div className="flex w-full flex-col items-center">
-        <header className="mx-auto flex w-full flex-col items-center gap-6 pb-12 text-center md:gap-8 md:pb-16 lg:gap-10">
+        <header className="mx-auto flex w-full flex-col items-center gap-6 px-6 pb-12 text-center md:gap-8 md:px-12 md:pb-16 lg:gap-10 lg:px-16 xl:px-20">
           <h2 className="font-body text-[clamp(3.75rem,11vw,8.5rem)] font-normal leading-[0.9] tracking-[-0.04em] text-white">
             {title}
           </h2>
@@ -54,36 +52,21 @@ export function WorkProjectsList({
           </p>
         </header>
 
-        <div className="relative mx-auto w-full max-w-[min(100%,90rem)] overflow-visible">
-          {sorted.map((project, index) => {
-            const isLast = index === lastIndex
-            const hasTrailing = isLast && Boolean(trailingContent)
-
-            if (hasTrailing) {
-              return (
-                <div key={project.slug} ref={trailingStackRef} className="relative w-full">
-                  <WorkProjectCard
-                    project={project}
-                    index={index}
-                    onNavigate={onNavigate}
-                    extendStickyThroughTrailing
-                    stackContainerRef={trailingStackRef}
-                  />
-                  {trailingContent}
-                </div>
-              )
-            }
-
-            return (
+        <div className="relative w-full overflow-visible">
+          <div className="w-full overflow-hidden rounded-t-[2rem] bg-white md:rounded-t-[2.5rem]">
+            {sorted.map((project, index) => (
               <WorkProjectCard
                 key={project.slug}
                 project={project}
                 index={index}
                 onNavigate={onNavigate}
-                enableScrollRunway={index < lastIndex}
+                showImage={index < sorted.length - 2}
               />
-            )
-          })}
+            ))}
+          </div>
+          {trailingContent ? (
+            <div className="px-6 md:px-12 lg:px-16 xl:px-20">{trailingContent}</div>
+          ) : null}
         </div>
       </div>
       <SiteFooter compact showLegalInfo={showLegalInfo} />

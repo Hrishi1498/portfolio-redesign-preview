@@ -9,7 +9,7 @@ export default function ProjectsPage() {
   return (
     <main className="relative min-h-screen bg-black">
       <Navbar theme="dark" position="static" />
-      <section className="px-6 pb-0 pt-8 md:px-12 md:pt-12 lg:px-16 xl:px-20">
+      <section className="px-0 pb-0 pt-8 md:pt-12">
         <WorkProjectsList
           projects={portfolioProjects}
           title="Our work"
