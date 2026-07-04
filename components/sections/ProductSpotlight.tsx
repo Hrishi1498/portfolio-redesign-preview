@@ -2,7 +2,8 @@
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { PRODUCT_IMAGE_FRAME_LIGHT_CLASS } from '@/components/showcase/case-study/CaseStudyScreenshot'
 import { cn } from '@/lib/utils'
 
@@ -49,6 +50,11 @@ function isSectionSettled(entry: IntersectionObserverEntry) {
   )
 }
 
+export interface ProductSpotlightImage {
+  src: string
+  alt: string
+}
+
 export interface ProductSpotlightProps {
   className?: string
   style?: CSSProperties
@@ -63,6 +69,10 @@ export interface ProductSpotlightProps {
   liveUrl: string
   imageSrc: string
   imageAlt: string
+  /** Optional carousel slides; falls back to a single `imageSrc` when omitted. */
+  images?: ProductSpotlightImage[]
+  /** Auto-advance interval in ms when multiple images are provided. */
+  carouselIntervalMs?: number
   imageAspect?: string
   glowGradient?: string
   ctaLabel?: string
@@ -72,6 +82,8 @@ export interface ProductSpotlightProps {
   showWave?: boolean
   /** Optional looping background video (muted, plays when section is in view). */
   backgroundVideoSrc?: string
+  /** Optional playlist of background videos; plays in order and loops the list. */
+  backgroundVideoSrcs?: string[]
   /**
    * Desktop composition.
    * `default` — panel left, screenshot right (Rezonna).
@@ -94,23 +106,85 @@ function ProductHeadline({ className }: { className?: string }) {
   )
 }
 
+const DEFAULT_CAROUSEL_INTERVAL_MS = 4200
+const CAROUSEL_TRANSITION_MS = 780
+
+type CarouselDirection = 'left' | 'right' | 'top' | 'bottom'
+
+const CAROUSEL_DIRECTIONS: CarouselDirection[] = ['left', 'right', 'top', 'bottom']
+
+const carouselSlideVariants = {
+  enter: (direction: CarouselDirection) => ({
+    x: direction === 'left' ? '-100%' : direction === 'right' ? '100%' : 0,
+    y: direction === 'top' ? '-100%' : direction === 'bottom' ? '100%' : 0,
+    opacity: 1,
+  }),
+  center: {
+    x: 0,
+    y: 0,
+    opacity: 1,
+  },
+  exit: (direction: CarouselDirection) => ({
+    x: direction === 'left' ? '100%' : direction === 'right' ? '-100%' : 0,
+    y: direction === 'top' ? '100%' : direction === 'bottom' ? '-100%' : 0,
+    opacity: 1,
+  }),
+}
+
+const carouselFadeVariants = {
+  enter: { opacity: 0 },
+  center: { opacity: 1 },
+  exit: { opacity: 0 },
+}
+
 function ProductScreenshot({
   className,
   frameClassName,
-  imageSrc,
-  imageAlt,
+  images,
   imageAspect,
   glowGradient,
+  carouselIntervalMs = DEFAULT_CAROUSEL_INTERVAL_MS,
 }: {
   className?: string
   frameClassName?: string
-  imageSrc: string
-  imageAlt: string
+  images: ProductSpotlightImage[]
   imageAspect: string
   glowGradient: string
+  carouselIntervalMs?: number
 }) {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [direction, setDirection] = useState<CarouselDirection>('left')
+  const [paused, setPaused] = useState(false)
+  const directionStepRef = useRef(0)
+  const prefersReducedMotion = useReducedMotion()
+  const isCarousel = images.length > 1
+  const activeImage = images[activeIndex] ?? images[0]
+  const slideVariants = prefersReducedMotion ? carouselFadeVariants : carouselSlideVariants
+
+  useEffect(() => {
+    if (!isCarousel || paused) return
+
+    const id = window.setInterval(() => {
+      directionStepRef.current = (directionStepRef.current + 1) % CAROUSEL_DIRECTIONS.length
+      setDirection(CAROUSEL_DIRECTIONS[directionStepRef.current])
+      setActiveIndex((current) => (current + 1) % images.length)
+    }, carouselIntervalMs)
+
+    return () => window.clearInterval(id)
+  }, [carouselIntervalMs, images.length, isCarousel, paused])
+
   return (
-    <figure className={cn('group/product-img', className)}>
+    <figure
+      className={cn('group/product-img', className)}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setPaused(false)
+        }
+      }}
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute -inset-8 -z-10 rounded-[2.75rem] opacity-40 blur-3xl transition-opacity duration-500 group-hover/product-img:opacity-55 max-md:-inset-4 max-md:rounded-[1.75rem]"
@@ -118,24 +192,58 @@ function ProductScreenshot({
       />
       <div
         className={cn(
-          'relative w-full',
+          'relative w-full overflow-hidden',
           PRODUCT_IMAGE_FRAME_LIGHT_CLASS,
           frameClassName,
           'transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover/product-img:-translate-y-1 group-hover/product-img:shadow-[0_0_0_3px_#fff,0_38px_110px_-30px_rgba(0,0,0,0.6)]'
         )}
         style={{ aspectRatio: imageAspect }}
+        role={isCarousel ? 'region' : undefined}
+        aria-roledescription={isCarousel ? 'carousel' : undefined}
+        aria-label={isCarousel ? 'Product screenshots' : undefined}
       >
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          unoptimized
-          className="object-cover object-top transition-transform duration-[650ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover/product-img:scale-[1.012]"
-          sizes={IMAGE_SIZES}
-          priority={false}
-        />
-        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20" />
+        {isCarousel ? (
+          <AnimatePresence initial={false} custom={direction} mode="sync">
+            <motion.div
+              key={activeImage.src}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                duration: prefersReducedMotion ? 0.35 : CAROUSEL_TRANSITION_MS / 1000,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={activeImage.src}
+                alt={activeImage.alt}
+                fill
+                unoptimized
+                className="object-cover object-top"
+                sizes={IMAGE_SIZES}
+                priority={activeIndex === 0}
+              />
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <div className="absolute inset-0">
+            <Image
+              src={activeImage.src}
+              alt={activeImage.alt}
+              fill
+              unoptimized
+              className="object-cover object-top"
+              sizes={IMAGE_SIZES}
+              priority
+            />
+          </div>
+        )}
+        <div className="pointer-events-none absolute inset-0 z-[1] ring-1 ring-inset ring-white/20" />
       </div>
+      <span className="sr-only">{activeImage?.alt}</span>
     </figure>
   )
 }
@@ -200,19 +308,36 @@ export function ProductSpotlight({
   liveUrl,
   imageSrc,
   imageAlt,
+  images,
+  carouselIntervalMs = DEFAULT_CAROUSEL_INTERVAL_MS,
   imageAspect = IMAGE_ASPECT,
   glowGradient = DEFAULT_GLOW,
   ctaLabel = 'Live Page',
   showHeadline = true,
   showWave = true,
   backgroundVideoSrc,
+  backgroundVideoSrcs,
   layout = 'default',
 }: ProductSpotlightProps) {
   const mirrored = layout === 'mirrored'
+  const screenshotImages =
+    images && images.length > 0 ? images : [{ src: imageSrc, alt: imageAlt }]
+  const videoPlaylist = useMemo(
+    () =>
+      backgroundVideoSrcs && backgroundVideoSrcs.length > 0
+        ? backgroundVideoSrcs
+        : backgroundVideoSrc
+          ? [backgroundVideoSrc]
+          : [],
+    [backgroundVideoSrc, backgroundVideoSrcs],
+  )
+  const hasBackgroundVideo = videoPlaylist.length > 0
   const sectionRef = useRef<HTMLElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
   const videoBackdropRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const videoInViewRef = useRef(false)
+  const [videoIndex, setVideoIndex] = useState(0)
   const [sectionActive, setSectionActive] = useState(false)
   const [shaderPlaying, setShaderPlaying] = useState(false)
   const [shaderIntensity, setShaderIntensity] = useState(0)
@@ -224,8 +349,10 @@ export function ProductSpotlight({
 
   shaderIntensityRef.current = shaderIntensity
 
+  const activeVideoSrc = videoPlaylist[videoIndex] ?? videoPlaylist[0]
+
   useEffect(() => {
-    if (!backgroundVideoSrc) return
+    if (!hasBackgroundVideo) return
 
     const section = sectionRef.current
     const video = videoRef.current
@@ -264,9 +391,18 @@ export function ProductSpotlight({
       }
     }
 
+    const onEnded = () => {
+      if (videoPlaylist.length <= 1) return
+      setVideoIndex((current) => (current + 1) % videoPlaylist.length)
+    }
+
+    video.addEventListener('ended', onEnded)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+        const inView = entry.isIntersecting && entry.intersectionRatio >= 0.2
+        videoInViewRef.current = inView
+        if (inView) {
           void video.play().catch(() => {})
         } else {
           video.pause()
@@ -278,11 +414,24 @@ export function ProductSpotlight({
     observer.observe(section)
     return () => {
       observer.disconnect()
+      video.removeEventListener('ended', onEnded)
       video.pause()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [backgroundVideoSrc])
+  }, [hasBackgroundVideo, videoPlaylist])
+
+  useEffect(() => {
+    if (!hasBackgroundVideo) return
+
+    const video = videoRef.current
+    if (!video) return
+
+    video.load()
+    if (videoInViewRef.current) {
+      void video.play().catch(() => {})
+    }
+  }, [activeVideoSrc, hasBackgroundVideo])
 
   useEffect(() => {
     if (!showWave) return
@@ -429,7 +578,7 @@ export function ProductSpotlight({
 
   const sectionBody = (
     <>
-      {backgroundVideoSrc ? (
+      {hasBackgroundVideo && activeVideoSrc ? (
         <div
           ref={videoBackdropRef}
           className="pointer-events-none fixed inset-0 z-0 bg-black"
@@ -439,15 +588,15 @@ export function ProductSpotlight({
           <video
             ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover"
-            src={backgroundVideoSrc}
+            src={activeVideoSrc}
             poster={imageSrc}
             muted
-            loop
+            loop={videoPlaylist.length === 1}
             playsInline
             preload="metadata"
           />
-          <div className="absolute inset-0 bg-black/70" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.55)_100%)]" />
+          <div className="absolute inset-0 bg-black/35" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.28)_100%)]" />
         </div>
       ) : null}
 
@@ -481,12 +630,12 @@ export function ProductSpotlight({
           <ProductHeadline className="-ml-4 whitespace-nowrap text-[clamp(3rem,13vw,4.25rem)]" />
         ) : null}
         <ProductScreenshot
-          className="relative w-full overflow-visible px-2"
+          className="relative -mt-4 w-full overflow-visible px-2"
           frameClassName="max-md:rounded-[1.75rem] max-md:shadow-[0_0_0_2px_#fff,0_24px_70px_-28px_rgba(0,0,0,0.55)]"
-          imageSrc={imageSrc}
-          imageAlt={imageAlt}
+          images={screenshotImages}
           imageAspect={imageAspect}
           glowGradient={glowGradient}
+          carouselIntervalMs={carouselIntervalMs}
         />
         <ProductPanel
           className="relative box-border w-full max-md:mx-auto max-md:w-[calc(100%-1rem)]"
@@ -513,12 +662,12 @@ export function ProductSpotlight({
           className={cn(
             'absolute z-[2] w-[66%]',
             mirrored ? 'left-[0%]' : 'left-[34%]',
-            showHeadline ? 'top-[34%]' : 'top-[12%]'
+            showHeadline ? 'top-[26%]' : 'top-[12%]'
           )}
-          imageSrc={imageSrc}
-          imageAlt={imageAlt}
+          images={screenshotImages}
           imageAspect={imageAspect}
           glowGradient={glowGradient}
+          carouselIntervalMs={carouselIntervalMs}
         />
 
         <ProductPanel

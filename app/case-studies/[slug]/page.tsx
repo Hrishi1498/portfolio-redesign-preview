@@ -27,6 +27,7 @@ export default function CaseStudyDetailPage() {
     <CaseStudyPageLayout
       project={fromLegacyCaseStudy(study)}
       backHref="/case-studies"
+      backLabel="Back to case studies"
     />
   )
 }

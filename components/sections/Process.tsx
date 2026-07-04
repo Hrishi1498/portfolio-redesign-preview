@@ -145,7 +145,7 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
           </p>
           <BlurTextAnimation
             text="Craft, not templates"
-            className="mb-8"
+            className="mb-8 whitespace-nowrap"
             textClassName="font-display font-bold text-zinc-950 text-3xl sm:text-4xl"
             theme="light"
             variant="headline"
@@ -175,8 +175,8 @@ export function Process({ embedded = false, accent = '#7c3aed' }: ProcessProps) 
           </p>
           <BlurTextAnimation
             text="Craft, not templates"
-            className="mt-8 max-w-5xl"
-            textClassName="font-display font-bold text-zinc-950 text-[clamp(3.25rem,9vw,7.5rem)]"
+            className="mt-8 whitespace-nowrap md:-translate-x-3"
+            textClassName="font-display font-bold text-zinc-950 text-[clamp(1.75rem,calc((100vw-3rem)/10.2),7.5rem)] md:text-[clamp(4rem,11vw,9rem)]"
             theme="light"
             variant="headline"
             startDelay={0.08}

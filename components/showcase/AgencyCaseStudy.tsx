@@ -35,13 +35,49 @@ import {
 interface AgencyCaseStudyProps {
   project: CaseStudyProject
   backHref?: string
+  backLabel?: string
 }
 
 function sectionTheme(chapterNumber: number): SceneTheme {
   return chapterNumber % 2 === 0 ? 'light' : 'dark'
 }
 
-export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: AgencyCaseStudyProps) {
+function CaseStudyBackLink({
+  href,
+  label = 'Back',
+}: {
+  href: string
+  label?: string
+}) {
+  return (
+    <Link
+      href={href}
+      className="group inline-flex min-h-10 items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-3.5 py-2 font-heading text-xs font-medium uppercase tracking-[0.14em] text-zinc-200 transition-all duration-300 hover:border-white/22 hover:bg-white/[0.1] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40"
+    >
+      <svg
+        aria-hidden
+        viewBox="0 0 16 16"
+        fill="none"
+        className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5"
+      >
+        <path
+          d="M10 3.5 5.5 8 10 12.5"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <span>{label}</span>
+    </Link>
+  )
+}
+
+export function AgencyCaseStudy({
+  project,
+  backHref = PORTFOLIO_SECTION_HREF,
+  backLabel = 'Back to portfolio',
+}: AgencyCaseStudyProps) {
   const slides = project.slides ?? []
   const accent = project.color
   const snapshotMetrics = project.metrics ?? []
@@ -260,12 +296,7 @@ export function AgencyCaseStudy({ project, backHref = PORTFOLIO_SECTION_HREF }: 
     <article id="case-study-article" className="bg-[#050505] text-white antialiased">
       <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-[#050505]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-6 py-4 md:px-12 lg:px-16">
-          <Link
-            href={backHref}
-            className="font-heading text-xs uppercase tracking-[0.18em] text-zinc-500 transition-colors hover:text-white"
-          >
-            ← Back
-          </Link>
+          <CaseStudyBackLink href={backHref} label={backLabel} />
           <p className="truncate font-body text-sm text-zinc-400">{project.title}</p>
         </div>
         <div className="h-px w-full" style={{ backgroundColor: `${accent}88` }} />
