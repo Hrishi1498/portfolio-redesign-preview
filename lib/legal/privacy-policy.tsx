@@ -35,7 +35,7 @@ export const privacySections: LegalSection[] = [
           <li>
             <strong className="font-medium text-zinc-300">Information you provide:</strong> name,
             email address, phone number, company name, project details, and any other information
-            you submit when booking a consultation through TidyCal or contacting us.
+            you submit when booking a consultation through Calendly or contacting us.
           </li>
           <li>
             <strong className="font-medium text-zinc-300">Technical information:</strong> browser
@@ -112,7 +112,7 @@ export const privacySections: LegalSection[] = [
         </p>
         <ul className="list-disc space-y-2 pl-5">
           <li>
-            <strong className="font-medium text-zinc-300">TidyCal</strong> — appointment scheduling
+            <strong className="font-medium text-zinc-300">Calendly</strong> — appointment scheduling
             when you book a project discussion (
             <a
               href={BOOKING_URL}
@@ -120,7 +120,7 @@ export const privacySections: LegalSection[] = [
               rel="noopener noreferrer"
               className="text-zinc-300 transition-opacity hover:opacity-60"
             >
-              tidycal.com/bitblabs
+              calendly.com/gshubham
             </a>
             )
           </li>

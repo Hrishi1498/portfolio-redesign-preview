@@ -21,6 +21,18 @@ export function getCategoryLabel(category: PortfolioProject['category']): string
   return CATEGORY_LABELS[category] ?? 'Digital Product'
 }
 
+export function sortPortfolioProjects(projects: PortfolioProject[]): PortfolioProject[] {
+  return [...projects].sort((a, b) => {
+    const aIsAi = a.category === 'ai'
+    const bIsAi = b.category === 'ai'
+    if (aIsAi && !bIsAi) return -1
+    if (!aIsAi && bIsAi) return 1
+    if (a.featured && !b.featured) return -1
+    if (!a.featured && b.featured) return 1
+    return Number(b.year) - Number(a.year)
+  })
+}
+
 export function getIndustry(project: PortfolioProject): string {
   return INDUSTRY_MAP[project.slug] ?? getCategoryLabel(project.category)
 }
