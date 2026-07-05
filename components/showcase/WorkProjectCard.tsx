@@ -2,8 +2,6 @@
 
 import Image from 'next/image'
 import type { PortfolioProject } from '@/lib/portfolio-data'
-import { heroImage } from '@/components/showcase/case-study/utils'
-import { fromPortfolioProject } from '@/lib/case-study-project'
 import { getCategoryLabel, getIndustry } from '@/lib/project-utils'
 import { WorkProjectLink } from '@/components/showcase/WorkProjectLink'
 import { cn } from '@/lib/utils'
@@ -19,8 +17,7 @@ const WORK_CARD_ASPECT = '1024/490'
 const WORK_CARD_IMAGE_SIZES = '(max-width: 768px) calc(100vw - 3rem), 1100px'
 
 function getWorkCardCover(project: PortfolioProject): string | undefined {
-  if (project.images.cover) return project.images.cover
-  return heroImage(fromPortfolioProject(project))
+  return project.images.workCover ?? project.images.cover
 }
 
 function getPreviewUrl(project: PortfolioProject): string {

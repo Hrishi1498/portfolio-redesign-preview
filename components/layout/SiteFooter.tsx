@@ -77,56 +77,68 @@ export function SiteFooter({ compact = false, showLegalInfo = false }: SiteFoote
           <div className="h-px w-full bg-white/20" />
         </div>
 
-        <p className="mt-10 max-w-md font-body text-sm leading-relaxed text-zinc-500 lg:mt-12">
-          From product strategy to launch-ready builds. Our studio designs and engineers digital
-          products that connect brands with their audience.
-        </p>
+        <div
+          className={cn(
+            'mt-10 flex flex-col gap-10 lg:mt-12',
+            showLegalInfo && 'lg:flex-row lg:items-end lg:justify-between lg:gap-16'
+          )}
+        >
+          <div>
+            <p className="max-w-md font-body text-sm leading-relaxed text-zinc-500">
+              From product strategy to launch-ready builds. Our studio designs and engineers digital
+              products that connect brands with their audience.
+            </p>
 
-        <p className="mt-8 font-body text-xs text-zinc-600">© {year} BitBLabs</p>
-
-        {showLegalInfo ? (
-          <div className="mt-10 space-y-4 text-center md:text-left lg:mt-12">
-            <div className="space-y-1.5 font-body text-xs leading-relaxed text-zinc-500">
-              <p className="font-heading text-[0.65rem] uppercase tracking-[0.2em] text-zinc-600">
-                Legal information
-              </p>
-              <p className="text-zinc-400">{LEGAL_NAME}</p>
-              <address className="not-italic text-zinc-500">
-                {LEGAL_ADDRESS_LINES.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-              </address>
-              <p>
-                <a
-                  href={`tel:${CONTACT_PHONE}`}
-                  className="text-zinc-400 transition-opacity hover:opacity-60"
-                >
-                  {CONTACT_PHONE_DISPLAY}
-                </a>
-              </p>
-            </div>
-
-            <nav aria-label="Legal" className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start">
-              <Link
-                href={PRIVACY_PATH}
-                className="font-body text-xs text-zinc-500 transition-opacity hover:opacity-60"
-              >
-                Privacy Policy
-              </Link>
-              <span className="text-zinc-700" aria-hidden>
-                ·
-              </span>
-              <Link
-                href={TERMS_PATH}
-                className="font-body text-xs text-zinc-500 transition-opacity hover:opacity-60"
-              >
-                Terms &amp; Conditions
-              </Link>
-            </nav>
+            <p className="mt-8 font-body text-xs text-zinc-600">© {year} BitBLabs</p>
           </div>
-        ) : null}
+
+          {showLegalInfo ? (
+            <div className="space-y-4 text-center md:text-left lg:max-w-sm lg:text-right">
+              <div className="space-y-1.5 font-body text-xs leading-relaxed text-zinc-500">
+                <p className="font-heading text-[0.65rem] uppercase tracking-[0.2em] text-zinc-600">
+                  Legal information
+                </p>
+                <p className="text-zinc-400">{LEGAL_NAME}</p>
+                <address className="not-italic text-zinc-500">
+                  {LEGAL_ADDRESS_LINES.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </address>
+                <p>
+                  <a
+                    href={`tel:${CONTACT_PHONE}`}
+                    className="text-zinc-400 transition-opacity hover:opacity-60"
+                  >
+                    {CONTACT_PHONE_DISPLAY}
+                  </a>
+                </p>
+              </div>
+
+              <nav
+                aria-label="Legal"
+                className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start lg:justify-end"
+              >
+                <Link
+                  href={PRIVACY_PATH}
+                  className="font-body text-xs text-zinc-500 transition-opacity hover:opacity-60"
+                >
+                  Privacy Policy
+                </Link>
+                <span className="text-zinc-700" aria-hidden>
+                  ·
+                </span>
+                <Link
+                  href={TERMS_PATH}
+                  className="font-body text-xs text-zinc-500 transition-opacity hover:opacity-60"
+                >
+                  Terms &amp; Conditions
+                </Link>
+              </nav>
+            </div>
+          ) : null}
+        </div>
       </div>
 
       <div className="relative mx-auto mt-10 flex max-w-[1400px] justify-center overflow-visible sm:mt-12">

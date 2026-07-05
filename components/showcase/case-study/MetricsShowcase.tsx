@@ -96,7 +96,13 @@ export function MetricsShowcase({
       <div className="relative mx-auto max-w-7xl">
         {blurText ? intro : <Reveal>{intro}</Reveal>}
 
-        <div className="mt-16 grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4 md:gap-y-16">
+        <div
+          className={cn(
+            'mt-16 grid grid-cols-2 gap-x-6 gap-y-12 md:gap-y-16',
+            metrics.length === 3 && 'md:grid-cols-3',
+            metrics.length >= 4 && 'md:grid-cols-4'
+          )}
+        >
           {metrics.map((metric, i) => (
             <div key={`${metric.label}-${metric.value}`} className="border-t pt-6" style={{ borderColor: `${accent}55` }}>
               {blurText ? (

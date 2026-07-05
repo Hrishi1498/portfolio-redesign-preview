@@ -321,7 +321,6 @@ export function ProductSpotlight({
     images && images.length > 0 ? images : [{ src: imageSrc, alt: imageAlt }]
   const sectionRef = useRef<HTMLElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
-  const videoBackdropRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [sectionActive, setSectionActive] = useState(false)
   const [shaderPlaying, setShaderPlaying] = useState(false)
@@ -329,7 +328,6 @@ export function ProductSpotlight({
   const sectionActiveRef = useRef(false)
   const shaderIntensityRef = useRef(0)
   const updateBackdropRef = useRef<() => void>(() => {})
-  const updateVideoBackdropRef = useRef<() => void>(() => {})
   const startDelayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   shaderIntensityRef.current = shaderIntensity
@@ -339,40 +337,10 @@ export function ProductSpotlight({
 
     const section = sectionRef.current
     const video = videoRef.current
-    const videoBackdrop = videoBackdropRef.current
-    if (!section || !video || !videoBackdrop) return
+    if (!section || !video) return
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    updateVideoBackdropRef.current = () => {
-      const rect = section.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      const inView = rect.bottom > 0 && rect.top < viewportHeight
-
-      if (!inView) {
-        videoBackdrop.style.visibility = 'hidden'
-        videoBackdrop.style.clipPath = 'inset(100% 0 0 0)'
-        return
-      }
-
-      const top = Math.max(0, rect.top)
-      const bottom = Math.min(viewportHeight, rect.bottom)
-
-      videoBackdrop.style.visibility = 'visible'
-      videoBackdrop.style.clipPath = `inset(${top}px 0 ${viewportHeight - bottom}px 0)`
-    }
-
-    const onScroll = () => updateVideoBackdropRef.current()
-    updateVideoBackdropRef.current()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-
-    if (prefersReducedMotion) {
-      return () => {
-        window.removeEventListener('scroll', onScroll)
-        window.removeEventListener('resize', onScroll)
-      }
-    }
+    if (prefersReducedMotion) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -389,8 +357,6 @@ export function ProductSpotlight({
     return () => {
       observer.disconnect()
       video.pause()
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
     }
   }, [backgroundVideoSrc])
 
@@ -541,10 +507,8 @@ export function ProductSpotlight({
     <>
       {backgroundVideoSrc ? (
         <div
-          ref={videoBackdropRef}
-          className="pointer-events-none fixed inset-0 z-0 bg-black"
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
           aria-hidden
-          style={{ visibility: 'hidden', clipPath: 'inset(100% 0 0 0)' }}
         >
           <video
             ref={videoRef}

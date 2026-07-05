@@ -25,7 +25,7 @@ import {
 } from '@/components/showcase/case-study/CaseStudyScenes'
 import { PORTFOLIO_SECTION_HREF } from '@/lib/site'
 import {
-  heroImage,
+  caseStudyHeroMedia,
   slideChapterLabel,
   stickySourceSlide,
   stickyStoryFromSlides,
@@ -81,7 +81,7 @@ export function AgencyCaseStudy({
   const slides = project.slides ?? []
   const accent = project.color
   const snapshotMetrics = project.metrics ?? []
-  const coverSrc = heroImage(project)
+  const coverSrc = caseStudyHeroMedia(project)
 
   let chapterNum = 0
   const nextChapter = (label: string) => {
@@ -361,7 +361,7 @@ export function AgencyCaseStudy({
             />
           </Reveal>
 
-          {coverSrc && (
+          {(coverSrc || project.coverVideo) && (
             <Reveal className="mt-14 md:mt-16">
               <CaseStudyScreenshot
                 src={coverSrc}

@@ -57,7 +57,6 @@ export function WorkProjectsList({
                 key={project.slug}
                 project={project}
                 index={index}
-                showImage={index < sorted.length - 2}
               />
             ))}
           </div>

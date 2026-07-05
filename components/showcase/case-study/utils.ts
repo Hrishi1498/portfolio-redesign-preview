@@ -34,6 +34,22 @@ export function heroImage(project: CaseStudyProject): string | undefined {
   return project.thumbnail
 }
 
+/** Hero media for case study pages — excludes logo/thumbnail-only fallback. */
+export function caseStudyHeroMedia(project: CaseStudyProject): string | undefined {
+  if (project.cover) return project.cover
+
+  const scene = project.slides?.find((s) => s.image && s.type === 'scene')
+  if (scene?.image) return scene.image
+
+  const any = project.slides?.find((s) => s.image)
+  if (any?.image) return any.image
+
+  const gallery = project.slides?.find((s) => s.galleryImages?.length)
+  if (gallery?.galleryImages?.[0]) return gallery.galleryImages[0]
+
+  return undefined
+}
+
 export function stickySourceSlide(slides: StorySlide[]): StorySlide | undefined {
   const withSteps = slides.filter((s) => s.steps && s.steps.length >= 3)
   if (withSteps.length > 0) {
