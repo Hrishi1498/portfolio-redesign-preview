@@ -28,7 +28,7 @@ const PORTFOLIO_DISPLAY_ORDER = [
 ] as const
 
 export function orderPortfolioProjects(projects: PortfolioProject[]): PortfolioProject[] {
-  const rank = new Map(
+  const rank = new Map<string, number>(
     PORTFOLIO_DISPLAY_ORDER.map((slug, index) => [slug, index]),
   )
 

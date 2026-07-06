@@ -53,7 +53,8 @@ function DeviceChrome({ label }: { label: string }) {
 }
 
 interface CaseStudyScreenshotProps {
-  src: string
+  /** Poster / still image; optional when `videoSrc` is set. */
+  src?: string
   alt: string
   className?: string
   layout?: 'inline' | 'gallery' | 'cinematic'
@@ -80,7 +81,7 @@ function MediaContent({
   resolvedSizes,
   priority,
 }: {
-  src: string
+  src?: string
   alt: string
   videoSrc?: string
   resolvedFit: 'contain' | 'cover'
@@ -135,6 +136,16 @@ function MediaContent({
   }, [videoSrc, priority, reduceMotion])
 
   if (videoSrc && reduceMotion) {
+    if (!src) {
+      return (
+        <div
+          className="absolute inset-0 bg-zinc-950"
+          role="img"
+          aria-label={alt}
+        />
+      )
+    }
+
     return (
       <Image
         src={src}
@@ -167,6 +178,8 @@ function MediaContent({
     )
   }
 
+  if (!src) return null
+
   return (
     <Image
       src={src}
@@ -196,9 +209,11 @@ export function CaseStudyScreenshot({
   deviceLabel = 'app.example.com',
   videoSrc,
 }: CaseStudyScreenshotProps) {
+  if (!src && !videoSrc) return null
+
   const variant =
     frameVariant ??
-    resolveImageFrameVariant({ src, layout, slideFrame, projectStyle })
+    resolveImageFrameVariant({ src: src ?? '', layout, slideFrame, projectStyle })
 
   const resolvedFit =
     imageFit ?? (variant === 'none' ? 'cover' : videoSrc ? 'cover' : 'contain')

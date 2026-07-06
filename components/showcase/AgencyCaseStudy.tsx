@@ -366,7 +366,7 @@ export function AgencyCaseStudy({
           {(coverSrc || project.coverVideo) && (
             <Reveal className="mt-14 md:mt-16">
               <CaseStudyScreenshot
-                src={coverSrc}
+                src={coverSrc ?? project.thumbnail}
                 alt={project.title}
                 layout="cinematic"
                 aspectRatio={project.coverAspect ?? CASE_STUDY_UI_ASPECT}
