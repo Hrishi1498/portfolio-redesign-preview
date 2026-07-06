@@ -8,7 +8,7 @@ export function WorkProjectLink({
   label: string
 }) {
   const className =
-    'inline-flex w-fit items-center justify-center gap-2 rounded-full bg-zinc-950 px-7 py-3 font-heading text-sm font-medium tracking-[-0.01em] text-white shadow-[0_10px_28px_-14px_rgba(9,9,11,0.45)] transition-colors hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950'
+    'inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-7 py-3 font-heading text-sm font-medium tracking-[-0.01em] text-zinc-950 shadow-[0_10px_28px_-14px_rgba(0,0,0,0.35)] transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
 
   const children = (
     <>

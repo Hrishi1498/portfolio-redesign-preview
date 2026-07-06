@@ -117,10 +117,10 @@ export function WorkProjectCard({
       <p className="font-heading text-[11px] font-normal uppercase tracking-[0.16em] text-zinc-500 md:text-xs">
         {kickerParts.join(' · ')}
       </p>
-      <h3 className="font-display text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.08] tracking-[-0.035em] text-zinc-950">
+      <h3 className="font-display text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.08] tracking-[-0.035em] text-white">
         {project.title}
       </h3>
-      <p className="max-w-none font-body text-base leading-[1.5] tracking-[-0.01em] text-zinc-600 md:text-[1.0625rem] md:leading-[1.5]">
+      <p className="max-w-none font-body text-base leading-[1.5] tracking-[-0.01em] text-zinc-400 md:text-[1.0625rem] md:leading-[1.5]">
         {project.description}
       </p>
       {href ? <WorkProjectLink href={href} label={linkLabel} /> : null}

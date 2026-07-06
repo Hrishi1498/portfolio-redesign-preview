@@ -21,9 +21,9 @@ export function WorkProjectsList({
   title = 'Portfolio',
   subtitle = (
     <>
-      Crafted with <b className="font-normal text-zinc-200">structure</b>,{' '}
-      <b className="font-normal text-zinc-200">clarity</b>, and{' '}
-      <b className="font-normal text-zinc-200">purpose</b>.
+      Crafted with <b className="font-normal text-zinc-950">structure</b>,{' '}
+      <b className="font-normal text-zinc-950">clarity</b>, and{' '}
+      <b className="font-normal text-zinc-950">purpose</b>.
     </>
   ),
   trailingContent,
@@ -34,17 +34,17 @@ export function WorkProjectsList({
   return (
     <>
       <div className="flex w-full flex-col items-center">
-        <header className="mx-auto flex w-full flex-col items-center gap-6 px-6 pb-12 text-center md:gap-8 md:px-12 md:pb-16 lg:gap-10 lg:px-16 xl:px-20">
-          <h2 className="font-body text-[clamp(3.75rem,11vw,8.5rem)] font-normal leading-[0.9] tracking-[-0.04em] text-white">
+        <header className="mx-auto flex w-full flex-col items-center gap-6 bg-white px-6 pb-12 text-center md:gap-8 md:px-12 md:pb-16 lg:gap-10 lg:px-16 xl:px-20">
+          <h2 className="font-body text-[clamp(3.75rem,11vw,8.5rem)] font-normal leading-[0.9] tracking-[-0.04em] text-zinc-950">
             {title}
           </h2>
-          <p className="font-body w-full text-center text-[clamp(0.875rem,calc((100vw-3rem)/18),9rem)] leading-[1.05] tracking-[-0.055em] text-zinc-400 whitespace-nowrap md:text-[clamp(1rem,calc((100vw-6rem)/18),9rem)] lg:text-[clamp(1rem,calc((100vw-8rem)/18),9rem)] xl:text-[clamp(1rem,calc((100vw-10rem)/18),9rem)]">
+          <p className="font-body w-full text-center text-[clamp(0.875rem,calc((100vw-3rem)/18),9rem)] leading-[1.05] tracking-[-0.055em] text-zinc-500 whitespace-nowrap md:text-[clamp(1rem,calc((100vw-6rem)/18),9rem)] lg:text-[clamp(1rem,calc((100vw-8rem)/18),9rem)] xl:text-[clamp(1rem,calc((100vw-10rem)/18),9rem)]">
             {subtitle}
           </p>
         </header>
 
         <div className="relative w-full overflow-visible">
-          <div className="w-full overflow-hidden rounded-t-[2rem] bg-white md:rounded-t-[2.5rem]">
+          <div className="w-full overflow-visible bg-black">
             {ordered.map((project, index) => (
               <WorkProjectCard
                 key={project.slug}
