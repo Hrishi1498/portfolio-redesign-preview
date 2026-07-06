@@ -321,6 +321,7 @@ export function ProductSpotlight({
     images && images.length > 0 ? images : [{ src: imageSrc, alt: imageAlt }]
   const sectionRef = useRef<HTMLElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
+  const videoBackdropRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [sectionActive, setSectionActive] = useState(false)
   const [shaderPlaying, setShaderPlaying] = useState(false)
@@ -328,6 +329,7 @@ export function ProductSpotlight({
   const sectionActiveRef = useRef(false)
   const shaderIntensityRef = useRef(0)
   const updateBackdropRef = useRef<() => void>(() => {})
+  const updateVideoBackdropRef = useRef<() => void>(() => {})
   const startDelayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   shaderIntensityRef.current = shaderIntensity
@@ -357,6 +359,43 @@ export function ProductSpotlight({
     return () => {
       observer.disconnect()
       video.pause()
+    }
+  }, [backgroundVideoSrc])
+
+  useEffect(() => {
+    if (!backgroundVideoSrc) return
+
+    const section = sectionRef.current
+    const backdrop = videoBackdropRef.current
+    if (!section || !backdrop) return
+
+    updateVideoBackdropRef.current = () => {
+      const rect = section.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const inView = rect.bottom > 0 && rect.top < viewportHeight
+
+      if (!inView) {
+        backdrop.style.visibility = 'hidden'
+        backdrop.style.clipPath = 'inset(100% 0 0 0)'
+        return
+      }
+
+      const top = Math.max(0, rect.top)
+      const bottom = Math.min(viewportHeight, rect.bottom)
+
+      backdrop.style.visibility = 'visible'
+      backdrop.style.clipPath = `inset(${top}px 0 ${viewportHeight - bottom}px 0)`
+    }
+
+    const onScroll = () => updateVideoBackdropRef.current()
+
+    updateVideoBackdropRef.current()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
     }
   }, [backgroundVideoSrc])
 
@@ -507,12 +546,13 @@ export function ProductSpotlight({
     <>
       {backgroundVideoSrc ? (
         <div
-          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+          ref={videoBackdropRef}
+          className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
           aria-hidden
         >
           <video
             ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full min-h-full min-w-full scale-[1.03] object-cover"
             src={backgroundVideoSrc}
             poster={imageSrc}
             muted
@@ -550,7 +590,12 @@ export function ProductSpotlight({
       ) : null}
 
       {/* Mobile — stacked, left-aligned within section padding */}
-      <div className="relative z-[2] mx-auto flex w-full max-w-[min(100%,90rem)] flex-col gap-8 md:hidden">
+      <div
+        className={cn(
+          'relative z-[2] mx-auto flex w-full max-w-[min(100%,90rem)] flex-col gap-8 md:hidden',
+          embedded && 'px-6 sm:px-8',
+        )}
+      >
         {showHeadline ? (
           <ProductHeadline className="-ml-4 whitespace-nowrap text-[clamp(3rem,13vw,4.25rem)]" />
         ) : null}
@@ -576,7 +621,8 @@ export function ProductSpotlight({
       <div
         className={cn(
           'product-stage relative z-[2] mx-auto hidden w-full max-w-[min(100%,90rem)] md:block',
-          showHeadline ? 'aspect-[1.28/1]' : 'aspect-[1.55/1]'
+          embedded && 'px-10 lg:px-14 xl:px-16',
+          showHeadline ? 'aspect-[1.28/1]' : 'aspect-[1.55/1]',
         )}
       >
         {showHeadline ? (

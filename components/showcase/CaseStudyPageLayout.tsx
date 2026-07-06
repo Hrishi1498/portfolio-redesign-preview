@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { AgencyCaseStudy } from '@/components/showcase/AgencyCaseStudy'
 import { CaseStudyExitTransition } from '@/components/showcase/CaseStudyExitTransition'
 import { ContactCTA } from '@/components/sections/ContactCTA'
+import { Founders } from '@/components/sections/Founders'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import type { CaseStudyProject } from '@/lib/case-study-project'
@@ -27,6 +28,7 @@ export function CaseStudyPageLayout({
       afterProcess={
         <>
           <Testimonials accent={project.color} />
+          <Founders accent={project.color} />
           <ContactCTA />
           <SiteFooter />
         </>

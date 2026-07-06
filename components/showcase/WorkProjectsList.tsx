@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import type { PortfolioProject } from '@/lib/portfolio-data'
-import { sortPortfolioProjects } from '@/lib/project-utils'
+import { orderPortfolioProjects } from '@/lib/project-utils'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { WorkProjectCard } from '@/components/showcase/WorkProjectCard'
 
@@ -29,7 +29,7 @@ export function WorkProjectsList({
   trailingContent,
   showLegalInfo = false,
 }: WorkProjectsListProps) {
-  const sorted = sortPortfolioProjects(projects)
+  const ordered = orderPortfolioProjects(projects)
 
   return (
     <>
@@ -45,7 +45,7 @@ export function WorkProjectsList({
 
         <div className="relative w-full overflow-visible">
           <div className="w-full overflow-hidden rounded-t-[2rem] bg-white md:rounded-t-[2.5rem]">
-            {sorted.map((project, index) => (
+            {ordered.map((project, index) => (
               <WorkProjectCard
                 key={project.slug}
                 project={project}
@@ -53,9 +53,7 @@ export function WorkProjectsList({
               />
             ))}
           </div>
-          {trailingContent ? (
-            <div className="px-6 md:px-12 lg:px-16 xl:px-20">{trailingContent}</div>
-          ) : null}
+          {trailingContent ? <div className="w-full">{trailingContent}</div> : null}
         </div>
       </div>
       <SiteFooter compact showLegalInfo={showLegalInfo} />

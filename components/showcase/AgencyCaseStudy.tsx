@@ -5,7 +5,7 @@ import { type ReactNode } from 'react'
 import { Reveal } from '@/components/ui/Reveal'
 import type { CaseStudyProject } from '@/lib/case-study-project'
 import { portfolioProjects } from '@/lib/portfolio-data'
-import { sortPortfolioProjects } from '@/lib/project-utils'
+import { orderPortfolioProjects } from '@/lib/project-utils'
 import type { StorySlide } from '@/lib/story-slide'
 import { MetricsShowcase } from '@/components/showcase/case-study/MetricsShowcase'
 import { CaseStudyStatsBlock } from '@/components/showcase/case-study/CaseStudyStatsBlock'
@@ -97,12 +97,12 @@ export function AgencyCaseStudy({
   const deviceLabel = liveUrlLabel(project.liveUrl, `${project.slug.replace(/-/g, '')}.com`)
   const conclusionSlide = slides.find((s) => s.type === 'conclusion') ?? slides[slides.length - 1]
 
-  const sortedProjects = sortPortfolioProjects(portfolioProjects)
-  const currentIndex = sortedProjects.findIndex((p) => p.slug === project.slug)
+  const orderedProjects = orderPortfolioProjects(portfolioProjects)
+  const currentIndex = orderedProjects.findIndex((p) => p.slug === project.slug)
   const nextProject =
     currentIndex >= 0
-      ? sortedProjects[(currentIndex + 1) % sortedProjects.length]
-      : sortedProjects[0]
+      ? orderedProjects[(currentIndex + 1) % orderedProjects.length]
+      : orderedProjects[0]
 
   const renderStatement = (
     slide: StorySlide,

@@ -17,20 +17,30 @@ const INDUSTRY_MAP: Record<string, string> = {
   'course-companion': 'EdTech',
 }
 
-export function getCategoryLabel(category: PortfolioProject['category']): string {
-  return CATEGORY_LABELS[category] ?? 'Digital Product'
+/** Curated homepage / case-study navigation order. */
+const PORTFOLIO_DISPLAY_ORDER = [
+  'healthy-fasal',
+  'course-companion',
+  'axion-plan',
+  'digipropass',
+  'natvoiz-ai',
+  'setoo-voice-ai',
+] as const
+
+export function orderPortfolioProjects(projects: PortfolioProject[]): PortfolioProject[] {
+  const rank = new Map(
+    PORTFOLIO_DISPLAY_ORDER.map((slug, index) => [slug, index]),
+  )
+
+  return [...projects].sort((a, b) => {
+    const aRank = rank.get(a.slug) ?? Number.MAX_SAFE_INTEGER
+    const bRank = rank.get(b.slug) ?? Number.MAX_SAFE_INTEGER
+    return aRank - bRank
+  })
 }
 
-export function sortPortfolioProjects(projects: PortfolioProject[]): PortfolioProject[] {
-  return [...projects].sort((a, b) => {
-    const aIsAi = a.category === 'ai'
-    const bIsAi = b.category === 'ai'
-    if (aIsAi && !bIsAi) return -1
-    if (!aIsAi && bIsAi) return 1
-    if (a.featured && !b.featured) return -1
-    if (!a.featured && b.featured) return 1
-    return Number(b.year) - Number(a.year)
-  })
+export function getCategoryLabel(category: PortfolioProject['category']): string {
+  return CATEGORY_LABELS[category] ?? 'Digital Product'
 }
 
 export function getIndustry(project: PortfolioProject): string {
